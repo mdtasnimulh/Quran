@@ -68,12 +68,17 @@ fun QuranApp(
     modifier: Modifier = Modifier,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
+    val context = LocalContext.current
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
 
     QuranApp(
+        context = context,
         appState = appState,
         modifier = modifier,
-        onTopAppBarActionClick = { showSettingsDialog = true },
+        onTopAppBarActionClick = {
+            showSettingsDialog = true
+            Toast.makeText(context, "App Bar Action Clicked!", Toast.LENGTH_SHORT).show()
+        },
         windowAdaptiveInfo = windowAdaptiveInfo,
     )
 }
@@ -81,13 +86,12 @@ fun QuranApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun QuranApp(
+    context: Context,
     appState: QuranAppState,
     modifier: Modifier = Modifier,
     onTopAppBarActionClick: () -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
-    val context = LocalContext.current
-
     val currentDestination = appState.currentDestination
 
     val isTopLevelDestination = appState.topLevelDestination.any { destination ->
