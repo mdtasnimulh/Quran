@@ -3,6 +3,7 @@ package com.tasnimulhasan.quran.ui
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -138,6 +139,8 @@ internal fun QuranApp(
     ) {
         CustomDrawer(
             onDrawerCloseClick = { customDrawerState = CustomDrawerState.Closed },
+            onAboutClick = { Toast.makeText(context, "About Click", Toast.LENGTH_SHORT).show() },
+            onSettingsClick = { Toast.makeText(context, "Settings Click", Toast.LENGTH_SHORT).show() },
         )
         Scaffold(
             modifier = modifier

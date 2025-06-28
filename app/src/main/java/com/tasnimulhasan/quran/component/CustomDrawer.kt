@@ -25,10 +25,8 @@ import com.tasnimulhasan.designsystem.R as Res
 @Composable
 fun CustomDrawer(
     onDrawerCloseClick: () -> Unit,
-    /*onAboutClick: () -> Unit,
-    onFeedBackClick: () -> Unit,
-    onFavouriteClick: () -> Unit,
-    onSettingsClick: () -> Unit,*/
+    onAboutClick: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -60,19 +58,9 @@ fun CustomDrawer(
             CustomNavigationItemView(
                 navigationItem = navigationItem,
                 onClick = {
-                    /*when (navigationItem) {
+                    when (navigationItem) {
                         CustomNavigationItem.ABOUT -> {
                             onAboutClick.invoke()
-                            onDrawerCloseClick.invoke()
-                        }
-
-                        CustomNavigationItem.FEEDBACK -> {
-                            onFeedBackClick.invoke()
-                            onDrawerCloseClick.invoke()
-                        }
-
-                        CustomNavigationItem.FAVOURITE -> {
-                            onFavouriteClick.invoke()
                             onDrawerCloseClick.invoke()
                         }
 
@@ -80,7 +68,7 @@ fun CustomDrawer(
                             onSettingsClick.invoke()
                             onDrawerCloseClick.invoke()
                         }
-                    }*/
+                    }
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))

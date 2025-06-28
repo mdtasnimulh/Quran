@@ -10,14 +10,6 @@ enum class CustomNavigationItem(
         title = "About",
         icon = Res.drawable.ic_about,
     ),
-    FEEDBACK(
-        title = "Feedback",
-        icon = Res.drawable.ic_feedback,
-    ),
-    FAVOURITE(
-        title = "Favourite",
-        icon = Res.drawable.ic_favorite,
-    ),
     SETTINGS(
         title = "Settings",
         icon = Res.drawable.ic_settings,
