@@ -23,6 +23,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.bundles.network.dependencies)
+    implementation(libs.bundles.rxjava3.dependencies)
     testImplementation(libs.kotlinx.serialization.json)
     implementation(libs.bundles.media3.dependencies)
 }

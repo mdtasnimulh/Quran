@@ -1,8 +1,8 @@
 package com.tasnimulhasan.quran.di
 
-import com.tasnimulhasan.data.repoimpl.QuranLocalRepoImpl
+import com.tasnimulhasan.data.repoimpl.QuranSuraFromLocalDbDbRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraRepoImpl
-import com.tasnimulhasan.domain.repository.local.QuranLocalRepository
+import com.tasnimulhasan.domain.repository.local.QuranSuraFromLocalDbRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraRepository
 import dagger.Binds
 import dagger.Module
@@ -17,6 +17,6 @@ interface RepositoryModule {
     fun bindQuranSuraRepository(quranSuraRepoImpl: QuranSuraRepoImpl): QuranSuraRepository
 
     @Binds
-    fun bindQuranLocalRepository(quranLocalRepoImpl: QuranLocalRepoImpl): QuranLocalRepository
+    fun bindQuranLocalRepository(quranSuraFromLocalDbRepoImpl: QuranSuraFromLocalDbDbRepoImpl): QuranSuraFromLocalDbRepository
 
 }
