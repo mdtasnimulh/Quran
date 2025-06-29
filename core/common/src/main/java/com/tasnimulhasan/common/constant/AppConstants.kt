@@ -5,6 +5,8 @@ object AppConstants {
     const val CHANNEL_NAME = "Quran Notification"
     const val NOTIFICATION_REQUEST_CODE = 107
 
+    const val DB_NAME = "quran_mobile.db"
+
     const val NOTIFICATION_ID = 107
     const val NOTIFICATION_CHANNEL_NAME = "Quran Notification"
     const val NOTIFICATION_CHANNEL_ID = "quran_channel_id"

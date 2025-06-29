@@ -2,7 +2,9 @@ package com.tasnimulhasan.entity
 
 data class QuranEntity (
     val index: Int,
-    val sura: Int,
-    val aya: Int,
-    val text: String
+    val suraNumber: Int,
+    val ayaNumber: Int,
+    val ayaText: String,
+    val suraName: String,
+    val suraNameEnglish: String
 )
