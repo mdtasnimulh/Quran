@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -110,9 +111,13 @@ internal fun SuraDetailsScreen(
                             .wrapContentHeight()
                             .border(width = 1.dp, color = Purple40, shape = MaterialTheme.shapes.medium)
                             .padding(horizontal = 16.dp, vertical = 8.dp),
-                        text = "${item.ayaText} (${item.ayaNumber})",
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Right
+                        text = item.ayaText,
+                        style = TextStyle(
+                            fontSize = 30.sp,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.End
+                        ),
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
