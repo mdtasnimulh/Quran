@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.theme.Purple40
 import com.tasnimulhasan.designsystem.theme.PurpleGrey80
+import com.tasnimulhasan.quran.component.SuraCard
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -52,32 +54,13 @@ internal fun QuranScreen(
         }
 
         itemsIndexed(suraNames) { index, item ->
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .clip(shape = MaterialTheme.shapes.medium)
-                    .background(
-                        color = PurpleGrey80,
-                        shape = MaterialTheme.shapes.medium
-                    )
-                    .clickable(
-                        onClick = {
-                            navigateToSuraDetails.invoke(item.suraName, item.suraNameEnglish, item.suraIndex)
-                        }
-                    )
-                    .padding(vertical = 8.dp),
-                text = "${item.suraName} (${item.suraNameEnglish})",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Purple40,
-                    textAlign = TextAlign.Center
-                ),
-            )
+            SuraCard(item) { suraName, suraNameEnglish, suraIndex ->
+                navigateToSuraDetails.invoke(suraName, suraNameEnglish, suraIndex)
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth().height(2.dp).padding(horizontal = 16.dp)
+            )
         }
 
         item {
