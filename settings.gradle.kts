@@ -50,4 +50,5 @@ include(":core:datastore")
 include(":feature:home")
 include(":feature:profile")
 include(":feature:quran")
+include(":feature:sura-details")
 /*** Feature Modules ***/

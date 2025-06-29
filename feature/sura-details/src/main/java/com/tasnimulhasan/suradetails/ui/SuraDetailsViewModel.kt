@@ -1,4 +1,4 @@
-package com.tasnimulhasan.home.ui
+package com.tasnimulhasan.suradetails.ui
 
 import com.tasnimulhasan.domain.base.DataResult
 import com.tasnimulhasan.domain.base.BaseViewModel
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class SuraDetailsViewModel @Inject constructor(
     private val fetchSurahFromLocalDbUseCase: FetchSurahFromLocalDbUseCase,
 ) : BaseViewModel() {
 
@@ -22,10 +22,6 @@ class HomeViewModel @Inject constructor(
         when (it) {
             is UiAction.FetchAllLocalDbSura -> fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(it.suraNumber))
         }
-    }
-
-    init {
-        fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(1))
     }
 
     private fun fetchAllLocalSura(params: FetchSurahFromLocalDbUseCase.Params) {

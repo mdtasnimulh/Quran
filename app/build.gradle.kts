@@ -81,11 +81,13 @@ dependencies {
         implementation(ui)
     }
     /*** Core Modules ***/
+
     /*** Feature Modules ***/
     with(projects) {
         implementation(feature.home)
         implementation(feature.profile)
         implementation(feature.quran)
+        implementation(feature.suraDetails)
     }
     /*** Feature Modules ***/
 

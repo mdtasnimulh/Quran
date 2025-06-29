@@ -15,6 +15,7 @@ import com.tasnimulhasan.home.navigation.navigateToHome
 import com.tasnimulhasan.profile.navigation.navigateToProfile
 import com.tasnimulhasan.quran.navigation.TopLevelDestination
 import com.tasnimulhasan.quran.navigation.navigateToQuran
+import com.tasnimulhasan.suradetails.navigation.navigateToSuraDetails
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -66,6 +67,16 @@ class QuranAppState(
             TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
         }
     }
+
+    fun navigateToSuraDetails(
+        suraName: String,
+        suraNameEnglish: String,
+        suraNumber: Int
+    ) = navController.navigateToSuraDetails(
+        suraName = suraName,
+        suraNameEnglish = suraNameEnglish,
+        suraNumber = suraNumber
+    )
 
     fun navigateBack() {
         navController.navigateUp()

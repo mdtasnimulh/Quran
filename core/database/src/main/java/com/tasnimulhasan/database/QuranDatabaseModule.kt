@@ -3,6 +3,7 @@ package com.tasnimulhasan.database
 import android.app.Application
 import androidx.room.Room
 import com.tasnimulhasan.database.dao.QuranDao
+import com.tasnimulhasan.database.dao.SuraNameDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,16 +16,20 @@ object QuranDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(application: Application): QuranDatabase {
+    fun provideDatabase(application: Application): QuranSuraDatabase {
         return Room.databaseBuilder(
             application,
-            QuranDatabase::class.java,
-            "quran_mobile.db"
+            QuranSuraDatabase::class.java,
+            "quran_sura.db"
         ).build()
     }
 
     @Singleton
     @Provides
-    fun provideQuranDao(database: QuranDatabase): QuranDao = database.quranDao()
+    fun provideQuranDao(database: QuranSuraDatabase): QuranDao = database.quranDao()
+
+    @Singleton
+    @Provides
+    fun provideSuraNameDao(database: QuranSuraDatabase): SuraNameDao = database.suraNameDao()
 
 }

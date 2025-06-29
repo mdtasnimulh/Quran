@@ -16,7 +16,7 @@ fun NavController.navigateToQuran(navOptions: NavOptions) = navigate(route = Qur
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.quranScreen(
-    //navigateToPlayer: (musicId: String) -> Unit,
+    navigateToSuraDetails: (suraName: String, suraNameEnglish: String, suraNumber: Int) -> Unit,
 ) {
     composable<QuranRoute>(
         enterTransition = { fadeIn() },
@@ -24,8 +24,6 @@ fun NavGraphBuilder.quranScreen(
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) {
-        QuranScreen(
-            animatedVisibilityScope = this@composable
-        )
+        QuranScreen(navigateToSuraDetails = navigateToSuraDetails)
     }
 }
