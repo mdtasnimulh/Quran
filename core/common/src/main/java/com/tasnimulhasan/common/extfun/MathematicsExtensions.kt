@@ -2,8 +2,33 @@ package com.tasnimulhasan.common.extfun
 
 import android.text.InputFilter
 import android.text.Spanned
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
 import java.math.RoundingMode
 import java.text.DecimalFormat
+
+fun buildAnnotatedString(verse: String, ayaNumber: Int): AnnotatedString {
+    return buildAnnotatedString {
+        append("$verse ")
+        withStyle(
+            style = SpanStyle(
+                color = Color(0xFF6650a4),//Color(0xFF4CAF50)
+                fontSize = 20.sp
+            )
+        ) {
+            append(convertToArabicNumber(ayaNumber))
+        }
+    }
+}
+
+fun convertToArabicNumber(number: Int): String {
+    val arabicDigits = listOf('٠','١','٢','٣','٤','٥','٦','٧','٨','٩')
+    return "${number.toString().map { arabicDigits[it.digitToInt()] }.joinToString("")}\u06DD"
+}
 
 fun String.convertToInt(): Int {
     return try {

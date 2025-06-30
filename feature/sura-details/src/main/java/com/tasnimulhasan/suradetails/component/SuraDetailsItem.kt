@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
 
@@ -39,9 +40,9 @@ fun SuraDetailsItem(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 },
-            text = verse.ayaText,
+            text = buildAnnotatedString(verse = verse.ayaText, ayaNumber = verse.index),
             style = TextStyle(
-                fontSize = 30.sp,
+                fontSize = 26.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.End
@@ -58,7 +59,7 @@ fun SuraDetailsItem(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 },
-            text = verseEnglish.ayaText,
+            text = "${verseEnglish.ayaNumber}. ${verseEnglish.ayaText}",
             style = TextStyle(
                 fontSize = 16.sp,
                 color = Color.DarkGray,

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tasnimulhasan.common.extfun.buildAnnotatedString
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -70,7 +71,7 @@ internal fun HomeScreen(
                 itemsIndexed(suraList) { index, item ->
                     Text(
                         modifier = Modifier.fillParentMaxWidth().wrapContentHeight(),
-                        text = "${item.ayaText} (${item.ayaNumber})",
+                        text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Right
                     )
