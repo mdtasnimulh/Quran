@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
+import com.tasnimulhasan.designsystem.theme.ArabicKafiExtendedFontFamily
+import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -72,8 +74,10 @@ internal fun HomeScreen(
                     Text(
                         modifier = Modifier.fillParentMaxWidth().wrapContentHeight(),
                         text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index),
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Right
+                        style = TextStyle(
+                            textAlign = TextAlign.Right,
+                            fontSize = 30.sp,
+                        ),
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))

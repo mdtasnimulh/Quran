@@ -2,9 +2,11 @@ package com.tasnimulhasan.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -31,4 +33,22 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val ArabicKsaFontFamily = FontFamily(
+    Font(R.font.ksa_regular, FontWeight.Normal),
+    Font(R.font.ksa_medium, FontWeight.Medium),
+    Font(R.font.ksa_bold, FontWeight.SemiBold),
+    Font(R.font.ksa_extra_bold, FontWeight.Bold),
+)
+
+val ArabicUthmanFontFamily = FontFamily(
+    Font(R.font.uthman_regular, FontWeight.Normal),
+    Font(R.font.uthman_medium, FontWeight.Medium),
+    Font(R.font.uthman_bold, FontWeight.SemiBold),
+    Font(R.font.uthman_extra_bold, FontWeight.Bold),
+)
+
+val ArabicKafiExtendedFontFamily = FontFamily(
+    Font(R.font.kufi_extended, FontWeight.Normal)
 )
