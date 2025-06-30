@@ -1,10 +1,11 @@
 package com.tasnimulhasan.suradetails.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,19 +24,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tasnimulhasan.designsystem.R as Res
+import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.Purple40
 import com.tasnimulhasan.designsystem.theme.PurpleGrey80
+import com.tasnimulhasan.suradetails.component.SuraDetailsItem
+import timber.log.Timber
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -48,9 +48,12 @@ internal fun SuraDetailsScreen(
     viewModel: SuraDetailsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val suraArabicList by viewModel.suraArabicList.collectAsStateWithLifecycle()
+    val suraEnglishSahihList by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.action(UiAction.FetchAllLocalDbSura(suraNumber))
+        viewModel.action(UiAction.FetchQuranEnglishSahih(suraNumber))
     }
 
     when (uiState) {
@@ -78,9 +81,7 @@ internal fun SuraDetailsScreen(
             }
         }
 
-        is UiState.Success -> {
-            val suraList = (uiState as UiState.Success).suraList
-
+        is UiState.Ready -> {
             LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(16.dp)
             ) {
@@ -111,25 +112,14 @@ internal fun SuraDetailsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(suraList) { index, item ->
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        text = item.ayaText,
-                        style = TextStyle(
-                            fontSize = 30.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.Medium,
-                            textAlign = TextAlign.End
-                        ),
+                itemsIndexed(suraArabicList) { index, item ->
+                    SuraDetailsItem(
+                        verse = item,
+                        verseEnglish = suraEnglishSahihList[index]
                     )
 
-                    if (index != suraList.size -1) {
-                        HorizontalDivider(
-                            modifier = Modifier.fillMaxWidth().height(1.dp).padding(horizontal = 16.dp), color = Purple40
-                        )
+                    if (index != suraArabicList.size -1) {
+                        DashedHorizontalDivider(color = Color.DarkGray)
                     }
                 }
 
