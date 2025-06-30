@@ -6,15 +6,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
+import com.tasnimulhasan.common.extfun.convertToArabicNumber
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
 
@@ -59,7 +63,18 @@ fun SuraDetailsItem(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 },
-            text = "${verseEnglish.ayaNumber}. ${verseEnglish.ayaText}",
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xFF6650a4),//Color(0xFF4CAF50)
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                ) {
+                    append("${verseEnglish.ayaNumber}.")
+                }
+                append(" ${verseEnglish.ayaText}")
+            },
             style = TextStyle(
                 fontSize = 16.sp,
                 color = Color.DarkGray,
