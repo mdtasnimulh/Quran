@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
@@ -41,14 +40,14 @@ fun CustomTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .background(color = MaterialTheme.colorScheme.primary),
+            .background(color = MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = onBackClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = context.getString(Res.string.desc_top_app_bar_back_icon),
-                tint = BackgroundWhite
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -61,9 +60,9 @@ fun CustomTopAppBar(
             text = appBarTitle,
             style = TextStyle(
                 fontSize = 18.sp,
-                color = BackgroundWhite,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Start
             ),
             maxLines = 1,
         )
@@ -75,7 +74,7 @@ fun CustomTopAppBar(
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = context.getString(Res.string.desc_top_app_bar_back_icon),
-                    tint = BackgroundWhite
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

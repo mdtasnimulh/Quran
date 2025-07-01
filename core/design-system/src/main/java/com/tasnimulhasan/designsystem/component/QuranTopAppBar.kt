@@ -35,13 +35,13 @@ fun QuranTopAppBar(
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(id = titleRes), color = BackgroundWhite) },
+        title = { Text(text = stringResource(id = titleRes), color = MaterialTheme.colorScheme.onBackground) },
         navigationIcon = {
             IconButton(onClick = onNavigationClick) {
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = BackgroundWhite
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         },
@@ -50,13 +50,11 @@ fun QuranTopAppBar(
                 Icon(
                     imageVector = actionIcon,
                     contentDescription = actionIconsContentDescription,
-                    tint = BackgroundWhite
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
         },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-        ),
+        colors = colors,
         modifier = modifier.testTag("melodicTopAppBar"),
     )
 }

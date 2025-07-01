@@ -36,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -138,8 +139,8 @@ internal fun QuranApp(
 
     Box(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primary)
-            .background(BackgroundWhite.copy(alpha = 0.05f))
+            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.05f))
             .statusBarsPadding()
             .navigationBarsPadding()
             .fillMaxSize()
@@ -155,7 +156,7 @@ internal fun QuranApp(
                 .scale(scale = animatedScale)
                 .coloredShadow(
                     color = Color.Black,
-                    alpha = 0.1f,
+                    alpha = 0.20f,
                     shadowRadius = 50.dp
                 )
                 .clickable(enabled = customDrawerState == CustomDrawerState.Opened) {
