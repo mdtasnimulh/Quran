@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -30,6 +31,8 @@ import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.suradetails.component.CustomTopAppBar
 import com.tasnimulhasan.suradetails.component.SuraDetailsHeader
 import com.tasnimulhasan.suradetails.component.SuraDetailsItem
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -38,11 +41,15 @@ internal fun SuraDetailsScreen(
     suraNameEnglish: String,
     suraNumber: Int,
     suraType: String,
+    isLastRead: Boolean,
+    lastReadAyaNumber: Int,
     onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SuraDetailsViewModel = hiltViewModel(),
 ) {
     val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val suraArabicList by viewModel.suraArabicList.collectAsStateWithLifecycle()
     val suraEnglishSahihList by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
@@ -52,6 +59,12 @@ internal fun SuraDetailsScreen(
         viewModel.action(UiAction.SetLastReadSuraAvailable(true))
         viewModel.action(UiAction.FetchAllLocalDbSura(suraNumber))
         viewModel.action(UiAction.FetchQuranEnglishSahih(suraNumber))
+
+        if (isLastRead){
+            scope.launch {
+                listState.animateScrollToItem(lastReadAyaNumber, -50)
+            }
+        }
     }
 
     when (uiState) {

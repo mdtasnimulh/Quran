@@ -16,7 +16,7 @@ fun NavController.navigateToQuran(navOptions: NavOptions) = navigate(route = Qur
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.quranScreen(
-    navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String) -> Unit,
+    navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String, isLastRead: Boolean, lastReadAyaNumber: Int) -> Unit,
 ) {
     composable<QuranRoute>(
         enterTransition = { fadeIn() },

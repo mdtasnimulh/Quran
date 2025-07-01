@@ -22,7 +22,7 @@ import com.tasnimulhasan.quran.component.SuraCard
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun QuranScreen(
-    navigateToSuraDetails: (String, String, Int, String) -> Unit,
+    navigateToSuraDetails: (String, String, Int, String, Boolean, Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: QuranViewModel = hiltViewModel(),
 ) {
@@ -53,12 +53,15 @@ internal fun QuranScreen(
         }
 
         itemsIndexed(suraNames) { index, item ->
+            val isLastRead = item.suraIndex == lastReadSura?.lastSuraNumber
+            val lastReadAyaNumber = lastReadSura?.lastAyahNumber ?: -1
+
             SuraCard(
                 suraName = item,
                 onSuraClick = { suraNameMeaning, suraNameEnglish, suraIndex, suraType ->
-                    navigateToSuraDetails.invoke(suraNameMeaning, suraNameEnglish, suraIndex, suraType)
+                    navigateToSuraDetails.invoke(suraNameMeaning, suraNameEnglish, suraIndex, suraType, isLastRead, lastReadAyaNumber)
                 },
-                isLastRead = item.suraIndex == lastReadSura?.lastSuraNumber
+                isLastRead = isLastRead
             )
 
             if (index != suraNames.lastIndex) {
