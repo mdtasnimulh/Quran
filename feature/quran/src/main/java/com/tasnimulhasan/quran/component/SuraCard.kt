@@ -2,18 +2,23 @@ package com.tasnimulhasan.quran.component
 
 import android.widget.ImageView
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.BrandGreen
 import com.tasnimulhasan.designsystem.theme.Purple40
 import com.tasnimulhasan.designsystem.theme.PurpleGrey40
@@ -47,7 +53,7 @@ fun SuraCard(
     ) {
         val (verseImageBg, verseNumber, verseColumn, arabicName) = createRefs()
 
-        Image(
+        Box(
             modifier = Modifier
                 .constrainAs(verseImageBg) {
                     top.linkTo(parent.top)
@@ -55,10 +61,8 @@ fun SuraCard(
                     start.linkTo(parent.start)
                     width = Dimension.value(45.dp)
                     height = Dimension.value(45.dp)
-                },
-            painter = painterResource(Res.drawable.ic_circle),
-            contentScale = ContentScale.FillBounds,
-            contentDescription = null
+                }
+                .background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(100)),
         )
 
         Text(
@@ -76,6 +80,7 @@ fun SuraCard(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
+                color = BackgroundWhite
             )
         )
 
@@ -99,8 +104,8 @@ fun SuraCard(
                 text = suraName.suraNameEnglish,
                 style = TextStyle(
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
-                    color = Purple40
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -113,8 +118,8 @@ fun SuraCard(
                 text = "${suraName.suraType} - ${suraName.ayahCount} Verses",
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
-                    color = PurpleGrey40
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.secondary
                 )
             )
         }
@@ -133,7 +138,7 @@ fun SuraCard(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 textAlign = TextAlign.End,
-                color = BrandGreen
+                color = MaterialTheme.colorScheme.primary
             )
         )
     }

@@ -60,9 +60,11 @@ internal fun QuranScreen(
                 navigateToSuraDetails.invoke(suraNameMeaning, suraNameEnglish, suraIndex, suraType)
             }
 
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth().height(2.dp).padding(horizontal = 16.dp)
-            )
+            if (index != suraNames.lastIndex) {
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth().height(2.dp).padding(horizontal = 16.dp)
+                )
+            }
         }
 
         item {
