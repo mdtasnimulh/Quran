@@ -41,7 +41,7 @@ fun SuraCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
-                onSuraClick(suraName.suraName, suraName.suraNameEnglish, suraName.suraIndex, suraName.suraType)
+                onSuraClick(suraName.suraNameMeaning, suraName.suraNameEnglish, suraName.suraIndex, suraName.suraType)
             }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
@@ -144,7 +144,7 @@ fun SuraCard(
 @Composable
 fun PreviewVerseCard() {
     SuraCard (
-        suraName = SuraNameEntity(1, "الفاتحة", "Al-Fatiha", 7, "Meccan"),
+        suraName = SuraNameEntity(1, "الفاتحة", "Al-Fatiha", 7, "Meccan", "The Opening"),
         onSuraClick = { _, _, _, _ -> }
     )
 }

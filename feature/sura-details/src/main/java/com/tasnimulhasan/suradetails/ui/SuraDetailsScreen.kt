@@ -28,11 +28,12 @@ import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.suradetails.component.CustomTopAppBar
 import com.tasnimulhasan.suradetails.component.SuraDetailsHeader
 import com.tasnimulhasan.suradetails.component.SuraDetailsItem
+import timber.log.Timber
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun SuraDetailsScreen(
-    suraName: String,
+    suraNameMeaning: String,
     suraNameEnglish: String,
     suraNumber: Int,
     suraType: String,
@@ -46,6 +47,7 @@ internal fun SuraDetailsScreen(
     val ayaCount by viewModel.ayaCount.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        Timber.e("Sura Data Details: ${suraNameMeaning}, ${suraNameEnglish}, ${suraNumber}, ${suraType}")
         viewModel.action(UiAction.FetchAllLocalDbSura(suraNumber))
         viewModel.action(UiAction.FetchQuranEnglishSahih(suraNumber))
     }
@@ -98,7 +100,7 @@ internal fun SuraDetailsScreen(
                     item {
                         SuraDetailsHeader(
                             suraName = suraNameEnglish,
-                            suraNameMeaning = suraName,
+                            suraNameMeaning = suraNameMeaning,
                             ayahCount = ayaCount.toString(),
                             suraType = suraType,
                             translationName = "Sahih International"

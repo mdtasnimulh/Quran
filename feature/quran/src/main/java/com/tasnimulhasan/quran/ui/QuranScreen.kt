@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.theme.Purple40
 import com.tasnimulhasan.designsystem.theme.PurpleGrey80
 import com.tasnimulhasan.quran.component.SuraCard
+import timber.log.Timber
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -54,8 +55,9 @@ internal fun QuranScreen(
         }
 
         itemsIndexed(suraNames) { index, item ->
-            SuraCard(item) { suraName, suraNameEnglish, suraIndex, suraType ->
-                navigateToSuraDetails.invoke(suraName, suraNameEnglish, suraIndex, suraType)
+            SuraCard(item) { suraNameMeaning, suraNameEnglish, suraIndex, suraType ->
+                Timber.e("Sura Data: ${suraNameMeaning}, ${suraNameEnglish}, ${suraIndex}, ${suraType}")
+                navigateToSuraDetails.invoke(suraNameMeaning, suraNameEnglish, suraIndex, suraType)
             }
 
             HorizontalDivider(

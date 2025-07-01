@@ -11,4 +11,5 @@ data class SuraNameEntity(
     val suraNameEnglish: String,
     val ayahCount: Int,
     val suraType: String,
+    val suraNameMeaning: String
 )

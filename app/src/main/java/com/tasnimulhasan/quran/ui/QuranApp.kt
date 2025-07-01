@@ -226,9 +226,9 @@ private fun GetContent(appState: QuranAppState) {
     Box(modifier = Modifier.consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))) {
         QuranNavHost(
             appState = appState,
-            navigateToSuraDetails = { suraName, suraNameEnglish, suraNumber, suraType ->
+            navigateToSuraDetails = { suraNameMeaning, suraNameEnglish, suraNumber, suraType ->
                 appState.navigateToSuraDetails(
-                    suraName = suraName,
+                    suraNameMeaning = suraNameMeaning,
                     suraNameEnglish = suraNameEnglish,
                     suraNumber = suraNumber,
                     suraType = suraType

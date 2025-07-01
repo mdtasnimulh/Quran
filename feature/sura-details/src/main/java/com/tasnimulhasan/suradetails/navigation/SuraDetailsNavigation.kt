@@ -11,15 +11,15 @@ import com.tasnimulhasan.suradetails.ui.SuraDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable class SuraDetailsRoute(
-    val suraName: String,
+    val suraNameMeaning: String,
     val suraNameEnglish: String,
     val suraNumber: Int,
     val suraType: String
 )
 
-fun NavController.navigateToSuraDetails(suraName: String, suraNameEnglish: String, suraNumber: Int, suraType: String,navOptions: NavOptionsBuilder.() -> Unit = {}){
+fun NavController.navigateToSuraDetails(suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String,navOptions: NavOptionsBuilder.() -> Unit = {}){
     navigate(route = SuraDetailsRoute(
-        suraName = suraName,
+        suraNameMeaning = suraNameMeaning,
         suraNameEnglish = suraNameEnglish,
         suraNumber = suraNumber,
         suraType = suraType
@@ -38,13 +38,13 @@ fun NavGraphBuilder.suraDetailsScreen(
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) { backStackEntry ->
-        val suraName = backStackEntry.arguments?.getString("suraName") ?: ""
+        val suraNameMeaning = backStackEntry.arguments?.getString("suraNameMeaning") ?: ""
         val suraNameEnglish = backStackEntry.arguments?.getString("suraNameEnglish") ?: ""
         val suraNumber = backStackEntry.arguments?.getInt("suraNumber") ?: -1
         val suraType = backStackEntry.arguments?.getString("suraType") ?: ""
 
         SuraDetailsScreen(
-            suraName = suraName,
+            suraNameMeaning = suraNameMeaning,
             suraNameEnglish = suraNameEnglish,
             suraNumber = suraNumber,
             suraType = suraType,

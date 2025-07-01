@@ -14,7 +14,7 @@ fun QuranNavHost(
     appState: QuranAppState,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
-    navigateToSuraDetails: (suraName: String, suraNameEnglish: String, suraNumber: Int, suraType: String) -> Unit,
+    navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String) -> Unit,
 ) {
     val navController = appState.navController
     NavHost(
