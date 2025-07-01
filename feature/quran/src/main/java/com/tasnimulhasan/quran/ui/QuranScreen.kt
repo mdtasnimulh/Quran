@@ -53,13 +53,20 @@ internal fun QuranScreen(
         }
 
         itemsIndexed(suraNames) { index, item ->
-            SuraCard(item) { suraNameMeaning, suraNameEnglish, suraIndex, suraType ->
-                navigateToSuraDetails.invoke(suraNameMeaning, suraNameEnglish, suraIndex, suraType)
-            }
+            SuraCard(
+                suraName = item,
+                onSuraClick = { suraNameMeaning, suraNameEnglish, suraIndex, suraType ->
+                    navigateToSuraDetails.invoke(suraNameMeaning, suraNameEnglish, suraIndex, suraType)
+                },
+                isLastRead = item.suraIndex == lastReadSura?.lastSuraNumber
+            )
 
             if (index != suraNames.lastIndex) {
                 HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth().height(2.dp).padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp)
+                        .padding(horizontal = 16.dp)
                 )
             }
         }

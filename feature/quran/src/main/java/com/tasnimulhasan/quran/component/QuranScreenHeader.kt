@@ -63,9 +63,10 @@ fun QuranScreenHeader(
             Image(
                 modifier = Modifier
                     .constrainAs(quranImage) {
-                        top.linkTo(parent.top, margin = (-32).dp)
-                        end.linkTo(parent.end, margin = (-32).dp)
-                        width = Dimension.wrapContent
+                        top.linkTo(suraNameRef.top)
+                        bottom.linkTo(dividerRef.bottom)
+                        end.linkTo(parent.end, margin = (-8).dp)
+                        width = Dimension.value(100.dp)
                         height = Dimension.wrapContent
                     },
                 painter = painterResource(Res.drawable.ic_quran_large),
@@ -81,9 +82,9 @@ fun QuranScreenHeader(
                         width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
                     },
-                text = "Last Read: ${lastReadSura.lastSuraName}",
+                text = "Last Read: ${lastReadSura.lastSuraNumber}. ${lastReadSura.lastSuraName}",
                 style = TextStyle(
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
@@ -118,7 +119,7 @@ fun QuranScreenHeader(
                     },
                 text = " (${lastReadSura.lastSuraType})",
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 13.sp,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
@@ -133,7 +134,7 @@ fun QuranScreenHeader(
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     },
-                text = "Last Aya No: ${lastReadSura.lastAyahNumber} / Total Verse: ${lastReadSura.lasReadSuraTotalAya}",
+                text = "Last Verse: ${lastReadSura.lastAyahNumber} / Total Verse: ${lastReadSura.lasReadSuraTotalAya}",
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = BackgroundWhite,
@@ -147,7 +148,8 @@ fun QuranScreenHeader(
                     .constrainAs(ayahCountRef) {
                         top.linkTo(dividerRef.bottom, margin = 16.dp)
                         start.linkTo(parent.start)
-                        width = Dimension.wrapContent
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
                     },
                 text = lastReadSura.lastAyaTextTranslation,
@@ -189,7 +191,7 @@ fun PreviewSuraDetailsHeader() {
             1,
             1,
             "Unknown",
-            "Unknown",
+            "Unknown Unknown Unknown Unknown Unknown Unknown Unknown Unknown",
             "Unknown",
             "Unknown",
             "Unknown",

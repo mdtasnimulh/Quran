@@ -33,6 +33,7 @@ import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.BrandGreen
 import com.tasnimulhasan.designsystem.theme.Purple40
 import com.tasnimulhasan.designsystem.theme.PurpleGrey40
+import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.entity.sura.SuraNameEntity
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -40,6 +41,7 @@ import com.tasnimulhasan.designsystem.R as Res
 fun SuraCard(
     suraName: SuraNameEntity,
     onSuraClick: (String, String, Int, String) -> Unit,
+    isLastRead: Boolean,
 ) {
 
     ConstraintLayout(
@@ -49,6 +51,7 @@ fun SuraCard(
             .clickable {
                 onSuraClick(suraName.suraNameMeaning, suraName.suraNameEnglish, suraName.suraIndex, suraName.suraType)
             }
+            .background(color = if (isLastRead) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         val (verseImageBg, verseNumber, verseColumn, arabicName) = createRefs()
@@ -150,6 +153,7 @@ fun SuraCard(
 fun PreviewVerseCard() {
     SuraCard (
         suraName = SuraNameEntity(1, "الفاتحة", "Al-Fatiha", 7, "Meccan", "The Opening"),
-        onSuraClick = { _, _, _, _ -> }
+        onSuraClick = { _, _, _, _ -> },
+        isLastRead = true
     )
 }
