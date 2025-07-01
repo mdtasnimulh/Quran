@@ -2,8 +2,10 @@ package com.tasnimulhasan.quran.ui
 
 import com.tasnimulhasan.common.constant.SuraNames
 import com.tasnimulhasan.domain.base.BaseViewModel
+import com.tasnimulhasan.domain.localusecase.datastore.GetLastReadSuraUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchAllSuraNamesUseCase
 import com.tasnimulhasan.domain.localusecase.suraname.InsertSuraNamesUseCase
+import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.entity.sura.SuraNameEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +17,11 @@ import javax.inject.Inject
 class QuranViewModel @Inject constructor(
     private val fetchAllSuraNamesUseCase: FetchAllSuraNamesUseCase,
     private val insertSuraNamesUseCase: InsertSuraNamesUseCase,
+    private val getLastReadSuraUseCase: GetLastReadSuraUseCase,
 ) : BaseViewModel() {
 
     val suraNames = MutableStateFlow<List<SuraNameEntity>>(emptyList())
+    val lastReadSura = MutableStateFlow<LastReadSuraInfoEntity?>(null)
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading(false))
     val uiState: StateFlow<UiState> get() = _uiState
@@ -25,6 +29,7 @@ class QuranViewModel @Inject constructor(
     val action: (UiAction) -> Unit = {
         when (it) {
             is UiAction.FetchAllSuraNames -> fetchAllSuraNames()
+            is UiAction.GetLastReadSura -> getLastReadSura()
         }
     }
 
@@ -50,6 +55,14 @@ class QuranViewModel @Inject constructor(
         }
     }
 
+    private fun getLastReadSura() {
+        execute {
+            getLastReadSuraUseCase.invoke().collectLatest {
+                lastReadSura.value = it
+            }
+        }
+    }
+
 }
 
 sealed interface UiState {
@@ -60,4 +73,5 @@ sealed interface UiState {
 
 sealed interface UiAction {
     data object FetchAllSuraNames : UiAction
+    data object GetLastReadSura : UiAction
 }

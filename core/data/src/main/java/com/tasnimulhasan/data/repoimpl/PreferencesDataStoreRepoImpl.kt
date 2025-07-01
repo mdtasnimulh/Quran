@@ -1,25 +1,17 @@
-/*
 package com.tasnimulhasan.data.repoimpl
 
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.preferencesOf
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
-import com.tasnimulhasan.entity.AppConfiguration
-import com.tasnimulhasan.entity.eqalizer.AudioEffects
+import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import com.tasnimulhasan.common.constant.AppConstants.FLAT
-import com.tasnimulhasan.common.constant.AppConstants.PRESET_FLAT
-import com.tasnimulhasan.entity.enums.SortType
 
 class PreferencesDataStoreRepoImpl @Inject constructor(
     private val gson: Gson,
@@ -35,61 +27,30 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun setEqType(eqType: AudioEffects) {
+    override suspend fun isLastReadSuraAvailable(available: Boolean) {
         tryIt {
             dataStorePreferences.edit { preferences ->
-                preferences[PreferencesKeys.eqType] = gson.toJson(eqType)
+                preferences[PreferencesKeys.isLastReadSuraAvailable] = available
             }
         }
     }
 
-    override suspend fun setEqualizerEnabled(enabled: Boolean) {
+    override suspend fun saveLastReadSura(sura: LastReadSuraInfoEntity) {
         tryIt {
             dataStorePreferences.edit { preferences ->
-                preferences[PreferencesKeys.enableEqualizer] = enabled
+                preferences[PreferencesKeys.lastReadSura] = gson.toJson(sura)
             }
         }
     }
 
-    override val appConfigurationStream: Flow<AppConfiguration> = dataStorePreferences.data
-        .catch { exception ->
-            exception.localizedMessage?.let { Log.e(tag, it) }
-            emit(emptyPreferences())
-        }
-        .map { preferences ->
-            val audioEffectsJson = preferences[PreferencesKeys.eqType] ?: ""
-            val audioEffects = if (audioEffectsJson.isNotEmpty()) {
-                try {
-                    gson.fromJson(audioEffectsJson, AudioEffects::class.java)
-                } catch (e: Exception) {
-                    Log.e(tag, "Failed to deserialize AudioEffects: ${e.localizedMessage}")
-                    AudioEffects(PRESET_FLAT, FLAT)
-                }
-            } else {
-                AudioEffects(PRESET_FLAT, FLAT)
-            }
-            val enableEqualizer = preferences[PreferencesKeys.enableEqualizer] ?: false
-            AppConfiguration(audioEffects = audioEffects, enableEqualizer = enableEqualizer)
-        }
-
-    override suspend fun saveSortType(type: SortType) {
-        tryIt {
-            dataStorePreferences.edit { preferences ->
-                preferences[PreferencesKeys.sortType] = type.name
-            }
-        }
-    }
-
-    override fun getSortType(): Flow<SortType> {
+    override fun getLastReadSura(): Flow<LastReadSuraInfoEntity> {
         return dataStorePreferences.data.map { preferences ->
-            val sortTypeName = preferences[PreferencesKeys.sortType]
-            SortType.entries.find { it.name == sortTypeName } ?: SortType.DATE_MODIFIED_DESC
+            gson.fromJson(preferences[PreferencesKeys.lastReadSura], LastReadSuraInfoEntity::class.java)
         }
     }
 
     private object PreferencesKeys {
-        val eqType = stringPreferencesKey(name = "eq_type")
-        val enableEqualizer = booleanPreferencesKey(name = "enable_equalizer")
-        val sortType = stringPreferencesKey("sort_type")
+        val lastReadSura = stringPreferencesKey(name = "last_read_sura")
+        val isLastReadSuraAvailable = booleanPreferencesKey(name = "is_last_read_sura_available")
     }
-}*/
+}

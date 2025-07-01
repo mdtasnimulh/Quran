@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.suradetails.component.CustomTopAppBar
 import com.tasnimulhasan.suradetails.component.SuraDetailsHeader
 import com.tasnimulhasan.suradetails.component.SuraDetailsItem
-import timber.log.Timber
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -41,13 +42,14 @@ internal fun SuraDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: SuraDetailsViewModel = hiltViewModel(),
 ) {
+    val listState = rememberLazyListState()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val suraArabicList by viewModel.suraArabicList.collectAsStateWithLifecycle()
     val suraEnglishSahihList by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
     val ayaCount by viewModel.ayaCount.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        Timber.e("Sura Data Details: ${suraNameMeaning}, ${suraNameEnglish}, ${suraNumber}, ${suraType}")
+        viewModel.action(UiAction.SetLastReadSuraAvailable(true))
         viewModel.action(UiAction.FetchAllLocalDbSura(suraNumber))
         viewModel.action(UiAction.FetchQuranEnglishSahih(suraNumber))
     }
@@ -91,8 +93,26 @@ internal fun SuraDetailsScreen(
                 )
 
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    state = listState
                 ) {
+                    viewModel.action(UiAction.SetLastReadSura(
+                        LastReadSuraInfoEntity(
+                            suraNumber,
+                            suraArabicList[listState.firstVisibleItemIndex].ayaNumber,
+                            suraArabicList[listState.firstVisibleItemIndex].ayaText,
+                            suraEnglishSahihList[listState.firstVisibleItemIndex].ayaText,
+                            suraNameEnglish,
+                            suraNameEnglish,
+                            suraNameMeaning,
+                            suraType,
+                            suraArabicList.size,
+                            "Sahih International"
+                        )
+                    ))
+
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
                     }

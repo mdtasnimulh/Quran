@@ -2,11 +2,13 @@ package com.tasnimulhasan.suradetails.ui
 
 import com.tasnimulhasan.domain.base.DataResult
 import com.tasnimulhasan.domain.base.BaseViewModel
+import com.tasnimulhasan.domain.localusecase.datastore.IsLastReadSuraAvailableUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.SetLastReadSuraUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchSurahFromLocalDbUseCase
+import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
-import com.tasnimulhasan.entity.sura.SuraNameEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +19,8 @@ import javax.inject.Inject
 class SuraDetailsViewModel @Inject constructor(
     private val fetchSurahFromLocalDbUseCase: FetchSurahFromLocalDbUseCase,
     private val fetchQuranEnglishSahihUseCase: FetchQuranEnglishSahihUseCase,
+    private val isLastReadSuraAvailableUseCase: IsLastReadSuraAvailableUseCase,
+    private val setLastReadSuraUseCase: SetLastReadSuraUseCase,
 ) : BaseViewModel() {
 
     val suraArabicList = MutableStateFlow<List<QuranLocalDbEntity>>(emptyList())
@@ -31,6 +35,8 @@ class SuraDetailsViewModel @Inject constructor(
         when (it) {
             is UiAction.FetchAllLocalDbSura -> fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(it.suraNumber))
             is UiAction.FetchQuranEnglishSahih -> fetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(it.suraNumber))
+            is UiAction.SetLastReadSura -> setLastReadSura(it.sura)
+            is UiAction.SetLastReadSuraAvailable -> setLastReadSuraAvailable(it.available)
         }
     }
 
@@ -64,6 +70,18 @@ class SuraDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    private fun setLastReadSura(sura: LastReadSuraInfoEntity) {
+        execute {
+            setLastReadSuraUseCase.invoke(sura)
+        }
+    }
+
+    private fun setLastReadSuraAvailable(available: Boolean) {
+        execute {
+            isLastReadSuraAvailableUseCase.invoke(available)
+        }
+    }
 }
 
 sealed interface UiState {
@@ -75,4 +93,6 @@ sealed interface UiState {
 sealed interface UiAction {
     data class FetchAllLocalDbSura(val suraNumber: Int) : UiAction
     data class FetchQuranEnglishSahih(val suraNumber: Int) : UiAction
+    data class SetLastReadSura(val sura: LastReadSuraInfoEntity) : UiAction
+    data class SetLastReadSuraAvailable(val available: Boolean) : UiAction
 }
