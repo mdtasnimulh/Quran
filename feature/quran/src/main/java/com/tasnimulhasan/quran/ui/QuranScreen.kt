@@ -44,13 +44,7 @@ internal fun QuranScreen(
 
         item {
             lastReadSura?.let { sura ->
-                QuranScreenHeader(
-                    suraName = sura.lastSuraNameEnglish,
-                    suraNameMeaning = sura.lastSuraNameMeaning,
-                    ayahCount = sura.lasReadSuraTotalAya.toString(),
-                    suraType = sura.lastSuraType,
-                    translationName = sura.lastReadSuraTranslationName
-                )
+                QuranScreenHeader(sura)
             }
         }
 

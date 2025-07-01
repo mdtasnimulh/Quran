@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,15 +22,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun QuranScreenHeader(
-    suraName: String,
-    suraNameMeaning: String,
-    ayahCount: String,
-    suraType: String,
-    translationName: String
+    lastReadSura: LastReadSuraInfoEntity
 ) {
     Box(
         modifier = Modifier
@@ -65,7 +63,7 @@ fun QuranScreenHeader(
             Image(
                 modifier = Modifier
                     .constrainAs(quranImage) {
-                        bottom.linkTo(parent.bottom, margin = (-32).dp)
+                        top.linkTo(parent.top, margin = (-32).dp)
                         end.linkTo(parent.end, margin = (-32).dp)
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
@@ -83,7 +81,7 @@ fun QuranScreenHeader(
                         width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
                     },
-                text = suraName,
+                text = "Last Read: ${lastReadSura.lastSuraName}",
                 style = TextStyle(
                     fontSize = 18.sp,
                     color = BackgroundWhite,
@@ -100,11 +98,29 @@ fun QuranScreenHeader(
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     },
-                text = suraNameMeaning,
+                text = lastReadSura.lastSuraNameMeaning,
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start
+                ),
+            )
+
+            Text(
+                modifier = Modifier
+                    .constrainAs(suraTypeValueRef) {
+                        top.linkTo(suraNameMeaningRef.top)
+                        bottom.linkTo(suraNameMeaningRef.bottom)
+                        start.linkTo(suraNameMeaningRef.end)
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                    },
+                text = " (${lastReadSura.lastSuraType})",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    color = BackgroundWhite,
+                    fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
             )
@@ -117,29 +133,11 @@ fun QuranScreenHeader(
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     },
-                text = "Type: ",
+                text = "Last Aya No: ${lastReadSura.lastAyahNumber} / Total Verse: ${lastReadSura.lasReadSuraTotalAya}",
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Start
-                ),
-            )
-
-            Text(
-                modifier = Modifier
-                    .constrainAs(suraTypeValueRef) {
-                        top.linkTo(suraTypeRef.top)
-                        bottom.linkTo(suraTypeRef.bottom)
-                        start.linkTo(suraTypeRef.end)
-                        width = Dimension.wrapContent
-                        height = Dimension.wrapContent
-                    },
-                text = suraType,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = BackgroundWhite,
-                    fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
             )
@@ -152,13 +150,15 @@ fun QuranScreenHeader(
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     },
-                text = "Total Verse: $ayahCount",
+                text = lastReadSura.lastAyaTextTranslation,
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Text(
@@ -169,7 +169,7 @@ fun QuranScreenHeader(
                         width = Dimension.wrapContent
                         height = Dimension.wrapContent
                     },
-                text = "Translation: $translationName",
+                text = "Translation: ${lastReadSura.lastReadSuraTranslationName}",
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = BackgroundWhite,
@@ -185,10 +185,17 @@ fun QuranScreenHeader(
 @Composable
 fun PreviewSuraDetailsHeader() {
     QuranScreenHeader(
-        suraName = "Sura Name",
-        suraNameMeaning = "Sura Name Meaning",
-        ayahCount = "Ayah Count",
-        suraType = "Sura Type",
-        translationName = "Translation Name"
+        LastReadSuraInfoEntity(
+            1,
+            1,
+            "Unknown",
+            "Unknown",
+            "Unknown",
+            "Unknown",
+            "Unknown",
+            "Unknown",
+            7,
+            "Sahih International"
+        )
     )
 }
