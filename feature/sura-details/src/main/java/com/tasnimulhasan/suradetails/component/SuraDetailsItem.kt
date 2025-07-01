@@ -71,7 +71,7 @@ fun SuraDetailsItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = verse.index.toString(),
+                text = verse.ayaNumber.toString(),
                 style = TextStyle(
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onBackground,
