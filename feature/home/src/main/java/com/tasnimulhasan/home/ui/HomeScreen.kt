@@ -73,7 +73,7 @@ internal fun HomeScreen(
                 itemsIndexed(suraList) { index, item ->
                     Text(
                         modifier = Modifier.fillParentMaxWidth().wrapContentHeight(),
-                        text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index),
+                        text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
                         style = TextStyle(
                             textAlign = TextAlign.Right,
                             fontSize = 30.sp,

@@ -8,15 +8,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.DigitalRed
+import com.tasnimulhasan.designsystem.theme.LilacViolet
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-fun buildAnnotatedString(verse: String, ayaNumber: Int): AnnotatedString {
+fun buildAnnotatedString(verse: String, ayaNumber: Int, color: Color): AnnotatedString {
     return buildAnnotatedString {
         append("$verse ")
         withStyle(
             style = SpanStyle(
-                color = Color(0xFF6650a4),//Color(0xFF4CAF50)
+                color = color,
                 fontSize = 20.sp
             )
         ) {

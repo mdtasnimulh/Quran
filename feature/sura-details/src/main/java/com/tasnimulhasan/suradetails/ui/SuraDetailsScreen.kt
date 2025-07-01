@@ -119,7 +119,7 @@ internal fun SuraDetailsScreen(
                     )
 
                     if (index != suraArabicList.size -1) {
-                        DashedHorizontalDivider(color = Color.DarkGray)
+                        DashedHorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
 
