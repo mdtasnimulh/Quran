@@ -71,11 +71,13 @@ class QuranAppState(
     fun navigateToSuraDetails(
         suraName: String,
         suraNameEnglish: String,
-        suraNumber: Int
+        suraNumber: Int,
+        suraType: String
     ) = navController.navigateToSuraDetails(
         suraName = suraName,
         suraNameEnglish = suraNameEnglish,
-        suraNumber = suraNumber
+        suraNumber = suraNumber,
+        suraType = suraType
     )
 
     fun navigateBack() {

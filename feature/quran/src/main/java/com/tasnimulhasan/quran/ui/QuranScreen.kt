@@ -35,7 +35,7 @@ import com.tasnimulhasan.quran.component.SuraCard
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun QuranScreen(
-    navigateToSuraDetails: (String, String, Int) -> Unit,
+    navigateToSuraDetails: (String, String, Int, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: QuranViewModel = hiltViewModel(),
 ) {
@@ -54,8 +54,8 @@ internal fun QuranScreen(
         }
 
         itemsIndexed(suraNames) { index, item ->
-            SuraCard(item) { suraName, suraNameEnglish, suraIndex ->
-                navigateToSuraDetails.invoke(suraName, suraNameEnglish, suraIndex)
+            SuraCard(item) { suraName, suraNameEnglish, suraIndex, suraType ->
+                navigateToSuraDetails.invoke(suraName, suraNameEnglish, suraIndex, suraType)
             }
 
             HorizontalDivider(

@@ -33,7 +33,7 @@ import com.tasnimulhasan.designsystem.R as Res
 @Composable
 fun SuraCard(
     suraName: SuraNameEntity,
-    onSuraClick: (String, String, Int) -> Unit,
+    onSuraClick: (String, String, Int, String) -> Unit,
 ) {
 
     ConstraintLayout(
@@ -41,7 +41,7 @@ fun SuraCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
-                onSuraClick(suraName.suraName, suraName.suraNameEnglish, suraName.suraIndex)
+                onSuraClick(suraName.suraName, suraName.suraNameEnglish, suraName.suraIndex, suraName.suraType)
             }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
@@ -145,6 +145,6 @@ fun SuraCard(
 fun PreviewVerseCard() {
     SuraCard (
         suraName = SuraNameEntity(1, "الفاتحة", "Al-Fatiha", 7, "Meccan"),
-        onSuraClick = { _, _, _ -> }
+        onSuraClick = { _, _, _, _ -> }
     )
 }

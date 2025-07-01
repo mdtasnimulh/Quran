@@ -22,6 +22,8 @@ class SuraDetailsViewModel @Inject constructor(
     val suraArabicList = MutableStateFlow<List<QuranLocalDbEntity>>(emptyList())
     val suraEnSahiList = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
 
+    val ayaCount = MutableStateFlow(0)
+
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading(false))
     val uiState: StateFlow<UiState> get() = _uiState
 
@@ -39,6 +41,7 @@ class SuraDetailsViewModel @Inject constructor(
                     is DataResult.Loading -> UiState.Loading(apiResult.loading)
                     is DataResult.Success -> {
                         suraArabicList.value = apiResult.data
+                        ayaCount.value = apiResult.data.size
                         UiState.Ready
                     }
                     is DataResult.Error -> UiState.Error(apiResult.message)
