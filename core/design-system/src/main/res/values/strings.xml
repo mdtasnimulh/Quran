@@ -27,4 +27,6 @@
     <string name="msg_repeat_one">Current track will be repeated</string>
     <string name="msg_repeat_all">All track will be repeated</string>
     <string name="msg_repeat_off">Repeat Off</string>
+
+    <string name="desc_top_app_bar_back_icon">Top App Bar Back Icon</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tasnimulhasan.designsystem.icon.QuranIcons
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,13 +35,13 @@ fun QuranTopAppBar(
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(id = titleRes)) },
+        title = { Text(text = stringResource(id = titleRes), color = BackgroundWhite) },
         navigationIcon = {
             IconButton(onClick = onNavigationClick) {
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = BackgroundWhite
                 )
             }
         },
@@ -48,11 +50,13 @@ fun QuranTopAppBar(
                 Icon(
                     imageVector = actionIcon,
                     contentDescription = actionIconsContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = BackgroundWhite
                 )
             }
         },
-        colors = colors,
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+        ),
         modifier = modifier.testTag("melodicTopAppBar"),
     )
 }

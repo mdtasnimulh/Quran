@@ -1,7 +1,9 @@
 package com.tasnimulhasan.suradetails.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.suradetails.component.CustomTopAppBar
 import com.tasnimulhasan.suradetails.component.SuraDetailsHeader
 import com.tasnimulhasan.suradetails.component.SuraDetailsItem
 
@@ -73,42 +76,56 @@ internal fun SuraDetailsScreen(
         }
 
         is UiState.Ready -> {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                CustomTopAppBar(
+                    appBarTitle = suraNameEnglish,
+                    onBackClick = onNavigateUp,
+                    isMenuIconVisible = false,
+                    onMenuIconClick = {}
+                )
 
-                item {
-                    SuraDetailsHeader(
-                        suraName = suraNameEnglish,
-                        suraNameMeaning = suraName,
-                        ayahCount = ayaCount.toString(),
-                        suraType = suraType,
-                        translationName = "Sahih International"
-                    )
-                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+                ) {
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                    item {
+                        SuraDetailsHeader(
+                            suraName = suraNameEnglish,
+                            suraNameMeaning = suraName,
+                            ayahCount = ayaCount.toString(),
+                            suraType = suraType,
+                            translationName = "Sahih International"
+                        )
+                    }
 
-                itemsIndexed(suraArabicList) { index, item ->
-                    SuraDetailsItem(
-                        verse = item,
-                        verseEnglish = suraEnglishSahihList[index]
-                    )
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
-                    if (index != suraArabicList.size -1) {
-                        DashedHorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+                    itemsIndexed(suraArabicList) { index, item ->
+                        SuraDetailsItem(
+                            verse = item,
+                            verseEnglish = suraEnglishSahihList[index]
+                        )
+
+                        if (index != suraArabicList.size -1) {
+                            DashedHorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
             }
+
         }
     }
 }

@@ -48,16 +48,19 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.tasnimulhasan.common.utils.coloredShadow
+import com.tasnimulhasan.designsystem.component.MainTopAppBar
 import com.tasnimulhasan.designsystem.component.QuranNavigationBar
 import com.tasnimulhasan.designsystem.component.QuranNavigationBarItem
 import com.tasnimulhasan.designsystem.component.QuranTopAppBar
 import com.tasnimulhasan.designsystem.icon.QuranIcons
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.profile.navigation.ProfileRoute
 import com.tasnimulhasan.quran.component.CustomDrawer
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
 import com.tasnimulhasan.quran.navigation.QuranNavHost
 import com.tasnimulhasan.quran.navigation.QuranRoute
+import com.tasnimulhasan.suradetails.navigation.SuraDetailsRoute
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 import com.tasnimulhasan.designsystem.R as Res
@@ -135,8 +138,8 @@ internal fun QuranApp(
 
     Box(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.surface)
-            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
+            .background(MaterialTheme.colorScheme.primary)
+            .background(BackgroundWhite.copy(alpha = 0.05f))
             .statusBarsPadding()
             .navigationBarsPadding()
             .fillMaxSize()
@@ -159,22 +162,31 @@ internal fun QuranApp(
                     customDrawerState = CustomDrawerState.Closed
                 },
             topBar = {
-                /*if (!currentDestination.isRouteInHierarchy(PlayerRoute::class)) {
-
-                }*/
-                QuranTopAppBar(
-                    titleRes = currentTitleRes,
-                    navigationIcon = navigationIcon,
-                    navigationIconContentDescription = navigationIconContentDescription,
-                    actionIcon = QuranIcons.ActionMore,
-                    actionIconsContentDescription = stringResource(id = Res.string.title_settings),
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
-                    onActionClick = { onTopAppBarActionClick() },
-                    onNavigationClick = {
-                        if (!isTopLevelDestination) appState.navigateBack()
-                        else customDrawerState = customDrawerState.opposite()
-                    }
-                )
+                if (!currentDestination.isRouteInHierarchy(SuraDetailsRoute::class)) {
+                    /*MainTopAppBar(
+                        appBarTitle = context.getString(currentTitleRes),
+                        onBackClick = {
+                            if (!isTopLevelDestination) appState.navigateBack()
+                            else customDrawerState = customDrawerState.opposite()
+                        },
+                        navigationIcon = navigationIcon,
+                        isMenuIconVisible = true,
+                        onMenuIconClick = { onTopAppBarActionClick() }
+                    )*/
+                    QuranTopAppBar(
+                        titleRes = currentTitleRes,
+                        navigationIcon = navigationIcon,
+                        navigationIconContentDescription = navigationIconContentDescription,
+                        actionIcon = QuranIcons.ActionMore,
+                        actionIconsContentDescription = stringResource(id = Res.string.title_settings),
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
+                        onActionClick = { onTopAppBarActionClick() },
+                        onNavigationClick = {
+                            if (!isTopLevelDestination) appState.navigateBack()
+                            else customDrawerState = customDrawerState.opposite()
+                        }
+                    )
+                }
             },
             bottomBar = {
                 if (isTopLevelDestination){
