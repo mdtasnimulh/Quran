@@ -209,7 +209,7 @@ fun PrayerTimesCard(
                         fontSize = 12.sp,
                         fontFamily = RobotoFontFamily,
                         color = BackgroundWhite,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Medium,
                         textAlign = TextAlign.Start
                     ),
                 )
