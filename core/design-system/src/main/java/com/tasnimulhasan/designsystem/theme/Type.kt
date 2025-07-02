@@ -35,6 +35,15 @@ val Typography = Typography(
     */
 )
 
+val RobotoFontFamily = FontFamily(
+    Font(R.font.roboto_light, FontWeight.Light),
+    Font(R.font.roboto_regular, FontWeight.Normal),
+    Font(R.font.roboto_medium, FontWeight.Medium),
+    Font(R.font.roboto_bold, FontWeight.SemiBold),
+    Font(R.font.roboto_black, FontWeight.Bold),
+    Font(R.font.roboto_italic, FontWeight.Normal),
+)
+
 val ArabicKsaFontFamily = FontFamily(
     Font(R.font.ksa_regular, FontWeight.Normal),
     Font(R.font.ksa_medium, FontWeight.Medium),

@@ -24,16 +24,16 @@ enum class TopLevelDestination(
     ),
 
     QURAN(
-        selectedIcon = QuranIcons.Songs,
-        unSelectedIcon = QuranIcons.SongsOutline,
+        selectedIcon = QuranIcons.Sura,
+        unSelectedIcon = QuranIcons.SuraOutline,
         iconTextId = Res.string.title_quran,
         titleTextId = Res.string.title_quran,
         route = QuranRoute::class
     ),
 
     PROFILE(
-        selectedIcon = QuranIcons.Album,
-        unSelectedIcon = QuranIcons.AlbumOutline,
+        selectedIcon = QuranIcons.Profile,
+        unSelectedIcon = QuranIcons.ProfileOutline,
         iconTextId = Res.string.title_profile,
         titleTextId = Res.string.title_profile,
         route = ProfileRoute::class

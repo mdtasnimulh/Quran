@@ -32,6 +32,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
@@ -92,8 +93,9 @@ internal fun HomeScreen(
                         text = "Prayer Times",
                         style = TextStyle(
                             fontSize = 16.sp,
+                            fontFamily = RobotoFontFamily,
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Start
                         ),
                     )
@@ -124,6 +126,7 @@ internal fun HomeScreen(
                         style = TextStyle(
                             textAlign = TextAlign.Right,
                             fontSize = 30.sp,
+                            fontWeight = FontWeight.Medium
                         ),
                     )
                     Spacer(modifier = Modifier.height(8.dp))

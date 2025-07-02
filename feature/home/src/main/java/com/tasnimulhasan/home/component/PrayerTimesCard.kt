@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
 import kotlinx.coroutines.delay
 import java.time.LocalTime
@@ -132,6 +133,7 @@ fun PrayerTimesCard(
                 text = arabicMonth,
                 style = TextStyle(
                     fontSize = 16.sp,
+                    fontFamily = RobotoFontFamily,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
@@ -150,6 +152,7 @@ fun PrayerTimesCard(
                 text = currentEnDate,
                 style = TextStyle(
                     fontSize = 12.sp,
+                    fontFamily = RobotoFontFamily,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
@@ -167,6 +170,7 @@ fun PrayerTimesCard(
                 text = nextPrayer,
                 style = TextStyle(
                     fontSize = 18.sp,
+                    fontFamily = RobotoFontFamily,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
@@ -203,6 +207,7 @@ fun PrayerTimesCard(
                     text = countdown,
                     style = TextStyle(
                         fontSize = 12.sp,
+                        fontFamily = RobotoFontFamily,
                         color = BackgroundWhite,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Start
@@ -241,6 +246,7 @@ fun PrayerTimesCard(
                             text = time.prayerName,
                             style = TextStyle(
                                 fontSize = 13.sp,
+                                fontFamily = RobotoFontFamily,
                                 color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                                 fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
@@ -253,6 +259,7 @@ fun PrayerTimesCard(
                             text = time.prayerTime,
                             style = TextStyle(
                                 fontSize = 11.sp,
+                                fontFamily = RobotoFontFamily,
                                 color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                                 fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
