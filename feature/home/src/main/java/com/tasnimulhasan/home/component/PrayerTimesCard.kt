@@ -45,7 +45,8 @@ fun PrayerTimesCard(
     dhuhrTime: String,
     asrTime: String,
     maghribTime: String,
-    ishaTime: String
+    ishaTime: String,
+    currentEnDate: String,
 ) {
     val prayerTimeList = listOf(
         PrayerTImeEntity("Fajr", fajrTime),
@@ -110,7 +111,7 @@ fun PrayerTimesCard(
                         width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
                     },
-                text = "Wednesday, 02 July 2025",
+                text = currentEnDate,
                 style = TextStyle(
                     fontSize = 14.sp,
                     color = BackgroundWhite,
@@ -196,7 +197,7 @@ fun PrayerTimesCard(
                         Text(
                             text = time.prayerName,
                             style = TextStyle(
-                                fontSize = 14.sp,
+                                fontSize = 13.sp,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.SemiBold,
                                 textAlign = TextAlign.Start
@@ -206,7 +207,7 @@ fun PrayerTimesCard(
                         Text(
                             text = time.prayerTime,
                             style = TextStyle(
-                                fontSize = 12.sp,
+                                fontSize = 11.sp,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium,
                                 textAlign = TextAlign.Start
@@ -227,6 +228,7 @@ fun PreviewPrayerTimesCard() {
         dhuhrTime = "12:45 Pm",
         asrTime = "04:43 Pm",
         maghribTime = "03:45 Pm",
-        ishaTime = "08:00 Pm"
+        ishaTime = "08:00 Pm",
+        currentEnDate = "Wednesday, 02 July 2025",
     )
 }

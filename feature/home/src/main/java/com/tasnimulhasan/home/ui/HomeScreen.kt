@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tasnimulhasan.common.dateparser.DateTimeFormat
+import com.tasnimulhasan.common.dateparser.DateTimeParser
+import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.home.component.PrayerTimesCard
@@ -82,11 +85,12 @@ internal fun HomeScreen(
                 item {
                     uiState.prayerTimes?.let {
                         PrayerTimesCard(
-                            fajrTime = it.prayerTimings.fajr,
-                            dhuhrTime = it.prayerTimings.dhuhr,
-                            asrTime = it.prayerTimings.asr,
-                            maghribTime = it.prayerTimings.maghrib,
-                            ishaTime = it.prayerTimings.isha
+                            fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            currentEnDate = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.FULL_DAY_DATE_FORMAT),
                         )
                     }
                 }

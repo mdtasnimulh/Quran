@@ -19,19 +19,13 @@ import kotlin.math.log10
 import kotlin.math.pow
 import com.tasnimulhasan.designsystem.R as Res
 
-
 fun String.decode(): String =
     Base64.decode(this.replace(" ", "/"), Base64.DEFAULT).toString(charset("UTF-8"))
-
 
 fun String.encode(): String =
     Base64.encodeToString(this.toByteArray(charset("UTF-8")), Base64.DEFAULT).replace("/", " ")
 
 fun String.replaceParenthesis(): String = this.replace("[","").replace("]","")
-
-fun getCurrentDate(): String {
-    return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-}
 
 fun List<String>.convertSeatNoToDisplayFormat(): String {
     val displayFormat = StringBuilder()
@@ -55,7 +49,6 @@ fun List<Int>.farePerSeat(): String {
 
     return displayFormat.toString()
 }
-
 
 fun Int.amountShortNotation(): String{
     val notation = arrayOf(' ', 'K', 'M', 'B', 'T', 'P', 'E')
@@ -110,7 +103,6 @@ fun String.commaSeparator(): String {
         .joinToString(",")
         .reversed()
 }
-
 
 fun String.spannableText(
     context: Context,

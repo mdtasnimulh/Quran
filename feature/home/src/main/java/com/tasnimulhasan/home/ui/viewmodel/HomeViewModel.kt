@@ -1,6 +1,7 @@
 package com.tasnimulhasan.home.ui.viewmodel
 
-import com.tasnimulhasan.common.extfun.getCurrentDate
+import com.tasnimulhasan.common.dateparser.DateTimeFormat
+import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.base.DataResult
 import com.tasnimulhasan.domain.base.BaseViewModel
@@ -30,7 +31,7 @@ class HomeViewModel @Inject constructor(
     init {
         fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(1))
         fetchDailyPrayerTimesByCity(FetchDailyPrayerTimesByCityUseCase.Params(
-            date = getCurrentDate(),
+            date = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.outputdMMy),
             city = "Dhaka",
             country = "Bangladesh",
         ))
