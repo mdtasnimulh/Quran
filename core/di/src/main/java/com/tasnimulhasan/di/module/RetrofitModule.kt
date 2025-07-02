@@ -1,9 +1,8 @@
-/*
-package com.jerp.di.module
+package com.tasnimulhasan.di.module
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.jerp.di.qualifier.AppBaseUrl
+import com.tasnimulhasan.di.qualifier.AppBaseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +16,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
+
     @Provides
     @Singleton
     @AppBaseUrl
@@ -44,4 +44,5 @@ object RetrofitModule {
         val gsonBuilder = GsonBuilder()
         return gsonBuilder.create()
     }
-}*/
+
+}

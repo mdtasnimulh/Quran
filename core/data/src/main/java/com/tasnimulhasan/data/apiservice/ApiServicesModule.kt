@@ -1,23 +1,23 @@
 package com.tasnimulhasan.data.apiservice
 
+import com.tasnimulhasan.di.qualifier.AppBaseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiServicesModule {
 
-    /*@Provides
+    @Provides
     @Singleton
     fun provideCredentialApiService(
-        @AppBaseUrl retrofit: Retrofit,
-        authRefreshServiceHolder: AuthRefreshServiceHolder
-    ): CredentialApiService {
-        authRefreshServiceHolder.setAuthRefreshApi(retrofit.create(AuthRefreshApiService::class.java))
-        return retrofit.create(CredentialApiService::class.java)
-    }*/
+        @AppBaseUrl retrofit: Retrofit
+    ): HomeApiService {
+        return retrofit.create(HomeApiService::class.java)
+    }
 
 }

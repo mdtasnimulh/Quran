@@ -122,6 +122,7 @@ dependencies {
     implementation(libs.glide.compose)
     implementation(libs.androidx.palette.compose)
 
+    implementation(libs.play.services.location)
     ksp(libs.hilt.compiler)
     implementation(libs.timber)
 

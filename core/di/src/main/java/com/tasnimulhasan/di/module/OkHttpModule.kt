@@ -1,10 +1,5 @@
-/*
-package com.jerp.di.module
+package com.tasnimulhasan.di.module
 
-
-import com.jerp.di.authrefresh.AuthenticationRefreshToken
-import com.jerp.sharedpref.SharedPrefHelper
-import com.jerp.sharedpref.SpKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,13 +23,10 @@ object OkHttpModule {
         return interceptor
     }
 
-
     @Provides
     @Singleton
     fun provideOkHttpClient(
         loggerInterceptor: HttpLoggingInterceptor,
-        helper: SharedPrefHelper,
-        refreshToken: AuthenticationRefreshToken
     ): OkHttpClient {
         val timeOut = 30
         val httpClient = OkHttpClient().newBuilder()
@@ -42,16 +34,8 @@ object OkHttpModule {
             .readTimeout(timeOut.toLong(), TimeUnit.SECONDS)
             .writeTimeout(timeOut.toLong(), TimeUnit.SECONDS)
 
-        httpClient.authenticator(refreshToken)
         httpClient.addInterceptor(loggerInterceptor)
-        httpClient.addInterceptor { chain ->
-            val original = chain.request()
-            val requestBuilder = original.newBuilder()
-                .addHeader("Accept", "application/json")
-                .addHeader("Authorization", "Bearer "+helper.getString(SpKey.authToken))
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }
         return httpClient.build()
     }
-}*/
+
+}

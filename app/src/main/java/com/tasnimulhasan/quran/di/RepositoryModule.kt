@@ -4,10 +4,12 @@ import com.tasnimulhasan.data.repoimpl.PreferencesDataStoreRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraFromLocalDbDbRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraRepoImpl
 import com.tasnimulhasan.data.repoimpl.SuraNameRepoImpl
+import com.tasnimulhasan.data.repoimpl.remote.HomeRepoImpl
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraFromLocalDbRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraRepository
 import com.tasnimulhasan.domain.repository.local.SuraNameRepository
+import com.tasnimulhasan.domain.repository.remote.HomeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,5 +30,8 @@ interface RepositoryModule {
 
     @Binds
     fun bindDataStorePreferenceRepository(preferencesDataStoreRepoImpl: PreferencesDataStoreRepoImpl): PreferencesDataStoreRepository
+
+    @Binds
+    fun bindHomeRepository(homeRepoImpl: HomeRepoImpl): HomeRepository
 
 }

@@ -10,5 +10,6 @@ android {
 
 dependencies {
     api(projects.core.datastore)
+    implementation(libs.bundles.network.dependencies)
     implementation(libs.timber)
 }

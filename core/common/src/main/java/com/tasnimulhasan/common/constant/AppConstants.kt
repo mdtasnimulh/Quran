@@ -7,6 +7,10 @@ object AppConstants {
 
     const val DB_NAME = "quran_mobile.db"
 
+    const val BASE_URL_Al_ADHAN = "https://api.aladhan.com/v1"
+
+    const val BISMILLAH = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ"
+
     const val NOTIFICATION_ID = 107
     const val NOTIFICATION_CHANNEL_NAME = "Quran Notification"
     const val NOTIFICATION_CHANNEL_ID = "quran_channel_id"
