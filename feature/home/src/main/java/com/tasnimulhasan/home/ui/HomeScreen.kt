@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
+import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
 
@@ -72,7 +73,7 @@ internal fun HomeScreen(
 
         else -> {
             LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(16.dp)
+                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
             ) {
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -80,14 +81,12 @@ internal fun HomeScreen(
 
                 item {
                     uiState.prayerTimes?.let {
-                        Text(
-                            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-                            text = "Fajr: ${it.prayerTimings.fajr}\nDhuhr: ${it.prayerTimings.dhuhr}\nAsr: ${it.prayerTimings.asr}\nMaghrib: ${it.prayerTimings.maghrib}\nIsha: ${it.prayerTimings.isha}",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold
-                            )
+                        PrayerTimesCard(
+                            fajrTime = it.prayerTimings.fajr,
+                            dhuhrTime = it.prayerTimings.dhuhr,
+                            asrTime = it.prayerTimings.asr,
+                            maghribTime = it.prayerTimings.maghrib,
+                            ishaTime = it.prayerTimings.isha
                         )
                     }
                 }
