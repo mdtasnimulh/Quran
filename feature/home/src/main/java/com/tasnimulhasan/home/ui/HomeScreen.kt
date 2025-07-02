@@ -29,6 +29,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.home.component.FindMosqueRow
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
 
@@ -107,6 +108,10 @@ internal fun HomeScreen(
                             arabicMonth = it.arabicMonth
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    FindMosqueRow()
                 }
 
                 item {
