@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
@@ -32,24 +32,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.tasnimulhasan.common.dateparser.DateTimeFormat
-import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
-import com.tasnimulhasan.designsystem.R as Res
-import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
-import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun PrayerTimesCard(
@@ -68,26 +63,31 @@ fun PrayerTimesCard(
         PrayerTImeEntity("Isha", ishaTime),
     )
 
-    val (currentPrayer, nextPrayer, nextPrayerTime) = getCurrentAndNextPrayer(
-        fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime
-    )
+    var currentPrayer by remember { mutableStateOf<String?>(null) }
+    var nextPrayer by remember { mutableStateOf("Fajr (Next Day)") }
+    var nextPrayerTime by remember { mutableStateOf(LocalTime.parse(fajrTime, DateTimeFormatter.ofPattern("hh:mm a", Locale.US))) }
 
-    var countdown by remember { mutableStateOf("") }
-    LaunchedEffect(nextPrayerTime) {
+    var countdown by remember { mutableStateOf("in 0h 0m 0s") }
+
+    LaunchedEffect(Unit) {
         while (true) {
             val now = LocalTime.now()
             val timeUntilNext = now.until(nextPrayerTime, ChronoUnit.SECONDS)
             if (timeUntilNext <= 0) {
-                // Update prayer times when the next prayer time is reached
-                val updatedPrayer = getCurrentAndNextPrayer(fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
-                countdown = "0h 0m"
-                break
+                val (newCurrentPrayer, newNextPrayer, newNextPrayerTime) = getCurrentAndNextPrayer(
+                    fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime
+                )
+                currentPrayer = newCurrentPrayer
+                nextPrayer = newNextPrayer
+                nextPrayerTime = newNextPrayerTime
+                countdown = "in 0h 0m 0s"
             } else {
                 val hours = timeUntilNext / 3600
                 val minutes = (timeUntilNext % 3600) / 60
-                countdown = "in ${hours}h ${minutes}m"
-                delay(1000L)
+                val seconds = timeUntilNext % 60
+                countdown = "in ${hours}h ${minutes}m ${seconds}s"
             }
+            delay(1000L)
         }
     }
 
@@ -183,7 +183,7 @@ fun PrayerTimesCard(
                     .clip(RoundedCornerShape(25.dp))
                     .background(
                         color = BackgroundWhite.copy(alpha = 0.5f),
-                        RoundedCornerShape(25.dp)
+                        shape = RoundedCornerShape(25.dp)
                     )
                     .padding(horizontal = 8.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -192,6 +192,7 @@ fun PrayerTimesCard(
                 Icon(
                     modifier = Modifier.size(18.dp),
                     imageVector = Icons.Default.AccessTime,
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = "Prayer Time Icon"
                 )
 
@@ -211,7 +212,7 @@ fun PrayerTimesCard(
             Row(
                 modifier = Modifier
                     .constrainAs(prayerTimesRef) {
-                        top.linkTo(nextPrayerCountRef.bottom, margin = 32.dp)
+                        top.linkTo(nextPrayerCountRef.bottom, margin = 24.dp)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom)
@@ -221,46 +222,54 @@ fun PrayerTimesCard(
                     .background(
                         BackgroundWhite,
                         RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                    )
-                    .padding(vertical = 12.dp),
+                    ),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                prayerTimeList.forEach{ time ->
+                prayerTimeList.forEach { time ->
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight()
-                            .weight(1f)
-                            .background(
-                                color = if (currentPrayer?.startsWith(time.prayerName) == true)
-                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                                else BackgroundWhite,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .padding(vertical = 4.dp),
+                            .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.Center
                     ) {
+                        Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = time.prayerName,
                             style = TextStyle(
                                 fontSize = 13.sp,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Start
+                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Medium else FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
                             ),
                         )
+
+                        Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
                             text = time.prayerTime,
                             style = TextStyle(
                                 fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Medium,
-                                textAlign = TextAlign.Start
+                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Normal else FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
                             ),
                         )
+
+                        Spacer(modifier = Modifier.height(7.dp))
+
+                        if (currentPrayer?.startsWith(time.prayerName) == true) {
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(4.dp)
+                                    .padding(horizontal = 4.dp)
+                                    .background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(10.dp)),
+                            )
+                        }
                     }
                 }
             }
@@ -272,11 +281,11 @@ fun PrayerTimesCard(
 @Composable
 fun PreviewPrayerTimesCard() {
     PrayerTimesCard(
-        fajrTime = "03:45 Am",
-        dhuhrTime = "12:45 Pm",
-        asrTime = "04:43 Pm",
-        maghribTime = "03:45 Pm",
-        ishaTime = "08:00 Pm",
+        fajrTime = "03:45 AM",
+        dhuhrTime = "12:45 PM",
+        asrTime = "04:43 PM",
+        maghribTime = "06:49 PM",
+        ishaTime = "08:00 PM",
         currentEnDate = "Wednesday, 02 July 2025",
     )
 }
@@ -317,10 +326,10 @@ fun getCurrentAndNextPrayer(
 
         if (current.isAfter(prayerTime) || current == prayerTime) {
             currentPrayer = "$prayerName at $prayerTime"
-            nextPrayer = "$nextPrayerName at ${nextPrayerTimeCandidate.toString().convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA)}"
+            nextPrayer = "$nextPrayerName at ${nextPrayerTimeCandidate.format(formatter)}"
             nextPrayerTime = nextPrayerTimeCandidate
         } else if (current.isBefore(prayerTime)) {
-            nextPrayer = "$prayerName at ${prayerTime.toString().convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA)}"
+            nextPrayer = "$prayerName at ${prayerTime.format(formatter)}"
             nextPrayerTime = prayerTime
             break
         }
@@ -328,7 +337,7 @@ fun getCurrentAndNextPrayer(
 
     if (current.isAfter(isha)) {
         currentPrayer = "Isha at $isha"
-        nextPrayer = "Fajr (Next Day) at $fajr"
+        nextPrayer = "Fajr (Next Day) at ${fajr.format(formatter)}"
         nextPrayerTime = fajr
     }
 
