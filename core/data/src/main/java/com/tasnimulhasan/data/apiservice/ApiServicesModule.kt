@@ -16,8 +16,8 @@ object ApiServicesModule {
     @Singleton
     fun provideCredentialApiService(
         @AppBaseUrl retrofit: Retrofit
-    ): HomeApiService {
-        return retrofit.create(HomeApiService::class.java)
+    ): PrayerTimesApiService {
+        return retrofit.create(PrayerTimesApiService::class.java)
     }
 
 }

@@ -11,6 +11,9 @@ import android.text.style.StyleSpan
 import android.util.Base64
 import androidx.core.content.ContextCompat
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.pow
@@ -26,7 +29,9 @@ fun String.encode(): String =
 
 fun String.replaceParenthesis(): String = this.replace("[","").replace("]","")
 
-
+fun getCurrentDate(): String {
+    return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+}
 
 fun List<String>.convertSeatNoToDisplayFormat(): String {
     val displayFormat = StringBuilder()

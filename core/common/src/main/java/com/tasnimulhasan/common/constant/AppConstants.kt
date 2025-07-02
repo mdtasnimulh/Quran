@@ -7,7 +7,7 @@ object AppConstants {
 
     const val DB_NAME = "quran_mobile.db"
 
-    const val BASE_URL_Al_ADHAN = "https://api.aladhan.com/v1"
+    const val PRAYER_TIMES_BASE_URL = "https://api.aladhan.com/v1/"
 
     const val BISMILLAH = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ"
 

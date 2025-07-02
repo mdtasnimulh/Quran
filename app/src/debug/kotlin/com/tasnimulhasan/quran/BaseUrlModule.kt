@@ -13,6 +13,6 @@ class BaseUrlModule{
 
     @Provides
     @AppBaseUrl
-    fun provideBaseUrl():String = AppConstants.BASE_URL_Al_ADHAN
+    fun provideBaseUrl():String = AppConstants.PRAYER_TIMES_BASE_URL
 
 }

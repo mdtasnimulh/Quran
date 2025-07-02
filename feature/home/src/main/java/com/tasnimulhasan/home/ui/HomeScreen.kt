@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -13,18 +14,21 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
-import com.tasnimulhasan.designsystem.theme.ArabicKafiExtendedFontFamily
-import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
+import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
+import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
+import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -32,37 +36,41 @@ internal fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    //val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    when (uiState) {
-        is UiState.Loading -> {
-            val loading = (uiState as UiState.Loading).isLoading
-            if (loading) CircularProgressIndicator()
-        }
+    /*LaunchedEffect(Unit) {
+        viewModel.action(HomeUiAction.FetchAllLocalDbSura(1))
+        viewModel.action(
+            HomeUiAction.FetchDailyPrayerTimesByCity(
+            FetchDailyPrayerTimesByCityUseCase.Params(
+                date = "09-07-2025",
+                city = "Dhaka",
+                country = "Bangladesh",
+            )
+        ))
+    }*/
 
-        is UiState.Error -> {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                val errorMessage = (uiState as UiState.Error).message
-
+    when {
+        uiState.errorMessage != null -> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    text = "An Error Occurred\n$errorMessage",
+                    text = "An Error Occurred\n${uiState.errorMessage}",
                     style = TextStyle(
                         fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center
                     )
                 )
             }
         }
 
-        is UiState.Success -> {
-            val suraList = (uiState as UiState.Success).suraList
+        uiState.isLoading -> {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
 
+        else -> {
             LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(16.dp)
             ) {
@@ -70,7 +78,25 @@ internal fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(suraList) { index, item ->
+                item {
+                    uiState.prayerTimes?.let {
+                        Text(
+                            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                            text = "Fajr: ${it.prayerTimings.fajr}\nDhuhr: ${it.prayerTimings.dhuhr}\nAsr: ${it.prayerTimings.asr}\nMaghrib: ${it.prayerTimings.maghrib}\nIsha: ${it.prayerTimings.isha}",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                itemsIndexed(uiState.surahList) { index, item ->
                     Text(
                         modifier = Modifier.fillParentMaxWidth().wrapContentHeight(),
                         text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
@@ -79,7 +105,6 @@ internal fun HomeScreen(
                             fontSize = 30.sp,
                         ),
                     )
-
                     Spacer(modifier = Modifier.height(8.dp))
                 }
 
