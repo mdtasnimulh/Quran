@@ -133,7 +133,7 @@ fun PrayerTimesCard(
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = BackgroundWhite,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
             )
@@ -149,7 +149,7 @@ fun PrayerTimesCard(
                     },
                 text = currentEnDate,
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
@@ -186,25 +186,25 @@ fun PrayerTimesCard(
                         color = BackgroundWhite.copy(alpha = 0.5f),
                         shape = RoundedCornerShape(25.dp)
                     )
-                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                    .padding(horizontal = 6.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(16.dp),
                     imageVector = Icons.Default.AccessTime,
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = "Prayer Time Icon"
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(6.dp))
 
                 Text(
                     text = countdown,
                     style = TextStyle(
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         color = BackgroundWhite,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Start
                     ),
                 )
@@ -242,7 +242,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
-                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Medium else FontWeight.SemiBold,
+                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
                         )
@@ -254,19 +254,19 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
-                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Normal else FontWeight.SemiBold,
+                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
                         )
 
-                        Spacer(modifier = Modifier.height(7.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
                         if (currentPrayer?.startsWith(time.prayerName) == true) {
-                            Spacer(modifier = Modifier.height(5.dp))
+                            Spacer(modifier = Modifier.height(4.dp))
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(4.dp)
+                                    .height(2.dp)
                                     .padding(horizontal = 4.dp)
                                     .background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(10.dp)),
                             )
@@ -328,10 +328,10 @@ fun getCurrentAndNextPrayer(
 
         if (current.isAfter(prayerTime) || current == prayerTime) {
             currentPrayer = "$prayerName at $prayerTime"
-            nextPrayer = "$nextPrayerName at ${nextPrayerTimeCandidate.format(formatter)}"
+            nextPrayer = "$nextPrayerName ${nextPrayerTimeCandidate.format(formatter)}"
             nextPrayerTime = nextPrayerTimeCandidate
         } else if (current.isBefore(prayerTime)) {
-            nextPrayer = "$prayerName at ${prayerTime.format(formatter)}"
+            nextPrayer = "$prayerName ${prayerTime.format(formatter)}"
             nextPrayerTime = prayerTime
             break
         }
