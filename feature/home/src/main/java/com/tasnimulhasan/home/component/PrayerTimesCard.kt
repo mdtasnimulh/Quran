@@ -97,15 +97,15 @@ fun PrayerTimesCard(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .background(
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(15.dp)
+            )
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(15.dp)
-                )
         ) {
             val (quranImage, arabicMonthYearRef, enDateRef, nextPrayerTimeRef, nextPrayerCountRef, prayerTimesRef) = createRefs()
 
