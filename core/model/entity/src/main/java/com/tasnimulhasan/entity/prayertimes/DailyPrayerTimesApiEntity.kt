@@ -11,7 +11,8 @@ data class DailyPrayerTimesApiEntity(
     val midNight: String,
     val lastThirdOfNight: String,
     val sunrise: String,
-    val sunset: String
+    val sunset: String,
+    val arabicMonth: String,
 )
 
 data class PrayerTimings(

@@ -13,18 +13,19 @@ class FetchDailyPrayerTimesByCityApiMapper @Inject constructor() : Mapper<DailyP
             location = type.data?.meta?.timezone ?: "",
             fajrTime = type.data?.timings?.Fajr ?: "",
             ishaTime = type.data?.timings?.Isha ?: "",
+            firstThirdOfNight = type.data?.timings?.Firstthird ?: "",
+            midNight = type.data?.timings?.Midnight ?: "",
+            lastThirdOfNight = type.data?.timings?.Lastthird ?: "",
+            sunrise = type.data?.timings?.Sunrise ?: "",
+            sunset = type.data?.timings?.Sunset ?: "",
+            arabicMonth = "${type.data?.date?.hijri?.day} ${type.data?.date?.hijri?.month?.en}, ${type.data?.date?.hijri?.year}",
             prayerTimings = PrayerTimings(
                 fajr = type.data?.timings?.Fajr ?: "",
                 dhuhr = type.data?.timings?.Dhuhr ?: "",
                 asr = type.data?.timings?.Asr ?: "",
                 maghrib = type.data?.timings?.Maghrib ?: "",
                 isha = type.data?.timings?.Isha ?: "",
-            ),
-            firstThirdOfNight = type.data?.timings?.Firstthird ?: "",
-            midNight = type.data?.timings?.Midnight ?: "",
-            lastThirdOfNight = type.data?.timings?.Lastthird ?: "",
-            sunrise = type.data?.timings?.Sunrise ?: "",
-            sunset = type.data?.timings?.Sunset ?: "",
+            )
         )
     }
 }

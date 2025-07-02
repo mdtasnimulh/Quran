@@ -54,6 +54,7 @@ fun PrayerTimesCard(
     maghribTime: String,
     ishaTime: String,
     currentEnDate: String,
+    arabicMonth: String,
 ) {
     val prayerTimeList = listOf(
         PrayerTImeEntity("Fajr", fajrTime),
@@ -128,7 +129,7 @@ fun PrayerTimesCard(
                         width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
                     },
-                text = "Ramazan, 1456",
+                text = arabicMonth,
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = BackgroundWhite,
@@ -140,7 +141,7 @@ fun PrayerTimesCard(
             Text(
                 modifier = Modifier
                     .constrainAs(enDateRef) {
-                        top.linkTo(arabicMonthYearRef.bottom, margin = 8.dp)
+                        top.linkTo(arabicMonthYearRef.bottom, margin = 6.dp)
                         start.linkTo(arabicMonthYearRef.start)
                         end.linkTo(arabicMonthYearRef.end)
                         width = Dimension.fillToConstraints
@@ -287,6 +288,7 @@ fun PreviewPrayerTimesCard() {
         maghribTime = "06:49 PM",
         ishaTime = "08:00 PM",
         currentEnDate = "Wednesday, 02 July 2025",
+        arabicMonth = "6 Muharram, 1447"
     )
 }
 

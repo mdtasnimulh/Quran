@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,12 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
@@ -83,6 +86,20 @@ internal fun HomeScreen(
                 }
 
                 item {
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize(),
+                        text = "Prayer Times",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Start
+                        ),
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     uiState.prayerTimes?.let {
                         PrayerTimesCard(
                             fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
@@ -91,6 +108,7 @@ internal fun HomeScreen(
                             maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
                             ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
                             currentEnDate = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.FULL_DAY_DATE_FORMAT),
+                            arabicMonth = it.arabicMonth
                         )
                     }
                 }
