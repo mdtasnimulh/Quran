@@ -38,11 +38,11 @@ class HomeViewModel @Inject constructor(
 
     init {
         fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(1))
-        fetchDailyPrayerTimesByCity(FetchDailyPrayerTimesByCityUseCase.Params(
+        /*fetchDailyPrayerTimesByCity(FetchDailyPrayerTimesByCityUseCase.Params(
             date = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.outputdMMy),
             city = "Dhaka",
             country = "Bangladesh",
-        ))
+        ))*/
     }
 
     private fun fetchAllLocalSura(params: FetchSurahFromLocalDbUseCase.Params) {

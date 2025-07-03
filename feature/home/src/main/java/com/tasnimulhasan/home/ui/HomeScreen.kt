@@ -55,7 +55,6 @@ import com.tasnimulhasan.home.component.FindMosqueRow
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
-import timber.log.Timber
 import java.util.Locale
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -70,6 +69,10 @@ internal fun HomeScreen(
     var permissionGranted by remember { mutableStateOf(false) }
     var showPermissionRequestDialog by remember { mutableStateOf(false) }
     var placeName by remember { mutableStateOf<String?>(null) }
+    var cityName by remember { mutableStateOf<String?>(null) }
+    var countryName by remember { mutableStateOf<String?>(null) }
+    var latitude by remember { mutableStateOf<String?>(null) }
+    var longitude by remember { mutableStateOf<String?>(null) }
 
     val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -110,12 +113,15 @@ internal fun HomeScreen(
                     if (location != null) {
                         placeName = try {
                             val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
-                            val name1 = address?.firstOrNull()?.getAddressLine(0) ?: ""
-                            val name2 = address?.firstOrNull()?.getAddressLine(1) ?: ""
-                            "$name2 $name1"
+                            cityName = address?.firstOrNull()?.locality
+                            countryName = address?.firstOrNull()?.countryName
+                            "${address?.firstOrNull()?.locality}, ${address?.firstOrNull()?.countryName}"
                         } catch (e: Exception) {
+                            print(e.message)
                             "Unknown Location!"
                         }
+                        latitude = location.latitude.toString()
+                        longitude = location.longitude.toString()
                     }
                 }
             }
@@ -123,28 +129,18 @@ internal fun HomeScreen(
     }
 
     LaunchedEffect(placeName) {
-        Timber.e("Check Location: $placeName")
-        Toast.makeText(context, "$placeName", Toast.LENGTH_SHORT).show()
-
-        /*if (placeName != null) {
+        if (placeName != null)
             viewModel.action(
                 HomeUiAction.FetchDailyPrayerTimesByCity(
                     FetchDailyPrayerTimesByCityUseCase.Params(
-                        date = "09-07-2025",
-                        city = "Dhaka",
-                        country = "Bangladesh",
+                        date = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.outputdMMy),
+                        city = cityName ?: "",
+                        country = countryName ?: "",
+                        latitude = latitude ?: "",
+                        longitude = longitude ?: ""
                     )
-                ))
-        } else {
-            viewModel.action(
-                HomeUiAction.FetchDailyPrayerTimesByCity(
-                    FetchDailyPrayerTimesByCityUseCase.Params(
-                        date = "09-07-2025",
-                        city = "Dhaka",
-                        country = "Bangladesh",
-                    )
-                ))
-        }*/
+                )
+            )
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
