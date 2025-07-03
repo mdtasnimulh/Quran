@@ -259,11 +259,10 @@ fun OpenSettingsDialog(
 ) {
     AlertDialog(
         onDismissRequest = { onDismissClicked.invoke() },
-        title = { Text(text = "Location Permission Required") },
+        title = { Text(text = "Permission Required") },
         text = {
             Column {
-                Text("Permission id required..")
-                Text("To see Prayer Times you need to give location permission!")
+                Text("Location Permission is required to see Prayer Times you need to give location permission!")
             }
         },
         confirmButton = {
