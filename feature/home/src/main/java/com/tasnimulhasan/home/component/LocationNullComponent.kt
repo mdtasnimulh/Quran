@@ -44,7 +44,7 @@ fun LocationPermissionDenied(
         Text(
             modifier = Modifier
                 .wrapContentSize(),
-            text = "Allow Location Permission to see Prayer Times here",
+            text = "Please allow Location Permission to see Prayer Times and Qibla Direction",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = RobotoFontFamily,
@@ -54,7 +54,7 @@ fun LocationPermissionDenied(
             ),
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             modifier = Modifier

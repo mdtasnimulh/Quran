@@ -118,28 +118,29 @@ internal fun HomeScreen(
             latitude = locations?.latitude
             longitude = locations?.longitude
         } else {
-            if (!permissionGranted) {
-                locationPermissionRequestLauncher.launch(locationPermissions)
-            } else {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                        if (location != null) {
-                            placeName = try {
-                                val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
-                                cityName = address?.firstOrNull()?.locality
-                                countryName = address?.firstOrNull()?.countryName
-                                "${address?.firstOrNull()?.locality}, ${address?.firstOrNull()?.countryName}"
-                            } catch (e: Exception) {
-                                print(e.message)
-                                "Unknown Location!"
-                            }
-                            latitude = location.latitude.toString()
-                            longitude = location.longitude.toString()
-                            viewModel.action(HomeUiAction.SaveUserLocation(
-                                location = UserLocationEntity(latitude = latitude ?: "", longitude = longitude ?: "", cityName = cityName ?: "", countryName = countryName ?: "")
-                            ))
+            /*if (permissionGranted) {
+                 locationPermissionRequestLauncher.launch(locationPermissions)
+             } else {
+
+            }*/
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                    if (location != null) {
+                        placeName = try {
+                            val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
+                            cityName = address?.firstOrNull()?.locality
+                            countryName = address?.firstOrNull()?.countryName
+                            "${address?.firstOrNull()?.locality}, ${address?.firstOrNull()?.countryName}"
+                        } catch (e: Exception) {
+                            print(e.message)
+                            "Unknown Location!"
                         }
+                        latitude = location.latitude.toString()
+                        longitude = location.longitude.toString()
+                        viewModel.action(HomeUiAction.SaveUserLocation(
+                            location = UserLocationEntity(latitude = latitude ?: "", longitude = longitude ?: "", cityName = cityName ?: "", countryName = countryName ?: "")
+                        ))
                     }
                 }
             }
