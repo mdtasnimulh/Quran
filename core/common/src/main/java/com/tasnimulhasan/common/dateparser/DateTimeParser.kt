@@ -2,6 +2,11 @@ package com.tasnimulhasan.common.dateparser
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Locale
 
@@ -69,5 +74,22 @@ object DateTimeParser {
             if (firstDateToMillis > secondDateToMillis) firstDateToMillis - secondDateToMillis
             else secondDateToMillis - firstDateToMillis
         return (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
+    }
+
+    fun isTimeDifferenceMoreThan24Hours(savedTime: String): Boolean {
+        // Define your saved format
+        val formatter = DateTimeFormatter.ofPattern(DateTimeFormat.outputYMDHMS)
+
+        // Parse the saved time string to a LocalDateTime
+        val savedDateTime = LocalDateTime.parse(savedTime, formatter)
+
+        // Get current time
+        val currentDateTime = LocalDateTime.now()
+
+        // Calculate time difference in seconds
+        val secondsDifference = ChronoUnit.SECONDS.between(savedDateTime, currentDateTime)
+
+        // Return true if >= 86400 seconds (24 hours)
+        return secondsDifference >= 86400
     }
 }

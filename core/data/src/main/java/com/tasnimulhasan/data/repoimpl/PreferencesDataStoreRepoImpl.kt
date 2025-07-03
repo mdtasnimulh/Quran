@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
+import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -49,8 +50,38 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveDailyPrayerTimes(times: DailyPrayerTimesApiEntity) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.dailyPrayerTimes] = gson.toJson(times)
+            }
+        }
+    }
+
+    override fun getDailyPrayerTimes(): Flow<DailyPrayerTimesApiEntity> {
+        return dataStorePreferences.data.map { preferences ->
+            gson.fromJson(preferences[PreferencesKeys.dailyPrayerTimes], DailyPrayerTimesApiEntity::class.java)
+        }
+    }
+
+    override suspend fun saveLastSyncTime(time: String) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.lastSyncTime] = time
+            }
+        }
+    }
+
+    override fun getLastSyncTime(): Flow<String> {
+        return dataStorePreferences.data.map { preferences ->
+            preferences[PreferencesKeys.lastSyncTime] ?: ""
+        }
+    }
+
     private object PreferencesKeys {
         val lastReadSura = stringPreferencesKey(name = "last_read_sura")
         val isLastReadSuraAvailable = booleanPreferencesKey(name = "is_last_read_sura_available")
+        val dailyPrayerTimes = stringPreferencesKey(name = "daily_prayer_times")
+        val lastSyncTime = stringPreferencesKey(name = "last_sync_time")
     }
 }
