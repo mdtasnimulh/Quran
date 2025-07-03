@@ -1,6 +1,7 @@
 package com.tasnimulhasan.domain.repository
 
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
+import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -12,4 +13,8 @@ interface PreferencesDataStoreRepository {
     fun getDailyPrayerTimes(): Flow<DailyPrayerTimesApiEntity>
     suspend fun saveLastSyncTime(time: String)
     fun getLastSyncTime(): Flow<String>
+    suspend fun saveUserLocation(location: UserLocationEntity)
+    fun getUserLocation(): Flow<UserLocationEntity>
+    suspend fun isLocationAvailable(available: Boolean)
+    fun getIsLocationAvailable(): Flow<Boolean>
 }

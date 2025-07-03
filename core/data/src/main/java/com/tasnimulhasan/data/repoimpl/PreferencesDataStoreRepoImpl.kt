@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
+import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -78,10 +79,40 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         }
     }
 
+    override suspend fun isLocationAvailable(available: Boolean) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.isLocationAvailable] = available
+            }
+        }
+    }
+
+    override fun getIsLocationAvailable(): Flow<Boolean> {
+        return dataStorePreferences.data.map { preferences ->
+            preferences[PreferencesKeys.isLocationAvailable] ?: false
+        }
+    }
+
+    override suspend fun saveUserLocation(location: UserLocationEntity) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.userLocation] = gson.toJson(location)
+            }
+        }
+    }
+
+    override fun getUserLocation(): Flow<UserLocationEntity> {
+        return dataStorePreferences.data.map { preferences ->
+            gson.fromJson(preferences[PreferencesKeys.userLocation], UserLocationEntity::class.java)
+        }
+    }
+
     private object PreferencesKeys {
         val lastReadSura = stringPreferencesKey(name = "last_read_sura")
         val isLastReadSuraAvailable = booleanPreferencesKey(name = "is_last_read_sura_available")
         val dailyPrayerTimes = stringPreferencesKey(name = "daily_prayer_times")
         val lastSyncTime = stringPreferencesKey(name = "last_sync_time")
+        val isLocationAvailable = booleanPreferencesKey(name = "is_location_available")
+        val userLocation = stringPreferencesKey(name = "user_location")
     }
 }

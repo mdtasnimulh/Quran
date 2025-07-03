@@ -51,6 +51,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTim
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
+import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.home.component.FindMosqueRow
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
@@ -73,6 +74,10 @@ internal fun HomeScreen(
     var countryName by remember { mutableStateOf<String?>(null) }
     var latitude by remember { mutableStateOf<String?>(null) }
     var longitude by remember { mutableStateOf<String?>(null) }
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isLocationSaved by viewModel.isLocationSaved.collectAsStateWithLifecycle()
+    val locations by viewModel.locations.collectAsStateWithLifecycle()
 
     val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -104,24 +109,35 @@ internal fun HomeScreen(
     }
 
     LaunchedEffect(permissionGranted) {
-        if (!permissionGranted) {
-            locationPermissionRequestLauncher.launch(locationPermissions)
+        if (isLocationSaved) {
+            placeName = "${locations?.cityName}, ${locations?.countryName}"
+            cityName = locations?.cityName
+            countryName = locations?.countryName
+            latitude = locations?.latitude
+            longitude = locations?.longitude
         } else {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                    if (location != null) {
-                        placeName = try {
-                            val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
-                            cityName = address?.firstOrNull()?.locality
-                            countryName = address?.firstOrNull()?.countryName
-                            "${address?.firstOrNull()?.locality}, ${address?.firstOrNull()?.countryName}"
-                        } catch (e: Exception) {
-                            print(e.message)
-                            "Unknown Location!"
+            if (!permissionGranted) {
+                locationPermissionRequestLauncher.launch(locationPermissions)
+            } else {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                        if (location != null) {
+                            placeName = try {
+                                val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
+                                cityName = address?.firstOrNull()?.locality
+                                countryName = address?.firstOrNull()?.countryName
+                                "${address?.firstOrNull()?.locality}, ${address?.firstOrNull()?.countryName}"
+                            } catch (e: Exception) {
+                                print(e.message)
+                                "Unknown Location!"
+                            }
+                            latitude = location.latitude.toString()
+                            longitude = location.longitude.toString()
+                            viewModel.action(HomeUiAction.SaveUserLocation(
+                                location = UserLocationEntity(latitude = latitude ?: "", longitude = longitude ?: "", cityName = cityName ?: "", countryName = countryName ?: "")
+                            ))
                         }
-                        latitude = location.latitude.toString()
-                        longitude = location.longitude.toString()
                     }
                 }
             }
@@ -142,8 +158,6 @@ internal fun HomeScreen(
                 )
             )
     }
-
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when {
         uiState.errorMessage != null -> {
