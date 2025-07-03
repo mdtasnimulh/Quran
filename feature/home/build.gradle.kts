@@ -10,4 +10,5 @@ android {
 dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.coil.kt.compose)
+    implementation(libs.play.services.location)
 }
