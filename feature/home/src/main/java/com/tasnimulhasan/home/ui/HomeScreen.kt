@@ -53,6 +53,7 @@ import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.home.component.FindMosqueRow
+import com.tasnimulhasan.home.component.LocationPermissionDenied
 import com.tasnimulhasan.home.component.OpenSettingsDialog
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
@@ -206,16 +207,24 @@ internal fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    uiState.prayerTimes?.let {
-                        PrayerTimesCard(
-                            fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            currentEnDate = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.FULL_DAY_DATE_FORMAT),
-                            arabicMonth = it.arabicMonth
+                    if (!isLocationSaved && !permissionGranted) {
+                        LocationPermissionDenied(
+                            onGrantClicked = {
+                                locationPermissionRequestLauncher.launch(locationPermissions)
+                            }
                         )
+                    } else {
+                        uiState.prayerTimes?.let {
+                            PrayerTimesCard(
+                                fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                                dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                                asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                                maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                                ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                                currentEnDate = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.FULL_DAY_DATE_FORMAT),
+                                arabicMonth = it.arabicMonth
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
