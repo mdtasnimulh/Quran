@@ -53,6 +53,7 @@ import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.home.component.FindMosqueRow
+import com.tasnimulhasan.home.component.OpenSettingsDialog
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
@@ -264,30 +265,4 @@ internal fun HomeScreen(
         )
     }
 
-}
-
-@Composable
-fun OpenSettingsDialog(
-    onOkClicked: () -> Unit,
-    onDismissClicked: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = { onDismissClicked.invoke() },
-        title = { Text(text = "Permission Required") },
-        text = {
-            Column {
-                Text("Location Permission is required to see Prayer Times you need to give location permission!")
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = { onOkClicked() }) {
-                Text("Grant")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { onDismissClicked() }) {
-                Text("Dismiss")
-            }
-        }
-    )
 }
