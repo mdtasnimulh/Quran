@@ -109,7 +109,7 @@ internal fun HomeScreen(
     }
 
     LaunchedEffect(permissionGranted) {
-        if (isLocationSaved) {
+        if (isLocationSaved && permissionGranted) {
             placeName = "${locations?.cityName}, ${locations?.countryName}"
             cityName = locations?.cityName
             countryName = locations?.countryName
