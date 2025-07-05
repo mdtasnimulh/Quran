@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <uses-feature android:name="android.hardware.sensor.compass" android:required="false"/>
+
     <queries>
         <package android:name="com.google.android.apps.maps" />
         <intent>
