@@ -48,20 +48,12 @@ class CalendarViewModel @Inject constructor(
         execute {
             val month = _selectedMonth.value
             val year = _selectedYear.value
-            val dates = getCalendarUseCase(
-                month = month,
-                year = year,
-                isHijriPrimary = _uiState.value.isHijriPrimary
-            )
+            val dates = getCalendarUseCase(month = month, year = year, isHijriPrimary = _uiState.value.isHijriPrimary)
 
-            // Assuming getCalendarUseCase returns a list of CalendarDateEntity
-            // and we need to compute gregorianMonthYear and hijriMonthYear
             val gregorianMonthYear = LocalDate.of(year, month, 1)
                 .month
                 .getDisplayName(TextStyle.FULL, Locale.getDefault()) + " $year"
 
-            // For Hijri month/year, you may need to adjust based on how your use case provides Hijri data
-            // This is a placeholder; replace with actual Hijri conversion logic
             val hijriMonthYear = getHijriMonthYear(month, year)
 
             _uiState.update {
@@ -80,9 +72,7 @@ class CalendarViewModel @Inject constructor(
         if (currentMonth == 12) {
             _selectedMonth.value = 1
             _selectedYear.value = currentYear + 1
-        } else {
-            _selectedMonth.value = currentMonth + 1
-        }
+        } else { _selectedMonth.value = currentMonth + 1 }
         loadCalendar()
     }
 
@@ -92,21 +82,16 @@ class CalendarViewModel @Inject constructor(
         if (currentMonth == 1) {
             _selectedMonth.value = 12
             _selectedYear.value = currentYear - 1
-        } else {
-            _selectedMonth.value = currentMonth - 1
-        }
+        } else { _selectedMonth.value = currentMonth - 1 }
         loadCalendar()
     }
 
     private fun getHijriMonthYear(month: Int, year: Int): String {
         val gregorianDate = LocalDate.of(year, month, 1)
         val hijriDate = HijrahDate.from(gregorianDate)
-
         val hijriMonthValue = hijriDate.get(ChronoField.MONTH_OF_YEAR)
         val hijriYear = hijriDate.get(ChronoField.YEAR)
-
         val hijriMonthName = getHijriMonthName(hijriMonthValue)
-
         return "$hijriMonthName $hijriYear"
     }
 
