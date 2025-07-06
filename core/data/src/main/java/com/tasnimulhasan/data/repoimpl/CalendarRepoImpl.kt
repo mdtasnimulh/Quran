@@ -31,7 +31,8 @@ class CalendarRepoImpl @Inject constructor(
         val startDayOfWeek = gregorian.get(Calendar.DAY_OF_WEEK) // Sunday = 1
 
         // Offset the first week (Sat = 7)
-        val offsetStart = if (startDayOfWeek == Calendar.SATURDAY) 0 else (startDayOfWeek + 5) % 7
+        //val offsetStart = if (startDayOfWeek == Calendar.SATURDAY) 0 else (startDayOfWeek + 5) % 7
+        val offsetStart = (startDayOfWeek - Calendar.SUNDAY + 7) % 7
 
         // Add empty dates for alignment
         repeat(offsetStart) {

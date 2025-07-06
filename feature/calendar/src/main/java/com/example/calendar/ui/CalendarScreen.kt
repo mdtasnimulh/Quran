@@ -93,8 +93,13 @@ internal fun CalendarScreen(
 
                 // Week headers
                 Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()) {
-                    listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri").forEach {
-                        Text(text = it, fontWeight = FontWeight.Bold)
+                    listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat").forEach {
+                        Text(
+                            text = it,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1f),
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
 
