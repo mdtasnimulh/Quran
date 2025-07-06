@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -20,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.calendar.component.CalendarModeDropdown
-import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -69,29 +68,34 @@ internal fun CalendarScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    modifier = Modifier
-                        .wrapContentSize(),
-                    text = if (uiState.isHijriPrimary) "Hijri Calendar" else "Gregorian Calendar",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = RobotoFontFamily,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Start
-                    ),
+                    text = "${uiState.gregorianMonthYear} (${uiState.hijriMonthYear})",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Dropdown
-                CalendarModeDropdown(
-                    isHijriPrimary = uiState.isHijriPrimary,
-                    onToggle = { viewModel.toggleCalendarMode() }
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextButton(onClick = { viewModel.prevMonth() }) {
+                        Text(text = "Previous")
+                    }
+
+                    CalendarModeDropdown(
+                        isHijriPrimary = uiState.isHijriPrimary,
+                        onToggle = { viewModel.toggleCalendarMode() }
+                    )
+
+                    TextButton(onClick = { viewModel.nextMonth() }) {
+                        Text(text = "Next")
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Week headers
                 Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()) {
                     listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat").forEach {
                         Text(
@@ -105,7 +109,6 @@ internal fun CalendarScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Calendar Grid
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(7),
                     content = {

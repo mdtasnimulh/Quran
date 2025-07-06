@@ -6,5 +6,7 @@ data class CalendarUiState(
     val isLoading: Boolean = false,
     val calendarDateList: List<CalendarDateEntity> = emptyList(),
     val isHijriPrimary: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val gregorianMonthYear: String = "",
+    val hijriMonthYear: String = ""
 )

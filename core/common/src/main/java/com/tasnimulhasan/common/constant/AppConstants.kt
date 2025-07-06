@@ -20,4 +20,22 @@ object AppConstants {
     const val ACTION_PREVIOUS = "previous"
     const val ACTION_PLAY_PAUSE = "play_pause"
     const val ACTION_NEXT = "next"
+
+    fun getHijriMonthName(month: Int): String {
+        return when (month) {
+            1 -> "Muharram"
+            2 -> "Safar"
+            3 -> "Rabi al-awwal"
+            4 -> "Rabi al-thani"
+            5 -> "Jumada al-awwal"
+            6 -> "Jumada al-thani"
+            7 -> "Rajab"
+            8 -> "Sha'ban"
+            9 -> "Ramadan"
+            10 -> "Shawwal"
+            11 -> "Dhu al-Qidah"
+            12 -> "Dhu al-Hijjah"
+            else -> "Unknown"
+        }
+    }
 }

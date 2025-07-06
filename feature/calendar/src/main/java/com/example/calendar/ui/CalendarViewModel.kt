@@ -2,14 +2,18 @@ package com.example.calendar.ui
 
 import com.example.calendar.ui.viewmodel.CalendarUiAction
 import com.example.calendar.ui.viewmodel.CalendarUiState
+import com.tasnimulhasan.common.constant.AppConstants.getHijriMonthName
 import com.tasnimulhasan.domain.base.BaseViewModel
 import com.tasnimulhasan.domain.localusecase.GetCalendarDatesUseCase
-import com.tasnimulhasan.domain.localusecase.local.FetchSurahFromLocalDbUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
+import java.time.chrono.HijrahDate
+import java.time.format.TextStyle
+import java.time.temporal.ChronoField
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +23,9 @@ class CalendarViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(CalendarUiState())
     val uiState: StateFlow<CalendarUiState> get() = _uiState
+
+    private val _selectedMonth = MutableStateFlow(LocalDate.now().monthValue)
+    private val _selectedYear = MutableStateFlow(LocalDate.now().year)
 
     val action: (CalendarUiAction) -> Unit = {
         when (it) {
@@ -39,14 +46,68 @@ class CalendarViewModel @Inject constructor(
 
     private fun loadCalendar() {
         execute {
-            val today = LocalDate.now()
+            val month = _selectedMonth.value
+            val year = _selectedYear.value
             val dates = getCalendarUseCase(
-                month = today.monthValue,
-                year = today.year,
+                month = month,
+                year = year,
                 isHijriPrimary = _uiState.value.isHijriPrimary
             )
-            _uiState.update { it.copy(calendarDateList = dates) }
+
+            // Assuming getCalendarUseCase returns a list of CalendarDateEntity
+            // and we need to compute gregorianMonthYear and hijriMonthYear
+            val gregorianMonthYear = LocalDate.of(year, month, 1)
+                .month
+                .getDisplayName(TextStyle.FULL, Locale.getDefault()) + " $year"
+
+            // For Hijri month/year, you may need to adjust based on how your use case provides Hijri data
+            // This is a placeholder; replace with actual Hijri conversion logic
+            val hijriMonthYear = getHijriMonthYear(month, year)
+
+            _uiState.update {
+                it.copy(
+                    calendarDateList = dates,
+                    gregorianMonthYear = gregorianMonthYear,
+                    hijriMonthYear = hijriMonthYear
+                )
+            }
         }
+    }
+
+    fun nextMonth() {
+        val currentMonth = _selectedMonth.value
+        val currentYear = _selectedYear.value
+        if (currentMonth == 12) {
+            _selectedMonth.value = 1
+            _selectedYear.value = currentYear + 1
+        } else {
+            _selectedMonth.value = currentMonth + 1
+        }
+        loadCalendar()
+    }
+
+    fun prevMonth() {
+        val currentMonth = _selectedMonth.value
+        val currentYear = _selectedYear.value
+        if (currentMonth == 1) {
+            _selectedMonth.value = 12
+            _selectedYear.value = currentYear - 1
+        } else {
+            _selectedMonth.value = currentMonth - 1
+        }
+        loadCalendar()
+    }
+
+    private fun getHijriMonthYear(month: Int, year: Int): String {
+        val gregorianDate = LocalDate.of(year, month, 1)
+        val hijriDate = HijrahDate.from(gregorianDate)
+
+        val hijriMonthValue = hijriDate.get(ChronoField.MONTH_OF_YEAR)
+        val hijriYear = hijriDate.get(ChronoField.YEAR)
+
+        val hijriMonthName = getHijriMonthName(hijriMonthValue)
+
+        return "$hijriMonthName $hijriYear"
     }
 
 }
