@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -63,6 +64,7 @@ import java.util.Locale
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun HomeScreen(
+    navigateToCalendarScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -195,7 +197,10 @@ internal fun HomeScreen(
                 item {
                     Text(
                         modifier = Modifier
-                            .wrapContentSize(),
+                            .wrapContentSize()
+                            .clickable(
+                                onClick = { navigateToCalendarScreen.invoke() }
+                            ),
                         text = "Prayer Times",
                         style = TextStyle(
                             fontSize = 16.sp,

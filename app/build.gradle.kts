@@ -88,6 +88,7 @@ dependencies {
         implementation(feature.profile)
         implementation(feature.quran)
         implementation(feature.suraDetails)
+        implementation(feature.calendar)
     }
     /*** Feature Modules ***/
 

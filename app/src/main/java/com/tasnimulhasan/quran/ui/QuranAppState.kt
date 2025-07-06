@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.example.calendar.navigation.navigateToCalendarScreen
 import com.tasnimulhasan.home.navigation.navigateToHome
 import com.tasnimulhasan.profile.navigation.navigateToProfile
 import com.tasnimulhasan.quran.navigation.TopLevelDestination
@@ -83,6 +84,8 @@ class QuranAppState(
         isLastRead = isLastRead,
         lastReadAyaNumber = lastReadAyaNumber
     )
+
+    fun navigateToCalendarScreen() = navController.navigateToCalendarScreen()
 
     fun navigateBack() {
         navController.navigateUp()

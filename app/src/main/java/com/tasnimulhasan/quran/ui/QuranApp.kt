@@ -238,6 +238,9 @@ private fun GetContent(appState: QuranAppState) {
             },
             navigateBack = {
                 appState.navigateBack()
+            },
+            navigateToCalendarScreen = {
+                appState.navigateToCalendarScreen()
             }
         )
     }

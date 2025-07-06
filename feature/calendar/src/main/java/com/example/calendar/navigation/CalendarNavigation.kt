@@ -1,31 +1,35 @@
-package com.tasnimulhasan.home.navigation
+package com.example.calendar.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import com.tasnimulhasan.home.ui.HomeScreen
+import com.example.calendar.ui.CalendarScreen
 import kotlinx.serialization.Serializable
 
-@Serializable object HomeRoute
+@Serializable object CalendarRoute
 
-fun NavController.navigateToHome(navOptions: NavOptions) = navigate(route = HomeRoute, navOptions)
+fun NavController.navigateToCalendarScreen(navOptions: NavOptionsBuilder.() -> Unit = {}){
+    navigate(route = CalendarRoute){
+        navOptions()
+    }
+}
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.homeScreen(
-    navigateToCalendarScreen: () -> Unit
+fun NavGraphBuilder.calendarScreen(
+    navigateBack: () -> Unit,
 ) {
-    composable<HomeRoute>(
+    composable<CalendarRoute>(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
-    ) {
-        HomeScreen(
-            navigateToCalendarScreen = navigateToCalendarScreen
+    ) { backStackEntry ->
+        CalendarScreen(
+            onNavigateUp = { navigateBack.invoke() }
         )
     }
 }
