@@ -70,7 +70,7 @@ internal fun CompassScreen(
         viewModel.action(CompassUiAction.ShowCompassWithQiblaDirection)
     }
 
-    Column (
+    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
@@ -120,7 +120,11 @@ internal fun CompassScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Qibla: ${qiblaDirection.roundToInt()}° ${getDirectionName(qiblaDirection.roundToInt().toFloat())}",
+            text = "Qibla: ${qiblaDirection.roundToInt()}° ${
+                getDirectionName(
+                    qiblaDirection.roundToInt().toFloat()
+                )
+            }",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = RobotoFontFamily,
@@ -145,11 +149,11 @@ internal fun CompassScreen(
                     .weight(1f),
                 text = "Lat: 21.4225",
                 style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
+                    fontSize = 14.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
             )
 
             Text(
@@ -158,11 +162,11 @@ internal fun CompassScreen(
                     .weight(1f),
                 text = "Lon: 39.8262",
                 style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
+                    fontSize = 14.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
             )
         }
 
@@ -194,11 +198,11 @@ internal fun CompassScreen(
                     .weight(1f),
                 text = "Lat: ${userLocation?.latitude}",
                 style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
+                    fontSize = 14.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
             )
 
             Text(
@@ -207,11 +211,11 @@ internal fun CompassScreen(
                     .weight(1f),
                 text = "Lon: ${userLocation?.longitude}",
                 style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground
-            ),
+                    fontSize = 14.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
             )
         }
     }
