@@ -34,7 +34,8 @@ class CalendarViewModel @Inject constructor(
 
     val action: (CalendarUiAction) -> Unit = {
         when (it) {
-            else -> {}
+            CalendarUiAction.FetchCalendar -> loadCalendar()
+            CalendarUiAction.ToggleCalendar -> toggleCalendarMode()
         }
     }
 
@@ -43,11 +44,10 @@ class CalendarViewModel @Inject constructor(
             fetchUserLocationUseCase.invoke().collectLatest { locationEntity ->
                 locations.value = locationEntity
             }
-            loadCalendar()
         }
     }
 
-    fun toggleCalendarMode() {
+    private fun toggleCalendarMode() {
         _uiState.update { it.copy(isHijriPrimary = !it.isHijriPrimary) }
         loadCalendar()
     }

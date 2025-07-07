@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.calendar.component.CalendarModeDropdown
+import com.example.calendar.ui.viewmodel.CalendarUiAction
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -43,9 +45,17 @@ internal fun CalendarScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.action(CalendarUiAction.FetchCalendar)
+    }
+
     when {
         uiState.errorMessage != null -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
                     text = "An Error Occurred\n${uiState.errorMessage}",
                     style = TextStyle(
@@ -64,7 +74,9 @@ internal fun CalendarScreen(
         }
 
         else -> {
-            Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
@@ -86,7 +98,7 @@ internal fun CalendarScreen(
 
                     CalendarModeDropdown(
                         isHijriPrimary = uiState.isHijriPrimary,
-                        onToggle = { viewModel.toggleCalendarMode() }
+                        onToggle = { viewModel.action(CalendarUiAction.ToggleCalendar) }
                     )
 
                     TextButton(onClick = { viewModel.nextMonth() }) {
