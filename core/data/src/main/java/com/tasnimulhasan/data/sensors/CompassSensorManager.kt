@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlin.math.abs
 
 class CompassSensorManager (context: Context) : SensorEventListener {
 
@@ -21,6 +22,9 @@ class CompassSensorManager (context: Context) : SensorEventListener {
 
     private var gravity: FloatArray? = null
     private var geomagnetic: FloatArray? = null
+
+    private var lastAzimuth = 0f
+    private val AZIMUTH_THRESHOLD = 1f
 
     fun start() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
@@ -42,7 +46,11 @@ class CompassSensorManager (context: Context) : SensorEventListener {
                 val orientation = FloatArray(3)
                 SensorManager.getOrientation(R, orientation)
                 val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
-                _azimuthFlow.value = (azimuth + 360) % 360
+                val normalizedAzimuth = (azimuth + 360) % 360
+                if (abs(normalizedAzimuth - lastAzimuth) >= AZIMUTH_THRESHOLD) {
+                    lastAzimuth = normalizedAzimuth
+                    _azimuthFlow.value = normalizedAzimuth
+                }
             }
         }
     }
