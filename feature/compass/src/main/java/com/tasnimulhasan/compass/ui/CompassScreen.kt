@@ -68,7 +68,7 @@ internal fun CompassScreen(
                 .rotate(-azimuth)
         )
         Image(
-            painter = painterResource(id = Res.drawable.ic_qibla_compass),
+            painter = painterResource(id = if (isSystemInDarkTheme()) Res.drawable.ic_qibla_compass_dark else Res.drawable.ic_qibla_compass_light),
             contentDescription = "Qibla Arrow",
             modifier = Modifier
                 .fillMaxWidth()
