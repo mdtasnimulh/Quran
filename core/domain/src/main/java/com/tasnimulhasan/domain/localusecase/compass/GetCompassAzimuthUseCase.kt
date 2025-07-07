@@ -7,9 +7,7 @@ import javax.inject.Inject
 class GetCompassAzimuthUseCase @Inject constructor(
     private val compassRepository: CompassRepository
 ) {
-
     operator fun invoke(): Flow<Float> = compassRepository.azimuthFlow
     fun start() = compassRepository.startListening()
     fun stop() = compassRepository.stopListening()
-
 }

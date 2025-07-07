@@ -38,4 +38,19 @@ object AppConstants {
             else -> "Unknown"
         }
     }
+
+    fun getDirectionName(degree: Float): String {
+        return when ((degree % 360 + 360) % 360) {
+            in 337.5..360.0, in 0.0..22.5 -> "North"
+            in 22.5..67.5 -> "Northeast"
+            in 67.5..112.5 -> "East"
+            in 112.5..157.5 -> "Southeast"
+            in 157.5..202.5 -> "South"
+            in 202.5..247.5 -> "Southwest"
+            in 247.5..292.5 -> "West"
+            in 292.5..337.5 -> "Northwest"
+            else -> ""
+        }
+    }
+
 }

@@ -26,6 +26,7 @@ class CompassViewModel @Inject constructor(
     val azimuth: StateFlow<Float> = _azimuth.asStateFlow()
 
     var locations = MutableStateFlow<UserLocationEntity?>(null)
+
     private val _qiblaDirection = MutableStateFlow(0.0)
     val qiblaDirection: StateFlow<Double> = _qiblaDirection.asStateFlow()
 
