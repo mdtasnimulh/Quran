@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
@@ -247,7 +248,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else BackgroundBlack,
                                 fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
@@ -260,7 +261,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else BackgroundBlack,
                                 fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
