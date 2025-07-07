@@ -52,4 +52,5 @@ include(":feature:profile")
 include(":feature:quran")
 include(":feature:sura-details")
 include(":feature:calendar")
+include(":feature:compass")
 /*** Feature Modules ***/

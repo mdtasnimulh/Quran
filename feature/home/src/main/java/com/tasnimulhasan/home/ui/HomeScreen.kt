@@ -14,10 +14,13 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -65,6 +68,7 @@ import java.util.Locale
 @Composable
 internal fun HomeScreen(
     navigateToCalendarScreen: () -> Unit,
+    navigateToCompassScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -197,10 +201,7 @@ internal fun HomeScreen(
                 item {
                     Text(
                         modifier = Modifier
-                            .wrapContentSize()
-                            .clickable(
-                                onClick = { navigateToCalendarScreen.invoke() }
-                            ),
+                            .wrapContentSize(),
                         text = "Prayer Times",
                         style = TextStyle(
                             fontSize = 16.sp,
@@ -239,6 +240,49 @@ internal fun HomeScreen(
                 }
 
                 item {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                    ){
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .weight(1f)
+                                .clickable(
+                                    onClick = { navigateToCalendarScreen.invoke() }
+                                ),
+                            text = "Calendar Screen",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = RobotoFontFamily,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Start
+                            ),
+                        )
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .weight(1f)
+                                .clickable(
+                                    onClick = { navigateToCompassScreen.invoke() }
+                                ),
+                            text = "Compass Screen",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = RobotoFontFamily,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Start
+                            ),
+                        )
+                    }
+
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 

@@ -5,9 +5,12 @@ import com.example.calendar.ui.viewmodel.CalendarUiState
 import com.tasnimulhasan.common.constant.AppConstants.getHijriMonthName
 import com.tasnimulhasan.domain.base.BaseViewModel
 import com.tasnimulhasan.domain.localusecase.GetCalendarDatesUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.location.FetchUserLocationUseCase
+import com.tasnimulhasan.entity.location.UserLocationEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 import java.time.chrono.HijrahDate
@@ -18,12 +21,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
+    private val fetchUserLocationUseCase: FetchUserLocationUseCase,
     private val getCalendarUseCase: GetCalendarDatesUseCase
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
     val uiState: StateFlow<CalendarUiState> get() = _uiState
 
+    var locations = MutableStateFlow<UserLocationEntity?>(null)
     private val _selectedMonth = MutableStateFlow(LocalDate.now().monthValue)
     private val _selectedYear = MutableStateFlow(LocalDate.now().year)
 
@@ -35,6 +40,9 @@ class CalendarViewModel @Inject constructor(
 
     init {
         execute {
+            fetchUserLocationUseCase.invoke().collectLatest { locationEntity ->
+                locations.value = locationEntity
+            }
             loadCalendar()
         }
     }

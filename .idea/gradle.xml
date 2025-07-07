@@ -40,6 +40,7 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/calendar" />
+            <option value="$PROJECT_DIR$/feature/compass" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/quran" />

@@ -7,6 +7,9 @@
     <string name="title_home">Home</string>
     <string name="title_quran">Sura\'s</string>
     <string name="title_profile">Profile</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_compass">Compass</string>
+
     <string name="title_playlists">Playlists</string>
     <string name="title_equalizer">Equalizer</string>
     <string name="title_settings">Settings</string>

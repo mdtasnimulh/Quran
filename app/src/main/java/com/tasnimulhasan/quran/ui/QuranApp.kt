@@ -48,7 +48,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.example.calendar.navigation.CalendarRoute
 import com.tasnimulhasan.common.utils.coloredShadow
+import com.tasnimulhasan.compass.navigation.CompassRoute
 import com.tasnimulhasan.designsystem.component.MainTopAppBar
 import com.tasnimulhasan.designsystem.component.QuranNavigationBar
 import com.tasnimulhasan.designsystem.component.QuranNavigationBarItem
@@ -106,6 +108,8 @@ internal fun QuranApp(
         HomeRoute::class.qualifiedName -> Res.string.app_name
         QuranRoute::class.qualifiedName -> Res.string.title_quran
         ProfileRoute::class.qualifiedName -> Res.string.title_profile
+        CalendarRoute::class.qualifiedName -> Res.string.title_calendar
+        CompassRoute::class.qualifiedName -> Res.string.title_compass
         else -> Res.string.app_name
     }
 
@@ -241,6 +245,9 @@ private fun GetContent(appState: QuranAppState) {
             },
             navigateToCalendarScreen = {
                 appState.navigateToCalendarScreen()
+            },
+            navigateToCompassScreen = {
+                appState.navigateToCompassScreen()
             }
         )
     }

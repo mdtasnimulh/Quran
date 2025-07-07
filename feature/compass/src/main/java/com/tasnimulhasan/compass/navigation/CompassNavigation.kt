@@ -1,4 +1,4 @@
-package com.tasnimulhasan.home.navigation
+package com.tasnimulhasan.compass.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
@@ -6,28 +6,32 @@ import androidx.compose.animation.fadeOut
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import com.tasnimulhasan.home.ui.HomeScreen
+import com.tasnimulhasan.compass.ui.CompassScreen
 import kotlinx.serialization.Serializable
 
-@Serializable object HomeRoute
+@Serializable object CompassRoute
 
-fun NavController.navigateToHome(navOptions: NavOptions) = navigate(route = HomeRoute, navOptions)
+fun NavController.navigateToCompassScreen(navOptions: NavOptionsBuilder.() -> Unit = {}){
+    navigate(route = CompassRoute){
+        navOptions()
+    }
+}
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.homeScreen(
-    navigateToCalendarScreen: () -> Unit,
-    navigateToCompassScreen: () -> Unit,
+fun NavGraphBuilder.compassScreen(
+    navigateBack: () -> Unit,
 ) {
-    composable<HomeRoute>(
+    composable<CompassRoute>(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) {
-        HomeScreen(
-            navigateToCalendarScreen = navigateToCalendarScreen,
-            navigateToCompassScreen = navigateToCompassScreen
+        CompassScreen(
+            animatedVisibilityScope = this@composable,
+            navigateBack = navigateBack
         )
     }
 }
