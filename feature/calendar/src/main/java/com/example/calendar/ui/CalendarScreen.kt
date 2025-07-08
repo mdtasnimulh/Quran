@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -26,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +41,7 @@ import com.example.calendar.component.PrayerTimesCard
 import com.example.calendar.ui.viewmodel.CalendarUiAction
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -88,34 +91,35 @@ internal fun CalendarScreen(
                 .fillMaxSize()
                 .padding(16.dp)
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "${uiState.gregorianMonthYear} (${uiState.hijriMonthYear})",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = { viewModel.prevMonth() }) {
-                        Text(text = "Previous")
+                        Text(text = "Calendar Type:")
                     }
 
                     CalendarModeDropdown(
                         isHijriPrimary = uiState.isHijriPrimary,
                         onToggle = { viewModel.action(CalendarUiAction.ToggleCalendar) }
                     )
-
-                    TextButton(onClick = { viewModel.nextMonth() }) {
-                        Text(text = "Next")
-                    }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    text = "${uiState.gregorianMonthYear} (${uiState.hijriMonthYear})",
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontFamily = RobotoFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center
+                    ),
+                    fontWeight = FontWeight.Bold
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -147,15 +151,17 @@ internal fun CalendarScreen(
                                     .clickable(
                                         onClick = {
                                             viewModel.dateString.value = date.dateString
-                                            viewModel.action(CalendarUiAction.FetchDailyPrayerTimesByCity(
-                                                FetchDailyPrayerTimesByCityUseCase.Params(
-                                                    date = date.dateString,
-                                                    city = cityName,
-                                                    country = countryName,
-                                                    latitude = latitude,
-                                                    longitude = longitude
+                                            viewModel.action(
+                                                CalendarUiAction.FetchDailyPrayerTimesByCity(
+                                                    FetchDailyPrayerTimesByCityUseCase.Params(
+                                                        date = date.dateString,
+                                                        city = cityName,
+                                                        country = countryName,
+                                                        latitude = latitude,
+                                                        longitude = longitude
+                                                    )
                                                 )
-                                            ))
+                                            )
                                         }
                                     )
                             ) {
@@ -188,6 +194,51 @@ internal fun CalendarScreen(
                         }
                     }
                 )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .weight(1f)
+                            .clip(RoundedCornerShape(15.dp))
+                            .clickable(
+                                onClick = { viewModel.prevMonth() }
+                            )
+                            .padding(vertical = 6.dp, horizontal = 8.dp),
+                        text = "Previous",
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Start
+                        )
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .weight(1f)
+                            .clip(RoundedCornerShape(15.dp))
+                            .clickable(
+                                onClick = { viewModel.nextMonth() }
+                            )
+                            .padding(vertical = 6.dp, horizontal = 8.dp),
+                        text = "Next",
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.End
+                        )
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
