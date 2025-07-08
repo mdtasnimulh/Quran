@@ -2,6 +2,7 @@ package com.example.calendar.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.calendar.component.CalendarModeDropdown
+import com.example.calendar.component.PrayerTimesCard
 import com.example.calendar.ui.viewmodel.CalendarUiAction
+import com.tasnimulhasan.common.dateparser.DateTimeFormat
+import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
+import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -44,6 +49,12 @@ internal fun CalendarScreen(
     viewModel: CalendarViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showPrayerTimes by viewModel.showPrayerTimes.collectAsStateWithLifecycle()
+    val cityName by viewModel.cityName.collectAsStateWithLifecycle()
+    val countryName by viewModel.countryName.collectAsStateWithLifecycle()
+    val latitude by viewModel.latitude.collectAsStateWithLifecycle()
+    val longitude by viewModel.longitude.collectAsStateWithLifecycle()
+    val dateString by viewModel.dateString.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.action(CalendarUiAction.FetchCalendar)
@@ -76,7 +87,8 @@ internal fun CalendarScreen(
         else -> {
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)) {
+                .padding(16.dp)
+            ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
@@ -133,6 +145,20 @@ internal fun CalendarScreen(
                                         if (date.isToday) Color.LightGray else Color.Transparent,
                                         shape = RoundedCornerShape(8.dp)
                                     )
+                                    .clickable(
+                                        onClick = {
+                                            viewModel.dateString.value = date.dateString
+                                            viewModel.action(CalendarUiAction.FetchDailyPrayerTimesByCity(
+                                                FetchDailyPrayerTimesByCityUseCase.Params(
+                                                    date = date.dateString,
+                                                    city = cityName,
+                                                    country = countryName,
+                                                    latitude = latitude,
+                                                    longitude = longitude
+                                                )
+                                            ))
+                                        }
+                                    )
                             ) {
                                 if (uiState.isHijriPrimary) {
                                     Text(
@@ -163,6 +189,21 @@ internal fun CalendarScreen(
                         }
                     }
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if (showPrayerTimes) {
+                    uiState.prayerTimes?.let {
+                        PrayerTimesCard(
+                            fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                            currentEnDate = dateString.convertReadableDateTime(DateTimeFormat.outputdMMy, DateTimeFormat.FULL_DAY_DATE_FORMAT),
+                        )
+                    }
+                }
             }
         }
     }

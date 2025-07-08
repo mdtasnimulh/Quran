@@ -4,8 +4,10 @@ import android.icu.util.IslamicCalendar
 import android.icu.util.ULocale
 import com.tasnimulhasan.domain.repository.CalendarRepository
 import com.tasnimulhasan.entity.calendar.CalendarDateEntity
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.GregorianCalendar
+import java.util.Locale
 import javax.inject.Inject
 
 class CalendarRepoImpl @Inject constructor() : CalendarRepository {
@@ -16,6 +18,7 @@ class CalendarRepoImpl @Inject constructor() : CalendarRepository {
         isHijriPrimary: Boolean
     ): List<CalendarDateEntity> {
         val result = mutableListOf<CalendarDateEntity>()
+        val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
         // Initialize Gregorian and Hijri calendars
         val gregorian = GregorianCalendar(year, month - 1, 1)
@@ -59,6 +62,7 @@ class CalendarRepoImpl @Inject constructor() : CalendarRepository {
             repeat(offsetStartHijri) {
                 result.add(
                     CalendarDateEntity(
+                        dateString = "",
                         gregorianDay = -1,
                         hijriDay = -1,
                         weekDay = "",
@@ -80,6 +84,7 @@ class CalendarRepoImpl @Inject constructor() : CalendarRepository {
 
                 val isToday = day == todayDayHijri && hijriMonth == todayMonthHijri && hijriYear == todayYearHijri
                 val date = CalendarDateEntity(
+                    dateString = dateFormatter.format(gregorianForDay.time),
                     gregorianDay = gregorianDay,
                     hijriDay = day,
                     weekDay = getWeekdayName(gregorianForDay.get(Calendar.DAY_OF_WEEK)),
@@ -92,6 +97,7 @@ class CalendarRepoImpl @Inject constructor() : CalendarRepository {
             repeat(offsetStart) {
                 result.add(
                     CalendarDateEntity(
+                        dateString = "",
                         gregorianDay = -1,
                         hijriDay = -1,
                         weekDay = "",
@@ -106,6 +112,7 @@ class CalendarRepoImpl @Inject constructor() : CalendarRepository {
                 hijri.time = gregorian.time
                 val isToday = day == todayDay && month - 1 == todayMonth && year == todayYear
                 val date = CalendarDateEntity(
+                    dateString = dateFormatter.format(gregorian.time),
                     gregorianDay = day,
                     hijriDay = hijri.get(IslamicCalendar.DAY_OF_MONTH),
                     weekDay = getWeekdayName(gregorian.get(Calendar.DAY_OF_WEEK)),

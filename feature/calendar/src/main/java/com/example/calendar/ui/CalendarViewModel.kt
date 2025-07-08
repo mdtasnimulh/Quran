@@ -1,12 +1,16 @@
 package com.example.calendar.ui
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Geocoder
 import com.example.calendar.ui.viewmodel.CalendarUiAction
 import com.example.calendar.ui.viewmodel.CalendarUiState
+import com.google.android.gms.location.LocationServices
 import com.tasnimulhasan.common.constant.AppConstants.getHijriMonthName
+import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.base.BaseViewModel
+import com.tasnimulhasan.domain.base.DataResult
 import com.tasnimulhasan.domain.localusecase.GetCalendarDatesUseCase
-import com.tasnimulhasan.domain.localusecase.datastore.location.FetchUserLocationUseCase
-import com.tasnimulhasan.entity.location.UserLocationEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,29 +25,38 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val fetchUserLocationUseCase: FetchUserLocationUseCase,
-    private val getCalendarUseCase: GetCalendarDatesUseCase
+    context: Context,
+    private val getCalendarUseCase: GetCalendarDatesUseCase,
+    private val fetchDailyPrayerTimesByCityUseCase: FetchDailyPrayerTimesByCityUseCase,
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
     val uiState: StateFlow<CalendarUiState> get() = _uiState
 
-    var locations = MutableStateFlow<UserLocationEntity?>(null)
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+    val geoCoder = Geocoder(context, Locale.getDefault())
+
     private val _selectedMonth = MutableStateFlow(LocalDate.now().monthValue)
     private val _selectedYear = MutableStateFlow(LocalDate.now().year)
+    var showPrayerTimes = MutableStateFlow(false)
+
+    var cityName = MutableStateFlow("")
+    var countryName = MutableStateFlow("")
+    val latitude = MutableStateFlow("")
+    val longitude = MutableStateFlow("")
+    val dateString = MutableStateFlow("")
 
     val action: (CalendarUiAction) -> Unit = {
         when (it) {
             CalendarUiAction.FetchCalendar -> loadCalendar()
             CalendarUiAction.ToggleCalendar -> toggleCalendarMode()
+            is CalendarUiAction.FetchDailyPrayerTimesByCity -> fetchDailyPrayerTimesByCity(it.params)
         }
     }
 
     init {
         execute {
-            fetchUserLocationUseCase.invoke().collectLatest { locationEntity ->
-                locations.value = locationEntity
-            }
+            fetchLocation(context)
         }
     }
 
@@ -101,6 +114,43 @@ class CalendarViewModel @Inject constructor(
         val hijriYear = hijriDate.get(ChronoField.YEAR)
         val hijriMonthName = getHijriMonthName(hijriMonthValue)
         return "$hijriMonthName $hijriYear"
+    }
+
+    private fun fetchDailyPrayerTimesByCity(params: FetchDailyPrayerTimesByCityUseCase.Params) {
+        execute {
+            fetchDailyPrayerTimesByCityUseCase.execute(params).collectLatest { result ->
+                when (result) {
+                    is DataResult.Loading -> _uiState.value = _uiState.value.copy(isLoading = result.loading)
+                    is DataResult.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
+                    is DataResult.Success -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            prayerTimes = result.data,
+                            errorMessage = null
+                        )
+                        showPrayerTimes.value = true
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchLocation(context: Context) {
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                cityName.value = try {
+                    val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
+                    countryName.value = "${address?.firstOrNull()?.countryName}"
+                    "${address?.firstOrNull()?.locality}"
+                } catch (e: Exception) {
+                    print(e.message)
+                    "Unknown Location!"
+                }
+                latitude.value = location.latitude.toString()
+                longitude.value = location.longitude.toString()
+            }
+        }
     }
 
 }
