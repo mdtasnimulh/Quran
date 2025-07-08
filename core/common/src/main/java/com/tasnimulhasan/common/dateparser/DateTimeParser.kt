@@ -77,19 +77,10 @@ object DateTimeParser {
     }
 
     fun isTimeDifferenceMoreThan24Hours(savedTime: String): Boolean {
-        // Define your saved format
         val formatter = DateTimeFormatter.ofPattern(DateTimeFormat.outputYMDHMS)
-
-        // Parse the saved time string to a LocalDateTime
         val savedDateTime = LocalDateTime.parse(savedTime, formatter)
-
-        // Get current time
         val currentDateTime = LocalDateTime.now()
-
-        // Calculate time difference in seconds
         val secondsDifference = ChronoUnit.SECONDS.between(savedDateTime, currentDateTime)
-
-        // Return true if >= 86400 seconds (24 hours)
         return secondsDifference >= 86400
     }
 }
