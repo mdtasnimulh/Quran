@@ -18,7 +18,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,10 +42,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.calendar.component.CalendarModeDropdown
+import com.example.calendar.component.CustomTopAppBar
 import com.example.calendar.component.PrayerTimesCard
 import com.example.calendar.ui.viewmodel.CalendarUiAction
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
+import com.tasnimulhasan.designsystem.R
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 
@@ -90,31 +99,13 @@ internal fun CalendarScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        text = "Calendar Type:",
-                        style = TextStyle(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontFamily = RobotoFontFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 14.sp,
-                            textAlign = TextAlign.Start
-                        )
-                    )
-
-                    CalendarModeDropdown(
-                        isHijriPrimary = uiState.isHijriPrimary,
-                        onToggle = { viewModel.action(CalendarUiAction.ToggleCalendar) }
-                    )
-                }
+                CustomTopAppBar(
+                    isHijriPrimary = uiState.isHijriPrimary,
+                    onToggleClick = { viewModel.action(CalendarUiAction.ToggleCalendar) },
+                    onBackClick = onNavigateUp
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -122,15 +113,32 @@ internal fun CalendarScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    text = "${uiState.gregorianMonthYear} (${uiState.hijriMonthYear})",
+                    text = if (!uiState.isHijriPrimary) uiState.gregorianMonthYear else uiState.hijriMonthYear,
                     style = TextStyle(
                         color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = RobotoFontFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 26.sp,
+                        textAlign = if (uiState.isHijriPrimary) TextAlign.End else TextAlign.Start
                     ),
                     fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    text = if (uiState.isHijriPrimary) uiState.gregorianMonthYear else uiState.hijriMonthYear,
+                    style = TextStyle(
+                        color = Color.Gray,
+                        fontFamily = RobotoFontFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp,
+                        textAlign = if (uiState.isHijriPrimary) TextAlign.End else TextAlign.Start
+                    ),
+                    fontWeight = FontWeight.Medium
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -142,9 +150,14 @@ internal fun CalendarScreen(
                     listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat").forEach {
                         Text(
                             text = it,
-                            textAlign = TextAlign.Center,
                             modifier = Modifier.weight(1f),
-                            fontWeight = FontWeight.Bold
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontFamily = RobotoFontFamily,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 14.sp,
+                                textAlign = TextAlign.Center,
+                            )
                         )
                     }
                 }
@@ -158,11 +171,12 @@ internal fun CalendarScreen(
                             Box(
                                 modifier = Modifier
                                     .aspectRatio(1f)
-                                    .padding(4.dp)
+                                    .padding(2.dp)
                                     .background(
                                         if (date.isToday) Color.LightGray else Color.Transparent,
                                         shape = RoundedCornerShape(8.dp)
                                     )
+                                    .padding(4.dp)
                                     .clickable(
                                         onClick = {
                                             viewModel.dateString.value = date.dateString
@@ -184,25 +198,45 @@ internal fun CalendarScreen(
                                     Text(
                                         text = if (date.hijriDay == -1) "" else date.hijriDay.toString(),
                                         modifier = Modifier.align(Alignment.Center),
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
+                                        style = TextStyle(
+                                            fontFamily = RobotoFontFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 14.sp,
+                                            textAlign = TextAlign.Center,
+                                        )
                                     )
                                     Text(
                                         text = if (date.gregorianDay == -1) "" else date.gregorianDay.toString(),
                                         modifier = Modifier.align(Alignment.TopEnd),
-                                        fontSize = 10.sp
+                                        style = TextStyle(
+                                            color = DeepSeaGreen,
+                                            fontFamily = RobotoFontFamily,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 10.sp,
+                                            textAlign = TextAlign.Center,
+                                        )
                                     )
                                 } else {
                                     Text(
                                         text = if (date.gregorianDay == -1) "" else date.gregorianDay.toString(),
                                         modifier = Modifier.align(Alignment.Center),
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
+                                        style = TextStyle(
+                                            fontFamily = RobotoFontFamily,
+                                            fontWeight = FontWeight.SemiBold,
+                                            fontSize = 14.sp,
+                                            textAlign = TextAlign.Center,
+                                        )
                                     )
                                     Text(
                                         text = if (date.hijriDay == -1) "" else date.hijriDay.toString(),
                                         modifier = Modifier.align(Alignment.TopEnd),
-                                        fontSize = 10.sp
+                                        style = TextStyle(
+                                            color = DeepSeaGreen,
+                                            fontFamily = RobotoFontFamily,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 10.sp,
+                                            textAlign = TextAlign.Center,
+                                        )
                                     )
                                 }
                             }
@@ -224,7 +258,7 @@ internal fun CalendarScreen(
                                 onClick = { viewModel.prevMonth() }
                             )
                             .padding(vertical = 6.dp, horizontal = 8.dp),
-                        text = "Previous",
+                        text = "Prev",
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.primary,
                             fontFamily = RobotoFontFamily,

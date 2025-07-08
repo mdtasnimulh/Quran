@@ -167,7 +167,8 @@ internal fun QuranApp(
                     customDrawerState = CustomDrawerState.Closed
                 },
             topBar = {
-                if (!currentDestination.isRouteInHierarchy(SuraDetailsRoute::class)) {
+                if (!currentDestination.isRouteInHierarchy(SuraDetailsRoute::class) &&
+                    !currentDestination.isRouteInHierarchy(CalendarRoute::class)) {
                     /*MainTopAppBar(
                         appBarTitle = context.getString(currentTitleRes),
                         onBackClick = {
