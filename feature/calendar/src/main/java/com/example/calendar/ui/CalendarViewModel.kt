@@ -7,6 +7,8 @@ import com.example.calendar.ui.viewmodel.CalendarUiAction
 import com.example.calendar.ui.viewmodel.CalendarUiState
 import com.google.android.gms.location.LocationServices
 import com.tasnimulhasan.common.constant.AppConstants.getHijriMonthName
+import com.tasnimulhasan.common.dateparser.DateTimeFormat
+import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.base.BaseViewModel
 import com.tasnimulhasan.domain.base.DataResult
@@ -38,7 +40,6 @@ class CalendarViewModel @Inject constructor(
 
     private val _selectedMonth = MutableStateFlow(LocalDate.now().monthValue)
     private val _selectedYear = MutableStateFlow(LocalDate.now().year)
-    var showPrayerTimes = MutableStateFlow(false)
 
     var cityName = MutableStateFlow("")
     var countryName = MutableStateFlow("")
@@ -128,7 +129,6 @@ class CalendarViewModel @Inject constructor(
                             prayerTimes = result.data,
                             errorMessage = null
                         )
-                        showPrayerTimes.value = true
                     }
                 }
             }
@@ -149,6 +149,17 @@ class CalendarViewModel @Inject constructor(
                 }
                 latitude.value = location.latitude.toString()
                 longitude.value = location.longitude.toString()
+                dateString.value = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.outputdMMy)
+
+                fetchDailyPrayerTimesByCity(
+                    FetchDailyPrayerTimesByCityUseCase.Params(
+                        date = dateString.value,
+                        city = cityName.value,
+                        country = countryName.value,
+                        latitude = latitude.value,
+                        longitude = longitude.value
+                    )
+                )
             }
         }
     }

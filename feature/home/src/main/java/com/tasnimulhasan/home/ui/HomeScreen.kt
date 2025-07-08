@@ -221,15 +221,15 @@ internal fun HomeScreen(
                             }
                         )
                     } else {
-                        uiState.prayerTimes?.let {
+                        if (uiState.prayerTimes != null) {
                             PrayerTimesCard(
-                                fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                                dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                                asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                                maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                                ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                                fajrTime = uiState.prayerTimes?.prayerTimings?.fajr?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
+                                dhuhrTime = uiState.prayerTimes?.prayerTimings?.dhuhr?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
+                                asrTime = uiState.prayerTimes?.prayerTimings?.asr?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
+                                maghribTime = uiState.prayerTimes?.prayerTimings?.maghrib?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
+                                ishaTime = uiState.prayerTimes?.prayerTimings?.isha?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
                                 currentEnDate = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.FULL_DAY_DATE_FORMAT),
-                                arabicMonth = it.arabicMonth
+                                arabicMonth = uiState.prayerTimes?.arabicMonth ?: ""
                             )
                         }
                     }

@@ -49,7 +49,6 @@ internal fun CalendarScreen(
     viewModel: CalendarViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val showPrayerTimes by viewModel.showPrayerTimes.collectAsStateWithLifecycle()
     val cityName by viewModel.cityName.collectAsStateWithLifecycle()
     val countryName by viewModel.countryName.collectAsStateWithLifecycle()
     val latitude by viewModel.latitude.collectAsStateWithLifecycle()
@@ -192,17 +191,15 @@ internal fun CalendarScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                if (showPrayerTimes) {
-                    uiState.prayerTimes?.let {
-                        PrayerTimesCard(
-                            fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                            currentEnDate = dateString.convertReadableDateTime(DateTimeFormat.outputdMMy, DateTimeFormat.FULL_DAY_DATE_FORMAT),
-                        )
-                    }
+                uiState.prayerTimes?.let {
+                    PrayerTimesCard(
+                        fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                        dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                        asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                        maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                        ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
+                        currentEnDate = dateString.convertReadableDateTime(DateTimeFormat.outputdMMy, DateTimeFormat.FULL_DAY_DATE_FORMAT),
+                    )
                 }
             }
         }
