@@ -1,13 +1,11 @@
 package com.example.calendar.component
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -45,7 +43,6 @@ fun CalendarModeDropdown(
             modifier = Modifier
                 .width(160.dp)
                 .clip(RoundedCornerShape(15.dp))
-                //.border(width = 1.dp, color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(15.dp))
                 .clickable(
                     onClick = { expanded = true }
                 )
@@ -56,7 +53,7 @@ fun CalendarModeDropdown(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = if (isHijriPrimary) "Hijri - Gregorian" else "Gregorian - Hijri",
+                text = if (isHijriPrimary) "Hijri - English" else "English - Hijri",
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
@@ -74,14 +71,32 @@ fun CalendarModeDropdown(
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(
-                text = { Text("Gregorian - Hijri") },
+                text = {
+                    Text(
+                        "English - Hijri", style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = RobotoFontFamily,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                },
                 onClick = {
                     if (isHijriPrimary) onToggle()
                     expanded = false
                 }
             )
             DropdownMenuItem(
-                text = { Text("Hijri - Gregorian") },
+                text = {
+                    Text(
+                        "Hijri - English", style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = RobotoFontFamily,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                },
                 onClick = {
                     if (!isHijriPrimary) onToggle()
                     expanded = false
