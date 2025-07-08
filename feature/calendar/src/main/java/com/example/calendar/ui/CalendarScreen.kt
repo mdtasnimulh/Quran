@@ -87,18 +87,28 @@ internal fun CalendarScreen(
         }
 
         else -> {
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = { viewModel.prevMonth() }) {
-                        Text(text = "Calendar Type:")
-                    }
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        text = "Calendar Type:",
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Start
+                        )
+                    )
 
                     CalendarModeDropdown(
                         isHijriPrimary = uiState.isHijriPrimary,
@@ -109,7 +119,9 @@ internal fun CalendarScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
                     text = "${uiState.gregorianMonthYear} (${uiState.hijriMonthYear})",
                     style = TextStyle(
                         color = MaterialTheme.colorScheme.onBackground,
@@ -123,7 +135,10 @@ internal fun CalendarScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Row(horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat").forEach {
                         Text(
                             text = it,
@@ -244,12 +259,30 @@ internal fun CalendarScreen(
 
                 uiState.prayerTimes?.let {
                     PrayerTimesCard(
-                        fajrTime = it.prayerTimings.fajr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                        dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                        asrTime = it.prayerTimings.asr.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                        maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                        ishaTime = it.prayerTimings.isha.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA),
-                        currentEnDate = dateString.convertReadableDateTime(DateTimeFormat.outputdMMy, DateTimeFormat.FULL_DAY_DATE_FORMAT),
+                        fajrTime = it.prayerTimings.fajr.convertReadableDateTime(
+                            DateTimeFormat.sqlHM,
+                            DateTimeFormat.outputHMA
+                        ),
+                        dhuhrTime = it.prayerTimings.dhuhr.convertReadableDateTime(
+                            DateTimeFormat.sqlHM,
+                            DateTimeFormat.outputHMA
+                        ),
+                        asrTime = it.prayerTimings.asr.convertReadableDateTime(
+                            DateTimeFormat.sqlHM,
+                            DateTimeFormat.outputHMA
+                        ),
+                        maghribTime = it.prayerTimings.maghrib.convertReadableDateTime(
+                            DateTimeFormat.sqlHM,
+                            DateTimeFormat.outputHMA
+                        ),
+                        ishaTime = it.prayerTimings.isha.convertReadableDateTime(
+                            DateTimeFormat.sqlHM,
+                            DateTimeFormat.outputHMA
+                        ),
+                        currentEnDate = dateString.convertReadableDateTime(
+                            DateTimeFormat.outputdMMy,
+                            DateTimeFormat.FULL_DAY_DATE_FORMAT
+                        ),
                     )
                 }
             }
