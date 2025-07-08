@@ -24,7 +24,7 @@ class CompassSensorManager (context: Context) : SensorEventListener {
     private var geomagnetic: FloatArray? = null
 
     private var lastAzimuth = 0f
-    private val AZIMUTH_THRESHOLD = 1f
+    private val AZIMUTH_THRESHOLD = 2f
 
     fun start() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
