@@ -87,8 +87,7 @@ fun PrayerTimesCard(
             } else {
                 val hours = timeUntilNext / 3600
                 val minutes = (timeUntilNext % 3600) / 60
-                val seconds = timeUntilNext % 60
-                countdown = "in ${hours}h ${minutes}m ${seconds}s"
+                countdown = "in ${hours}h ${minutes}m"
             }
             delay(1000L)
         }
