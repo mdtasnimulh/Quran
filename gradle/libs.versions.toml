@@ -51,6 +51,7 @@ rxJava3Version = "3.1.10"
 rxAndroid3Version = "3.0.2"
 mapPlaceVersion = "17.1.0"
 mapLocationVersion = "21.3.0"
+material3Expressive = "1.0.0-alpha11"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -163,6 +164,7 @@ room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", vers
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }
+material3-expressive = { group = "androidx.xr.compose.material3", name = "material3", version.ref = "material3Expressive" }
 
 [bundles]
 androidx-core-dependencies = [
@@ -188,6 +190,7 @@ androidx-material-dependencies = [
     "androidx-palette-compose",
     "compose-graphics-shapes",
     "androidx-animation-compose",
+    "material3-expressive"
 ]
 
 androidx-lifecycle-dependencies = [

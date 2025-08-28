@@ -123,6 +123,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.glide.compose)
     implementation(libs.androidx.palette.compose)
+    implementation(libs.material3.expressive)
 
     implementation(libs.play.services.location)
     ksp(libs.hilt.compiler)

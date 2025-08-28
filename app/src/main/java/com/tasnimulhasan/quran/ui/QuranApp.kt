@@ -10,18 +10,31 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FloatingToolbarDefaults
+import androidx.compose.material3.FloatingToolbarDefaults.ScreenOffset
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,7 +48,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -48,6 +63,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.xr.compose.material3.ExperimentalMaterial3XrApi
+import androidx.xr.compose.material3.HorizontalFloatingToolbar
 import com.example.calendar.navigation.CalendarRoute
 import com.tasnimulhasan.common.utils.coloredShadow
 import com.tasnimulhasan.compass.navigation.CompassRoute
@@ -57,9 +74,11 @@ import com.tasnimulhasan.designsystem.component.QuranNavigationBarItem
 import com.tasnimulhasan.designsystem.component.QuranTopAppBar
 import com.tasnimulhasan.designsystem.icon.QuranIcons
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.MaltaOrange
 import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.profile.navigation.ProfileRoute
 import com.tasnimulhasan.quran.component.CustomDrawer
+import com.tasnimulhasan.quran.component.CustomFloatingToolBar
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
 import com.tasnimulhasan.quran.navigation.QuranNavHost
 import com.tasnimulhasan.quran.navigation.QuranRoute
@@ -89,7 +108,9 @@ fun QuranApp(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalMaterial3XrApi::class
+)
 @Composable
 internal fun QuranApp(
     context: Context,
@@ -221,6 +242,44 @@ internal fun QuranApp(
                     .consumeWindowInsets(padding)
             ) {
                 GetContent(appState = appState)
+
+                /*Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                        .wrapContentWidth()
+                        .wrapContentHeight()
+                        .clip(RoundedCornerShape(100))
+                        .background(color = BackgroundWhite, shape = RoundedCornerShape(100))
+                        .padding(horizontal = 4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    HorizontalFloatingToolbar(
+                        modifier = Modifier
+                            .offset(y = -ScreenOffset),
+                        expanded = true,
+                        colors = FloatingToolbarDefaults.standardFloatingToolbarColors(
+                            toolbarContainerColor = Color.Transparent,
+                        ),
+                        content = {
+                            appState.topLevelDestination.forEach { destination ->
+                                FilledIconButton(
+                                    modifier = Modifier.width(64.dp),
+                                    colors = IconButtonDefaults.iconButtonColors(
+                                        containerColor = if (currentDestination.isRouteInHierarchy(destination.route)) MaltaOrange else Color.Transparent
+                                    ),
+                                    onClick = { appState.navigateToTopLevelDestination(destination) }
+                                ) {
+                                    Icon(Icons.Filled.Add, contentDescription = null)
+                                }
+
+                                if (destination.name != appState.topLevelDestination[appState.topLevelDestination.size-1].name) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                }
+                            }
+                        }
+                    )
+                }*/
             }
         }
     }
