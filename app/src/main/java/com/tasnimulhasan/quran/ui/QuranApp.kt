@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +34,8 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingToolbarDefaults
 import androidx.compose.material3.FloatingToolbarDefaults.ScreenOffset
+import androidx.compose.material3.FloatingToolbarExitDirection
+import androidx.compose.material3.FloatingToolbarScrollBehavior
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +44,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.rememberFloatingToolbarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -162,6 +166,8 @@ internal fun QuranApp(
         customDrawerState = CustomDrawerState.Closed
     }
 
+    val floatingToolbarState = rememberFloatingToolbarState()
+
     Box(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -215,7 +221,7 @@ internal fun QuranApp(
                     )
                 }
             },
-            bottomBar = {
+            /*bottomBar = {
                 if (isTopLevelDestination){
                     QuranNavigationBar {
                         appState.topLevelDestination.forEach { destination ->
@@ -229,7 +235,7 @@ internal fun QuranApp(
                         }
                     }
                 }
-            },
+            },*/
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -243,7 +249,7 @@ internal fun QuranApp(
             ) {
                 GetContent(appState = appState)
 
-                /*Box(
+                Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
@@ -252,7 +258,7 @@ internal fun QuranApp(
                         .clip(RoundedCornerShape(100))
                         .background(color = BackgroundWhite, shape = RoundedCornerShape(100))
                         .padding(horizontal = 4.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     HorizontalFloatingToolbar(
                         modifier = Modifier
@@ -270,16 +276,26 @@ internal fun QuranApp(
                                     ),
                                     onClick = { appState.navigateToTopLevelDestination(destination) }
                                 ) {
-                                    Icon(Icons.Filled.Add, contentDescription = null)
+                                    Icon(
+                                        if (currentDestination.isRouteInHierarchy(destination.route))
+                                            destination.selectedIcon
+                                        else
+                                            destination.unSelectedIcon,
+                                        contentDescription = null
+                                    )
                                 }
 
                                 if (destination.name != appState.topLevelDestination[appState.topLevelDestination.size-1].name) {
                                     Spacer(modifier = Modifier.width(8.dp))
                                 }
                             }
-                        }
+                        },
+                        scrollBehavior = FloatingToolbarDefaults.exitAlwaysScrollBehavior(
+                            exitDirection = FloatingToolbarExitDirection.Bottom,
+                            state = floatingToolbarState,
+                        ),
                     )
-                }*/
+                }
             }
         }
     }
