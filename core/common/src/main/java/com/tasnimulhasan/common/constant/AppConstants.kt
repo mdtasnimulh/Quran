@@ -1,5 +1,7 @@
 package com.tasnimulhasan.common.constant
 
+import com.tasnimulhasan.entity.ArabicAlphabet
+
 object AppConstants {
     const val CHANNEL_ID = "quran_channel_id"
     const val CHANNEL_NAME = "Quran Notification"
@@ -52,5 +54,38 @@ object AppConstants {
             else -> ""
         }
     }
+
+    val arabicLetters = listOf(
+        ArabicAlphabet("Alif", "ا", "ا", "ـا", "ـا", "a / ā"),
+        ArabicAlphabet("Baa", "ب", "بـ", "ـبـ", "ـب", "b"),
+        ArabicAlphabet("Taa", "ت", "تـ", "ـتـ", "ـت", "t"),
+        ArabicAlphabet("Thaa", "ث", "ثـ", "ـثـ", "ـث", "th"),
+        ArabicAlphabet("Jeem", "ج", "جـ", "ـجـ", "ـج", "j"),
+        ArabicAlphabet("Haa", "ح", "حـ", "ـحـ", "ـح", "ḥ"),
+        ArabicAlphabet("Khaa", "خ", "خـ", "ـخـ", "ـخ", "kh"),
+        ArabicAlphabet("Dal", "د", "د", "ـد", "ـد", "d"),
+        ArabicAlphabet("Dhal", "ذ", "ذ", "ـذ", "ـذ", "dh"),
+        ArabicAlphabet("Raa", "ر", "ر", "ـر", "ـر", "r"),
+        ArabicAlphabet("Zaay", "ز", "ز", "ـز", "ـز", "z"),
+        ArabicAlphabet("Seen", "س", "سـ", "ـسـ", "ـس", "s"),
+        ArabicAlphabet("Sheen", "ش", "شـ", "ـشـ", "ـش", "sh"),
+        ArabicAlphabet("Saad", "ص", "صـ", "ـصـ", "ـص", "ṣ"),
+        ArabicAlphabet("Daad", "ض", "ضـ", "ـضـ", "ـض", "ḍ"),
+        ArabicAlphabet("Taa", "ط", "طـ", "ـطـ", "ـط", "ṭ"),
+        ArabicAlphabet("Dhaa", "ظ", "ظـ", "ـظـ", "ـظ", "ẓ"),
+        ArabicAlphabet("A\'yen", "ع", "عـ", "ـعـ", "ـع", "\'"),
+        ArabicAlphabet("Ghayn", "غ", "غـ", "ـغـ", "ـغ", "gh"),
+        ArabicAlphabet("Faa", "ف", "فـ", "ـفـ", "ـف", "f"),
+        ArabicAlphabet("Qaaf", "ق", "قـ", "ـقـ", "ـق", "q"),
+        ArabicAlphabet("Kaaf", "ك", "كـ", "ـكـ", "ـك", "k"),
+        ArabicAlphabet("Laam", "ل", "لـ", "ـلـ", "ـل", "l"),
+        ArabicAlphabet("Meem", "م", "مـ", "ـمـ", "ـم", "m"),
+        ArabicAlphabet("Noon", "ن", "نـ", "ـنـ", "ـن", "n"),
+        ArabicAlphabet("Haa\'", "ه", "هـ", "ـهـ", "ـه", "h"),
+        ArabicAlphabet("Waw", "و", "و", "ـو", "ـو", "w"),
+        ArabicAlphabet("Yaa\'", "ي", "يـ", "ـيـ", "ـي", "y"),
+        ArabicAlphabet("Hamzah", "ء", "ء", "ء", "ء", "\'"),
+        ArabicAlphabet("Laam Alif", "لا", "لا", "ـلا", "ـلا", "lā")
+    )
 
 }
