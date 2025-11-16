@@ -36,6 +36,9 @@ fun FindMosqueRow(context: Context = LocalContext.current) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(15.dp))
+            .background(color = MaterialTheme.colorScheme.background, shape = RoundedCornerShape(15.dp))
+            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(15.dp))
             .clickable {
                 val gmmIntentUri = "geo:0,0?q=Mosque".toUri()
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
@@ -53,9 +56,6 @@ fun FindMosqueRow(context: Context = LocalContext.current) {
                     }
                 }
             }
-            .clip(RoundedCornerShape(15.dp))
-            .background(color = MaterialTheme.colorScheme.background, shape = RoundedCornerShape(15.dp))
-            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(15.dp))
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
