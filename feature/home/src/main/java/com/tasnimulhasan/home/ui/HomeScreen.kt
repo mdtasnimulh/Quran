@@ -12,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,6 +57,7 @@ import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.home.component.FindMosqueRow
 import com.tasnimulhasan.home.component.LocationPermissionDenied
 import com.tasnimulhasan.home.component.OpenSettingsDialog
+import com.tasnimulhasan.home.component.OtherMenuItem
 import com.tasnimulhasan.home.component.PrayerTimesCard
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
@@ -237,67 +239,53 @@ internal fun HomeScreen(
 
                     Row(modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
+                        .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ){
-                        Text(
+                        Box(
                             modifier = Modifier
-                                .wrapContentSize()
-                                .weight(1f)
-                                .clickable(
-                                    onClick = { navigateToCalendarScreen.invoke() }
-                                ),
-                            text = "Calendar Screen",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontFamily = RobotoFontFamily,
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Start
-                            ),
-                        )
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Calendar",
+                                onMenuClick = {
+                                    navigateToCalendarScreen.invoke()
+                                }
+                            )
+                        }
 
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Text(
+                        Box(
                             modifier = Modifier
-                                .wrapContentSize()
-                                .weight(1f)
-                                .clickable(
-                                    onClick = { navigateToCompassScreen.invoke() }
-                                ),
-                            text = "Compass Screen",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontFamily = RobotoFontFamily,
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Start
-                            ),
-                        )
-                    }
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Compass",
+                                onMenuClick = {
+                                    navigateToCompassScreen.invoke()
+                                }
+                            )
+                        }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                    ){
-                        Text(
+                        Box(
                             modifier = Modifier
-                                .wrapContentSize()
-                                .weight(1f)
-                                .clickable(
-                                    onClick = { navigateToArabicLettersScreen.invoke() }
-                                ),
-                            text = "Arabic Letters",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontFamily = RobotoFontFamily,
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Start
-                            ),
-                        )
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Arabic",
+                                onMenuClick = {
+                                    navigateToArabicLettersScreen.invoke()
+                                }
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))

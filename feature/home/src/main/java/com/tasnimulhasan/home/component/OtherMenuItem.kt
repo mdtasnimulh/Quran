@@ -21,15 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
-import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
-import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 
 @Composable
-fun LetterItem(
+fun OtherMenuItem(
     title: String,
     onMenuClick: () -> Unit,
 ) {
@@ -38,7 +36,7 @@ fun LetterItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .shadow(
-                elevation = 2.dp,
+                elevation = 4.dp,
                 shape = RoundedCornerShape(20.dp),
                 ambientColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
                 spotColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite
@@ -54,14 +52,14 @@ fun LetterItem(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(75.dp)
                 .padding(8.dp)
         ) {
-            val (arabicLetter, engName) = createRefs()
+            val (menuTitle) = createRefs()
 
             Text(
                 modifier = Modifier
-                    .constrainAs(arabicLetter) {
+                    .constrainAs(menuTitle) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
@@ -70,9 +68,9 @@ fun LetterItem(
                         height = Dimension.wrapContent
                     },
                 text = title,
-                fontFamily = ArabicKsaFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
@@ -84,7 +82,7 @@ fun LetterItem(
 @Composable
 fun PreviewLetterItem() {
     QuranTheme {
-        LetterItem(
+        OtherMenuItem(
             title = "Calendar\nScreen",
             onMenuClick = {}
         )
