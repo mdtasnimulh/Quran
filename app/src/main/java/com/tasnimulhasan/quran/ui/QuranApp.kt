@@ -251,52 +251,54 @@ internal fun QuranApp(
             ) {
                 GetContent(appState = appState)
 
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-                        .wrapContentWidth()
-                        .wrapContentHeight()
-                        .clip(RoundedCornerShape(100))
-                        .background(color = BackgroundWhite, shape = RoundedCornerShape(100))
-                        .padding(horizontal = 4.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    HorizontalFloatingToolbar(
+                if (isTopLevelDestination) {
+                    Box(
                         modifier = Modifier
-                            .offset(y = -ScreenOffset),
-                        expanded = true,
-                        colors = FloatingToolbarDefaults.standardFloatingToolbarColors(
-                            toolbarContainerColor = Color.Transparent,
-                        ),
-                        content = {
-                            appState.topLevelDestination.forEach { destination ->
-                                FilledIconButton(
-                                    modifier = Modifier.width(64.dp),
-                                    colors = IconButtonDefaults.iconButtonColors(
-                                        containerColor = if (currentDestination.isRouteInHierarchy(destination.route)) MaltaOrange else Color.Transparent
-                                    ),
-                                    onClick = { appState.navigateToTopLevelDestination(destination) }
-                                ) {
-                                    Icon(
-                                        if (currentDestination.isRouteInHierarchy(destination.route))
-                                            destination.selectedIcon
-                                        else
-                                            destination.unSelectedIcon,
-                                        contentDescription = null
-                                    )
-                                }
+                            .align(Alignment.BottomCenter)
+                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                            .wrapContentWidth()
+                            .wrapContentHeight()
+                            .clip(RoundedCornerShape(100))
+                            .background(color = BackgroundWhite, shape = RoundedCornerShape(100))
+                            .padding(horizontal = 4.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        HorizontalFloatingToolbar(
+                            modifier = Modifier
+                                .offset(y = -ScreenOffset),
+                            expanded = true,
+                            colors = FloatingToolbarDefaults.standardFloatingToolbarColors(
+                                toolbarContainerColor = Color.Transparent,
+                            ),
+                            content = {
+                                appState.topLevelDestination.forEach { destination ->
+                                    FilledIconButton(
+                                        modifier = Modifier.width(64.dp),
+                                        colors = IconButtonDefaults.iconButtonColors(
+                                            containerColor = if (currentDestination.isRouteInHierarchy(destination.route)) MaltaOrange else Color.Transparent
+                                        ),
+                                        onClick = { appState.navigateToTopLevelDestination(destination) }
+                                    ) {
+                                        Icon(
+                                            if (currentDestination.isRouteInHierarchy(destination.route))
+                                                destination.selectedIcon
+                                            else
+                                                destination.unSelectedIcon,
+                                            contentDescription = null
+                                        )
+                                    }
 
-                                if (destination.name != appState.topLevelDestination[appState.topLevelDestination.size-1].name) {
-                                    Spacer(modifier = Modifier.width(8.dp))
+                                    if (destination.name != appState.topLevelDestination[appState.topLevelDestination.size-1].name) {
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                    }
                                 }
-                            }
-                        },
-                        scrollBehavior = FloatingToolbarDefaults.exitAlwaysScrollBehavior(
-                            exitDirection = FloatingToolbarExitDirection.Bottom,
-                            state = floatingToolbarState,
-                        ),
-                    )
+                            },
+                            scrollBehavior = FloatingToolbarDefaults.exitAlwaysScrollBehavior(
+                                exitDirection = FloatingToolbarExitDirection.Bottom,
+                                state = floatingToolbarState,
+                            ),
+                        )
+                    }
                 }
             }
         }
