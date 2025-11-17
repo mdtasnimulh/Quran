@@ -303,7 +303,7 @@ internal fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(uiState.surahList) { index, item ->
+                itemsIndexed(uiState.surahList) { _, item ->
                     Text(
                         modifier = Modifier
                             .fillParentMaxWidth()
@@ -319,7 +319,7 @@ internal fun HomeScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(72.dp))
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.tasnimulhasan.arabicletters.ui.component
+package com.tasnimulhasan.home.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,38 +21,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
-import com.tasnimulhasan.designsystem.theme.EggshellWhite
-import com.tasnimulhasan.designsystem.theme.Harvest
-import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.QuranTheme
-import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
-import com.tasnimulhasan.designsystem.theme.SaladGreen
-import com.tasnimulhasan.designsystem.theme.ScreamGreen
-import com.tasnimulhasan.entity.ArabicAlphabet
 
 @Composable
 fun LetterItem(
-    item: ArabicAlphabet,
-    onItemClick: (item: ArabicAlphabet) -> Unit = {},
+    title: String,
+    onMenuClick: () -> Unit,
 ) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .shadow(
-                elevation = 4.dp,
+                elevation = 2.dp,
                 shape = RoundedCornerShape(20.dp),
-                ambientColor = PumpkinOrange,
-                spotColor = DeepSeaGreen
+                ambientColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
+                spotColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite
             )
             .clickable(
-                onClick = { onItemClick.invoke(item) }
+                onClick = { onMenuClick.invoke() }
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.elevatedCardColors(
@@ -71,34 +63,16 @@ fun LetterItem(
                 modifier = Modifier
                     .constrainAs(arabicLetter) {
                         top.linkTo(parent.top)
-                        bottom.linkTo(engName.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.wrapContent
-                    },
-                text = item.isolatedForm,
-                fontFamily = ArabicKsaFontFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                color = PumpkinOrange,
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                modifier = Modifier
-                    .constrainAs(engName) {
-                        top.linkTo(arabicLetter.bottom)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         width = Dimension.fillToConstraints
                         height = Dimension.wrapContent
                     },
-                text = item.name,
-                fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
+                text = title,
+                fontFamily = ArabicKsaFontFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
@@ -111,7 +85,8 @@ fun LetterItem(
 fun PreviewLetterItem() {
     QuranTheme {
         LetterItem(
-            item = AppConstants.arabicLetters.first()
+            title = "Calendar\nScreen",
+            onMenuClick = {}
         )
     }
 }

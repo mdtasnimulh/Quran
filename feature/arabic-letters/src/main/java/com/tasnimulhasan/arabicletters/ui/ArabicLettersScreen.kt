@@ -41,15 +41,15 @@ internal fun ArabicLettersScreen(
     ConstraintLayout(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
         val (lazyColumn) = createRefs()
 
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(4),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .constrainAs(lazyColumn){
@@ -67,7 +67,7 @@ internal fun ArabicLettersScreen(
                         text = "Arabic Letters",
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.End
                     )
