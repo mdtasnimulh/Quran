@@ -12,6 +12,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.calendar.navigation.navigateToCalendarScreen
+import com.tasnimulhasan.arabicletters.navigation.navigateToArabicLettersScreen
 import com.tasnimulhasan.compass.navigation.navigateToCompassScreen
 import com.tasnimulhasan.home.navigation.navigateToHome
 import com.tasnimulhasan.profile.navigation.navigateToProfile
@@ -89,6 +90,8 @@ class QuranAppState(
     fun navigateToCalendarScreen() = navController.navigateToCalendarScreen()
 
     fun navigateToCompassScreen() = navController.navigateToCompassScreen()
+
+    fun navigateToArabicLettersScreen() = navController.navigateToArabicLettersScreen()
 
     fun navigateBack() {
         navController.navigateUp()

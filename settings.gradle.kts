@@ -53,4 +53,5 @@ include(":feature:quran")
 include(":feature:sura-details")
 include(":feature:calendar")
 include(":feature:compass")
+include(":feature:arabic-letters")
 /*** Feature Modules ***/

@@ -66,6 +66,7 @@ import java.util.Locale
 internal fun HomeScreen(
     navigateToCalendarScreen: () -> Unit,
     navigateToCompassScreen: () -> Unit,
+    navigateToArabicLettersScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -265,6 +266,30 @@ internal fun HomeScreen(
                                     onClick = { navigateToCompassScreen.invoke() }
                                 ),
                             text = "Compass Screen",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = RobotoFontFamily,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Start
+                            ),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                    ){
+                        Text(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .weight(1f)
+                                .clickable(
+                                    onClick = { navigateToArabicLettersScreen.invoke() }
+                                ),
+                            text = "Arabic Letters",
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 fontFamily = RobotoFontFamily,

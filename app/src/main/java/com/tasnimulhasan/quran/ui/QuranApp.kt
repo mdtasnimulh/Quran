@@ -70,6 +70,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.xr.compose.material3.ExperimentalMaterial3XrApi
 import androidx.xr.compose.material3.HorizontalFloatingToolbar
 import com.example.calendar.navigation.CalendarRoute
+import com.tasnimulhasan.arabicletters.navigation.ArabicLettersRoute
 import com.tasnimulhasan.common.utils.coloredShadow
 import com.tasnimulhasan.compass.navigation.CompassRoute
 import com.tasnimulhasan.designsystem.component.MainTopAppBar
@@ -135,6 +136,7 @@ internal fun QuranApp(
         ProfileRoute::class.qualifiedName -> Res.string.title_profile
         CalendarRoute::class.qualifiedName -> Res.string.title_calendar
         CompassRoute::class.qualifiedName -> Res.string.title_compass
+        ArabicLettersRoute::class.qualifiedName -> Res.string.title_arabic_letters
         else -> Res.string.app_name
     }
 
@@ -324,6 +326,9 @@ private fun GetContent(appState: QuranAppState) {
             },
             navigateToCompassScreen = {
                 appState.navigateToCompassScreen()
+            },
+            navigateToArabicLettersScreen = {
+                appState.navigateToArabicLettersScreen()
             }
         )
     }

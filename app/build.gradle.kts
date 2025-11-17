@@ -90,6 +90,7 @@ dependencies {
         implementation(feature.suraDetails)
         implementation(feature.calendar)
         implementation(feature.compass)
+        implementation(feature.arabicLetters)
     }
     /*** Feature Modules ***/
 

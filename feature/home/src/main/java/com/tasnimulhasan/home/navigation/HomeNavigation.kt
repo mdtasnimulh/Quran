@@ -18,6 +18,7 @@ fun NavController.navigateToHome(navOptions: NavOptions) = navigate(route = Home
 fun NavGraphBuilder.homeScreen(
     navigateToCalendarScreen: () -> Unit,
     navigateToCompassScreen: () -> Unit,
+    navigateToArabicLettersScreen: () -> Unit,
 ) {
     composable<HomeRoute>(
         enterTransition = { fadeIn() },
@@ -27,7 +28,8 @@ fun NavGraphBuilder.homeScreen(
     ) {
         HomeScreen(
             navigateToCalendarScreen = navigateToCalendarScreen,
-            navigateToCompassScreen = navigateToCompassScreen
+            navigateToCompassScreen = navigateToCompassScreen,
+            navigateToArabicLettersScreen = navigateToArabicLettersScreen,
         )
     }
 }
