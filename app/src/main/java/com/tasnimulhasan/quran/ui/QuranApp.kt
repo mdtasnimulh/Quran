@@ -293,10 +293,6 @@ internal fun QuranApp(
                                     }
                                 }
                             },
-                            scrollBehavior = FloatingToolbarDefaults.exitAlwaysScrollBehavior(
-                                exitDirection = FloatingToolbarExitDirection.Bottom,
-                                state = floatingToolbarState,
-                            ),
                         )
                     }
                 }
