@@ -1,5 +1,6 @@
 package com.tasnimulhasan.home.ui.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
@@ -17,10 +18,17 @@ import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchSurahFromLocalDbUseCase
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.location.UserLocationEntity
+import com.tasnimulhasan.home.component.getCurrentAndNextPrayer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,6 +53,11 @@ class HomeViewModel @Inject constructor(
 
     var isLocationSaved = MutableStateFlow(false)
     var locations = MutableStateFlow<UserLocationEntity?>(null)
+
+    private val _prayerCountdownState = MutableStateFlow(PrayerCountdownState())
+    val prayerCountdownState: StateFlow<PrayerCountdownState> get() = _prayerCountdownState
+
+    private var prayerTimerJob: Job? = null
 
     val action: (HomeUiAction) -> Unit = {
         when (it) {
@@ -114,6 +127,14 @@ class HomeViewModel @Inject constructor(
                         )
                         saveDailyPrayerTimesToDataStoreUseCase.invoke(result.data)
                         saveLastSyncTimeUseCase.invoke(DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.outputYMDHMS))
+
+                        startPrayerCountdown(
+                            fajr = result.data.prayerTimings.fajr,
+                            dhuhr = result.data.prayerTimings.dhuhr,
+                            asr = result.data.prayerTimings.asr,
+                            maghrib = result.data.prayerTimings.maghrib,
+                            isha = result.data.prayerTimings.isha
+                        )
                     }
                 }
             }
@@ -128,6 +149,16 @@ class HomeViewModel @Inject constructor(
                     prayerTimes = prayerTimes,
                     errorMessage = null
                 )
+
+                prayerTimes.let {
+                    startPrayerCountdown(
+                        it.prayerTimings.fajr,
+                        it.prayerTimings.dhuhr,
+                        it.prayerTimings.asr,
+                        it.prayerTimings.maghrib,
+                        it.prayerTimings.isha
+                    )
+                }
             }
         }
     }
@@ -157,4 +188,49 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun startPrayerCountdown(
+        fajr: String,
+        dhuhr: String,
+        asr: String,
+        maghrib: String,
+        isha: String
+    ) {
+        prayerTimerJob?.cancel()
+
+        prayerTimerJob = viewModelScope.launch {
+            while (isActive) {
+                val (current, next, nextTime) = getCurrentAndNextPrayer(
+                    fajr,
+                    dhuhr,
+                    asr,
+                    maghrib,
+                    isha
+                )
+
+                val now = LocalTime.now()
+                val secondsLeft = now
+                    .until(nextTime, ChronoUnit.SECONDS)
+                    .coerceAtLeast(0)
+
+                val hours = secondsLeft / 3600
+                val minutes = (secondsLeft % 3600) / 60
+                val seconds = secondsLeft % 60
+
+                _prayerCountdownState.value = PrayerCountdownState(
+                    currentPrayer = current,
+                    nextPrayer = next,
+                    countdown = "in ${hours}h ${minutes}m ${seconds}s"
+                )
+
+                delay(1_000L)
+            }
+        }
+    }
+
 }
+
+data class PrayerCountdownState(
+    val currentPrayer: String? = null,
+    val nextPrayer: String = "",
+    val countdown: String = ""
+)

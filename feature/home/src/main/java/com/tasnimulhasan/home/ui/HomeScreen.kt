@@ -56,6 +56,7 @@ import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.entity.location.UserLocationEntity
+import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
 import com.tasnimulhasan.home.component.FindMosqueRow
 import com.tasnimulhasan.home.component.LocationPermissionDenied
 import com.tasnimulhasan.home.component.OpenSettingsDialog
@@ -85,6 +86,7 @@ internal fun HomeScreen(
     var latitude by remember { mutableStateOf<String?>(null) }
     var longitude by remember { mutableStateOf<String?>(null) }
     val suraEnglish by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
+    val prayerCountdown by viewModel.prayerCountdownState.collectAsStateWithLifecycle()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLocationSaved by viewModel.isLocationSaved.collectAsStateWithLifecycle()
@@ -225,12 +227,19 @@ internal fun HomeScreen(
                     } else {
                         if (uiState.prayerTimes != null) {
                             PrayerTimesCard(
-                                fajrTime = uiState.prayerTimes?.prayerTimings?.fajr?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
-                                dhuhrTime = uiState.prayerTimes?.prayerTimings?.dhuhr?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
-                                asrTime = uiState.prayerTimes?.prayerTimings?.asr?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
-                                maghribTime = uiState.prayerTimes?.prayerTimings?.maghrib?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
-                                ishaTime = uiState.prayerTimes?.prayerTimings?.isha?.convertReadableDateTime(DateTimeFormat.sqlHM, DateTimeFormat.outputHMA) ?: "",
-                                currentEnDate = DateTimeParser.getCurrentDeviceDateTime(DateTimeFormat.FULL_DAY_DATE_FORMAT),
+                                prayerTimes = listOf(
+                                    PrayerTImeEntity("Fajr", uiState.prayerTimes?.prayerTimings?.fajr ?: ""),
+                                    PrayerTImeEntity("Dhuhr", uiState.prayerTimes?.prayerTimings?.dhuhr ?: ""),
+                                    PrayerTImeEntity("Asr", uiState.prayerTimes?.prayerTimings?.asr ?: ""),
+                                    PrayerTImeEntity("Maghrib", uiState.prayerTimes?.prayerTimings?.maghrib ?: ""),
+                                    PrayerTImeEntity("Isha", uiState.prayerTimes?.prayerTimings?.isha ?: "")
+                                ),
+                                currentPrayer = prayerCountdown.currentPrayer,
+                                nextPrayer = prayerCountdown.nextPrayer,
+                                countdown = prayerCountdown.countdown,
+                                currentEnDate = DateTimeParser.getCurrentDeviceDateTime(
+                                    DateTimeFormat.FULL_DAY_DATE_FORMAT
+                                ),
                                 arabicMonth = uiState.prayerTimes?.arabicMonth ?: ""
                             )
                         }

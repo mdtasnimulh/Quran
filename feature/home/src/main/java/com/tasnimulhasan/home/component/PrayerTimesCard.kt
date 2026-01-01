@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.common.dateparser.DateTimeFormat
+import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
@@ -50,49 +52,13 @@ import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun PrayerTimesCard(
-    fajrTime: String,
-    dhuhrTime: String,
-    asrTime: String,
-    maghribTime: String,
-    ishaTime: String,
+    prayerTimes: List<PrayerTImeEntity>,
+    currentPrayer: String?,
+    nextPrayer: String,
+    countdown: String,
     currentEnDate: String,
     arabicMonth: String,
 ) {
-    val prayerTimeList = listOf(
-        PrayerTImeEntity("Fajr", fajrTime),
-        PrayerTImeEntity("Dhuhr", dhuhrTime),
-        PrayerTImeEntity("Asr", asrTime),
-        PrayerTImeEntity("Maghrib", maghribTime),
-        PrayerTImeEntity("Isha", ishaTime),
-    )
-
-    var currentPrayer by remember { mutableStateOf<String?>(null) }
-    var nextPrayer by remember { mutableStateOf("Fajr (Next Day)") }
-    var nextPrayerTime by remember { mutableStateOf(LocalTime.parse(fajrTime, DateTimeFormatter.ofPattern("hh:mm a", Locale.US))) }
-
-    var countdown by remember { mutableStateOf("in 0h 0m 0s") }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            val now = LocalTime.now()
-            val timeUntilNext = now.until(nextPrayerTime, ChronoUnit.SECONDS)
-            if (timeUntilNext <= 0) {
-                val (newCurrentPrayer, newNextPrayer, newNextPrayerTime) = getCurrentAndNextPrayer(
-                    fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime
-                )
-                currentPrayer = newCurrentPrayer
-                nextPrayer = newNextPrayer
-                nextPrayerTime = newNextPrayerTime
-                countdown = "in 0h 0m 0s"
-            } else {
-                val hours = timeUntilNext / 3600
-                val minutes = (timeUntilNext % 3600) / 60
-                countdown = "in ${hours}h ${minutes}m"
-            }
-            delay(1000L)
-        }
-    }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,15 +76,14 @@ fun PrayerTimesCard(
             val (quranImage, arabicMonthYearRef, enDateRef, nextPrayerTimeRef, nextPrayerCountRef, prayerTimesRef) = createRefs()
 
             Image(
-                modifier = Modifier
-                    .constrainAs(quranImage) {
-                        bottom.linkTo(prayerTimesRef.top)
-                        end.linkTo(parent.end)
-                        width = Dimension.value(100.dp)
-                        height = Dimension.wrapContent
-                    },
+                modifier = Modifier.constrainAs(quranImage) {
+                    bottom.linkTo(prayerTimesRef.top, margin = 8.dp)
+                    end.linkTo(parent.end, margin = 8.dp)
+                    width = Dimension.value(100.dp)
+                    height = Dimension.wrapContent
+                },
                 painter = painterResource(Res.drawable.ic_quran_large),
-                contentDescription = "Quran Image",
+                contentDescription = null
             )
 
             Text(
@@ -135,7 +100,7 @@ fun PrayerTimesCard(
                     fontSize = 16.sp,
                     fontFamily = RobotoFontFamily,
                     color = BackgroundWhite,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
             )
@@ -169,7 +134,7 @@ fun PrayerTimesCard(
                     },
                 text = nextPrayer,
                 style = TextStyle(
-                    fontSize = 18.sp,
+                    fontSize = 24.sp,
                     fontFamily = RobotoFontFamily,
                     color = BackgroundWhite,
                     fontWeight = FontWeight.Bold,
@@ -195,13 +160,13 @@ fun PrayerTimesCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    modifier = Modifier.size(16.dp),
                     imageVector = Icons.Default.AccessTime,
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = "Prayer Time Icon"
+                    modifier = Modifier.size(16.dp)
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(Modifier.width(6.dp))
 
                 Text(
                     text = countdown,
@@ -232,50 +197,51 @@ fun PrayerTimesCard(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                prayerTimeList.forEach { time ->
+                prayerTimes.forEach { time ->
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .weight(1f),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(Modifier.height(12.dp))
+
+                        val isCurrent =
+                            currentPrayer?.startsWith(time.prayerName) == true
+
                         Text(
                             text = time.prayerName,
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else BackgroundBlack,
-                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Medium else FontWeight.Normal,
+                                color = if (isCurrent) MaterialTheme.colorScheme.primary else BackgroundBlack,
+                                fontWeight = if (isCurrent) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(Modifier.height(8.dp))
 
                         Text(
                             text = time.prayerTime,
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (currentPrayer?.startsWith(time.prayerName) == true) MaterialTheme.colorScheme.primary else BackgroundBlack,
-                                fontWeight = if (currentPrayer?.startsWith(time.prayerName) == true) FontWeight.Bold else FontWeight.SemiBold,
+                                color = if (isCurrent) MaterialTheme.colorScheme.primary else BackgroundBlack,
+                                fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        if (currentPrayer?.startsWith(time.prayerName) == true) {
-                            Spacer(modifier = Modifier.height(4.dp))
+                        if (isCurrent) {
+                            Spacer(Modifier.height(6.dp))
                             Box(
                                 modifier = Modifier
-                                    .fillMaxWidth()
                                     .height(2.dp)
+                                    .fillMaxWidth()
                                     .padding(horizontal = 4.dp)
-                                    .background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(10.dp)),
+                                    .background(
+                                        MaterialTheme.colorScheme.primary,
+                                        RoundedCornerShape(10.dp)
+                                    )
                             )
                         }
                     }
@@ -288,7 +254,7 @@ fun PrayerTimesCard(
 @Preview()
 @Composable
 fun PreviewPrayerTimesCard() {
-    PrayerTimesCard(
+    /*PrayerTimesCard(
         fajrTime = "03:45 AM",
         dhuhrTime = "12:45 PM",
         asrTime = "04:43 PM",
@@ -296,7 +262,7 @@ fun PreviewPrayerTimesCard() {
         ishaTime = "08:00 PM",
         currentEnDate = "Wednesday, 02 July 2025",
         arabicMonth = "6 Muharram, 1447"
-    )
+    )*/
 }
 
 fun getCurrentAndNextPrayer(
@@ -306,13 +272,16 @@ fun getCurrentAndNextPrayer(
     maghribTime: String,
     ishaTime: String
 ): Triple<String?, String, LocalTime> {
-    val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.US)
 
-    val fajr = LocalTime.parse(fajrTime, formatter)
-    val dhuhr = LocalTime.parse(dhuhrTime, formatter)
-    val asr = LocalTime.parse(asrTime, formatter)
-    val maghrib = LocalTime.parse(maghribTime, formatter)
-    val isha = LocalTime.parse(ishaTime, formatter)
+    val parseFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.US)
+    val displayFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.US)
+
+    val fajr = LocalTime.parse(fajrTime, parseFormatter)
+    val dhuhr = LocalTime.parse(dhuhrTime, parseFormatter)
+    val asr = LocalTime.parse(asrTime, parseFormatter)
+    val maghrib = LocalTime.parse(maghribTime, parseFormatter)
+    val isha = LocalTime.parse(ishaTime, parseFormatter)
+
     val current = LocalTime.now()
 
     val prayerTimes = listOf(
@@ -324,29 +293,20 @@ fun getCurrentAndNextPrayer(
     )
 
     var currentPrayer: String? = null
-    var nextPrayer = "Fajr (Next Day)"
+    var nextPrayer = ""
     var nextPrayerTime = fajr
 
-    for (i in prayerTimes.indices) {
-        val (prayerName, prayerTime) = prayerTimes[i]
-        val nextIndex = (i + 1) % prayerTimes.size
-        val nextPrayerName = if (nextIndex == 0) "Fajr (Next Day)" else prayerTimes[nextIndex].first
-        val nextPrayerTimeCandidate = if (nextIndex == 0) fajr else prayerTimes[nextIndex].second
-
-        if (current.isAfter(prayerTime) || current == prayerTime) {
-            currentPrayer = "$prayerName at $prayerTime"
-            nextPrayer = "$nextPrayerName ${nextPrayerTimeCandidate.format(formatter)}"
-            nextPrayerTime = nextPrayerTimeCandidate
-        } else if (current.isBefore(prayerTime)) {
-            nextPrayer = "$prayerName ${prayerTime.format(formatter)}"
-            nextPrayerTime = prayerTime
+    for ((name, time) in prayerTimes) {
+        if (current.isBefore(time)) {
+            nextPrayer = "$name ${time.format(displayFormatter)}"
+            nextPrayerTime = time
             break
         }
+        currentPrayer = name
     }
 
     if (current.isAfter(isha)) {
-        currentPrayer = "Isha at $isha"
-        nextPrayer = "Fajr (Next Day) at ${fajr.format(formatter)}"
+        nextPrayer = "Fajr ${fajr.format(displayFormatter)}"
         nextPrayerTime = fajr
     }
 
