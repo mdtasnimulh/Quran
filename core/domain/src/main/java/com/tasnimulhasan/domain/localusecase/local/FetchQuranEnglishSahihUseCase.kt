@@ -12,11 +12,12 @@ class FetchQuranEnglishSahihUseCase @Inject constructor(
 ) : RoomSuspendableUseCase<FetchQuranEnglishSahihUseCase.Params, Flow<DataResult<List<QuranEnglishSahihEntity>>>> {
 
     data class Params(
-        val suraNumber: Int
+        val suraNumber: Int,
+        val translationName: String,
     )
 
     override suspend fun invoke(params: Params): Flow<DataResult<List<QuranEnglishSahihEntity>>> {
-        return repository.getQuranEnglishSahih(params.suraNumber)
+        return repository.getQuranEnglishSahih(params = params)
     }
 
 }

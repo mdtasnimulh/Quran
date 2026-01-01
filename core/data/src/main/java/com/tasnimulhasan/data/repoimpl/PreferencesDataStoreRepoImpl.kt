@@ -107,6 +107,20 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         }
     }
 
+    override suspend fun savePreferredTranslation(translationName: String) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.preferredTranslation] = translationName
+            }
+        }
+    }
+
+    override fun getPreferredTranslation(): Flow<String> {
+        return dataStorePreferences.data.map { preferences ->
+            preferences[PreferencesKeys.preferredTranslation] ?: ""
+        }
+    }
+
     private object PreferencesKeys {
         val lastReadSura = stringPreferencesKey(name = "last_read_sura")
         val isLastReadSuraAvailable = booleanPreferencesKey(name = "is_last_read_sura_available")
@@ -114,5 +128,6 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         val lastSyncTime = stringPreferencesKey(name = "last_sync_time")
         val isLocationAvailable = booleanPreferencesKey(name = "is_location_available")
         val userLocation = stringPreferencesKey(name = "user_location")
+        val preferredTranslation = stringPreferencesKey(name = "preferred_translation")
     }
 }

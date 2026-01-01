@@ -49,12 +49,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.location.LocationServices
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
-import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
-import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
+import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
 import com.tasnimulhasan.home.component.FindMosqueRow
@@ -62,6 +61,7 @@ import com.tasnimulhasan.home.component.LocationPermissionDenied
 import com.tasnimulhasan.home.component.OpenSettingsDialog
 import com.tasnimulhasan.home.component.OtherMenuItem
 import com.tasnimulhasan.home.component.PrayerTimesCard
+import com.tasnimulhasan.home.component.TranslationSelectionDialog
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
 import java.util.Locale
@@ -87,10 +87,14 @@ internal fun HomeScreen(
     var longitude by remember { mutableStateOf<String?>(null) }
     val suraEnglish by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
     val prayerCountdown by viewModel.prayerCountdownState.collectAsStateWithLifecycle()
+    val translationName by viewModel.translationName.collectAsStateWithLifecycle()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLocationSaved by viewModel.isLocationSaved.collectAsStateWithLifecycle()
     val locations by viewModel.locations.collectAsStateWithLifecycle()
+
+    var showTranslationDialog by remember { mutableStateOf(false) }
+    var selectedTranslation by remember { mutableStateOf<String?>(null) }
 
     val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -168,8 +172,16 @@ internal fun HomeScreen(
             )
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.action(HomeUiAction.FetchQuranEnglishSahih(1))
+    LaunchedEffect(translationName) {
+        if (translationName.isEmpty() && viewModel.showPreferredDialog) {
+            showTranslationDialog = true
+        }
+        viewModel.action(HomeUiAction.FetchQuranEnglishSahih(
+            FetchQuranEnglishSahihUseCase.Params(
+                suraNumber = 1,
+                translationName = translationName.ifEmpty { "quran_en_sahih" }
+            )
+        ))
     }
 
     when {
@@ -396,5 +408,35 @@ internal fun HomeScreen(
             }
         )
     }
+
+    if (showTranslationDialog) {
+        TranslationSelectionDialog(
+            options = viewModel.translationOptions,
+            selected = selectedTranslation,
+            onSelect = { selectedTranslation = it },
+            onSave = {
+                selectedTranslation?.let { translation ->
+                    viewModel.action(
+                        HomeUiAction.SavePreferredTranslationName(translation)
+                    )
+
+                    viewModel.action(HomeUiAction.FetchAllLocalDbSura(1))
+                    viewModel.action(
+                        HomeUiAction.FetchQuranEnglishSahih(
+                            FetchQuranEnglishSahihUseCase.Params(
+                                suraNumber = 1,
+                                translationName = translation
+                            )
+                        )
+                    )
+                }
+                showTranslationDialog = false
+            },
+            onDismiss = {
+                showTranslationDialog = false
+            }
+        )
+    }
+
 
 }

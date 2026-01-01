@@ -4,6 +4,7 @@ import android.content.Context
 import com.tasnimulhasan.data.ResourceWrapper
 import com.tasnimulhasan.data.helper.QuranDatabaseHelper
 import com.tasnimulhasan.domain.base.DataResult
+import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.domain.repository.local.QuranSuraFromLocalDbRepository
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
@@ -46,15 +47,15 @@ class QuranSuraFromLocalDbDbRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getQuranEnglishSahih(suraNumber: Int): Flow<DataResult<List<QuranEnglishSahihEntity>>> {
+    override suspend fun getQuranEnglishSahih(params: FetchQuranEnglishSahihUseCase.Params): Flow<DataResult<List<QuranEnglishSahihEntity>>> {
         return resourceWrapper.fetchData {
             val dbHelper = QuranDatabaseHelper(context)
             val db = dbHelper.openDatabase()
 
             val entityList = mutableListOf<QuranEnglishSahihEntity>()
             val cursor = db.rawQuery(
-                "SELECT * FROM quran_en_sahih WHERE sura_number = ?", //bn_mohiuddin_khan
-                arrayOf(suraNumber.toString())
+                "SELECT * FROM ${params.translationName} WHERE sura_number = ?", //bn_mohiuddin_khan quran_en_sahih
+                arrayOf(params.suraNumber.toString())
             )
 
             if (cursor.moveToFirst()) {

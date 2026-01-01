@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.suradetails.component.CustomTopAppBar
 import com.tasnimulhasan.suradetails.component.SuraDetailsHeader
@@ -54,17 +55,25 @@ internal fun SuraDetailsScreen(
     val suraArabicList by viewModel.suraArabicList.collectAsStateWithLifecycle()
     val suraEnglishSahihList by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
     val ayaCount by viewModel.ayaCount.collectAsStateWithLifecycle()
+    val translationName by viewModel.translationName.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.action(UiAction.SetLastReadSuraAvailable(true))
-        viewModel.action(UiAction.FetchAllLocalDbSura(suraNumber))
-        viewModel.action(UiAction.FetchQuranEnglishSahih(suraNumber))
-
         if (isLastRead){
             scope.launch {
                 listState.animateScrollToItem(lastReadAyaNumber, -50)
             }
         }
+    }
+
+    LaunchedEffect(translationName) {
+        viewModel.action(UiAction.FetchAllLocalDbSura(suraNumber))
+        viewModel.action(UiAction.FetchQuranEnglishSahih(
+            FetchQuranEnglishSahihUseCase.Params(
+                suraNumber = suraNumber,
+                translationName = translationName.ifEmpty { "quran_en_sahih" }
+            )
+        ))
     }
 
     when (uiState) {
@@ -122,7 +131,7 @@ internal fun SuraDetailsScreen(
                             suraNameMeaning,
                             suraType,
                             suraArabicList.size,
-                            "Sahih International"
+                            translationName
                         )
                     ))
 
@@ -136,7 +145,7 @@ internal fun SuraDetailsScreen(
                             suraNameMeaning = suraNameMeaning,
                             ayahCount = ayaCount.toString(),
                             suraType = suraType,
-                            translationName = "Sahih International"
+                            translationName = translationName
                         )
                     }
 

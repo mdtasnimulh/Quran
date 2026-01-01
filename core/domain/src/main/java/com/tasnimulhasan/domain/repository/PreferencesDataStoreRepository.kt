@@ -17,4 +17,6 @@ interface PreferencesDataStoreRepository {
     fun getUserLocation(): Flow<UserLocationEntity>
     suspend fun isLocationAvailable(available: Boolean)
     fun getIsLocationAvailable(): Flow<Boolean>
+    suspend fun savePreferredTranslation(translationName: String)
+    fun getPreferredTranslation(): Flow<String>
 }

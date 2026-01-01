@@ -14,6 +14,8 @@ import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.FetchDailyPra
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.GetLastSyncTimeUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveDailyPrayerTimesToDataStoreUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveLastSyncTimeUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.translation.GetPreferredTranslationUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.translation.SavePreferredTranslationUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchSurahFromLocalDbUseCase
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
@@ -27,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -44,7 +47,14 @@ class HomeViewModel @Inject constructor(
     private val isLocationAvailableDataStoreUseCase: IsLocationAvailableDataStoreUseCase,
     private val getIsLocationAvailableDataStoreUseCase: GetIsLocationAvailableDataStoreUseCase,
     private val fetchQuranEnglishSahihUseCase: FetchQuranEnglishSahihUseCase,
+    private val getPreferredTranslationUseCase: GetPreferredTranslationUseCase,
+    private val savePreferredTranslationUseCase: SavePreferredTranslationUseCase,
 ) : BaseViewModel() {
+
+    val translationOptions = listOf(
+        "quran_en_sahih" to "Sahih International",
+        "bn_mohiuddin_khan" to "Bangla (Mohiuddin Khan)",
+    )
 
     val suraEnSahiList = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
 
@@ -57,6 +67,11 @@ class HomeViewModel @Inject constructor(
     private val _prayerCountdownState = MutableStateFlow(PrayerCountdownState())
     val prayerCountdownState: StateFlow<PrayerCountdownState> get() = _prayerCountdownState
 
+    var showPreferredDialog = false
+
+    private val _translationName = MutableStateFlow("")
+    val translationName: StateFlow<String> = _translationName
+
     private var prayerTimerJob: Job? = null
 
     val action: (HomeUiAction) -> Unit = {
@@ -64,11 +79,14 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.FetchAllLocalDbSura -> fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(it.suraNumber))
             is HomeUiAction.FetchDailyPrayerTimesByCity -> fetchDailyPrayerTimesByCity(it.params)
             is HomeUiAction.SaveUserLocation -> saveUserLocation(it.location)
-            is HomeUiAction.FetchQuranEnglishSahih -> fetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(it.suraNumber))
+            is HomeUiAction.FetchQuranEnglishSahih -> fetchQuranEnglishSahih(it.params)
+            is HomeUiAction.SavePreferredTranslationName -> saveTranslationName(it.translation)
+            is HomeUiAction.GetPreferredTranslationName -> getPreferredTranslationName()
         }
     }
 
     init {
+        getPreferredTranslationName()
         fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(1))
         getIsLocationAvailable()
     }
@@ -223,6 +241,22 @@ class HomeViewModel @Inject constructor(
                 )
 
                 delay(1_000L)
+            }
+        }
+    }
+
+    private fun saveTranslationName(translationName: String) {
+        execute {
+            savePreferredTranslationUseCase.invoke(translationName)
+            _translationName.value = translationName
+        }
+    }
+
+    private fun getPreferredTranslationName() {
+        execute {
+            getPreferredTranslationUseCase.invoke().collectLatest { result ->
+                _translationName.value = result
+                if (result.isEmpty()) showPreferredDialog = true
             }
         }
     }
