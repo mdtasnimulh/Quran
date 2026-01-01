@@ -3,17 +3,19 @@ package com.tasnimulhasan.home.ui.viewmodel
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
-import com.tasnimulhasan.domain.base.DataResult
 import com.tasnimulhasan.domain.base.BaseViewModel
+import com.tasnimulhasan.domain.base.DataResult
 import com.tasnimulhasan.domain.localusecase.datastore.location.FetchUserLocationUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.location.GetIsLocationAvailableDataStoreUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.location.IsLocationAvailableDataStoreUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.location.SaveUserLocationUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.FetchDailyPrayerTimesFromDataStoreUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.GetLastSyncTimeUseCase
-import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveLastSyncTimeUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveDailyPrayerTimesToDataStoreUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveLastSyncTimeUseCase
+import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchSurahFromLocalDbUseCase
+import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +35,10 @@ class HomeViewModel @Inject constructor(
     private val saveUserLocationUseCase: SaveUserLocationUseCase,
     private val isLocationAvailableDataStoreUseCase: IsLocationAvailableDataStoreUseCase,
     private val getIsLocationAvailableDataStoreUseCase: GetIsLocationAvailableDataStoreUseCase,
+    private val fetchQuranEnglishSahihUseCase: FetchQuranEnglishSahihUseCase,
 ) : BaseViewModel() {
+
+    val suraEnSahiList = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> get() = _uiState
@@ -46,6 +51,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.FetchAllLocalDbSura -> fetchAllLocalSura(FetchSurahFromLocalDbUseCase.Params(it.suraNumber))
             is HomeUiAction.FetchDailyPrayerTimesByCity -> fetchDailyPrayerTimesByCity(it.params)
             is HomeUiAction.SaveUserLocation -> saveUserLocation(it.location)
+            is HomeUiAction.FetchQuranEnglishSahih -> fetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(it.suraNumber))
         }
     }
 
@@ -130,6 +136,24 @@ class HomeViewModel @Inject constructor(
         execute {
             saveUserLocationUseCase.invoke(location)
             isLocationAvailableDataStoreUseCase.invoke(true)
+        }
+    }
+
+    private fun fetchQuranEnglishSahih(params: FetchQuranEnglishSahihUseCase.Params) {
+        execute {
+            fetchQuranEnglishSahihUseCase.invoke(params).collectLatest { result ->
+                when (result) {
+                    is DataResult.Loading -> _uiState.value = _uiState.value.copy(isLoading = result.loading)
+                    is DataResult.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
+                    is DataResult.Success -> {
+                        suraEnSahiList.value = result.data
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                    }
+                }
+            }
         }
     }
 

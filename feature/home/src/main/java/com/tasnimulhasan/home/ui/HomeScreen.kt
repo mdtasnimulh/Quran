@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +51,8 @@ import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
+import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.entity.location.UserLocationEntity
@@ -80,6 +84,7 @@ internal fun HomeScreen(
     var countryName by remember { mutableStateOf<String?>(null) }
     var latitude by remember { mutableStateOf<String?>(null) }
     var longitude by remember { mutableStateOf<String?>(null) }
+    val suraEnglish by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLocationSaved by viewModel.isLocationSaved.collectAsStateWithLifecycle()
@@ -159,6 +164,10 @@ internal fun HomeScreen(
                     )
                 )
             )
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.action(HomeUiAction.FetchQuranEnglishSahih(1))
     }
 
     when {
@@ -289,7 +298,40 @@ internal fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(uiState.surahList) { _, item ->
+                item {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "الفاتحة",
+                        style = TextStyle(
+                            fontSize = 48.sp,
+                            fontFamily = ArabicUthmanFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Center,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            )
+                        )
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Al-Fatiha (The Opening)",
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.Normal,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                itemsIndexed(uiState.surahList) { index, item ->
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     Text(
                         modifier = Modifier
                             .fillParentMaxWidth()
@@ -297,15 +339,34 @@ internal fun HomeScreen(
                         text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
                         style = TextStyle(
                             textAlign = TextAlign.Right,
-                            fontSize = 30.sp,
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Medium
                         ),
                     )
+
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    Text(
+                        modifier = Modifier,
+                        text = suraEnglish[index].ayaText.replace("-", ""),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.Justify,
+                            fontFamily = RobotoFontFamily,
+                        ),
+                    )
+
                     Spacer(modifier = Modifier.height(8.dp))
+
+                    if (index != suraEnglish.size -1) {
+                        HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+                    }
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(72.dp))
+                    Spacer(modifier = Modifier.height(80.dp))
                 }
             }
         }
