@@ -53,7 +53,7 @@ class QuranSuraFromLocalDbDbRepoImpl @Inject constructor(
 
             val entityList = mutableListOf<QuranEnglishSahihEntity>()
             val cursor = db.rawQuery(
-                "SELECT * FROM quran_en_sahih WHERE sura_number = ?",
+                "SELECT * FROM quran_en_sahih WHERE sura_number = ?", //bn_mohiuddin_khan
                 arrayOf(suraNumber.toString())
             )
 
