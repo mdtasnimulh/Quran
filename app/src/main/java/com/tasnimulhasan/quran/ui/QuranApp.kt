@@ -87,6 +87,7 @@ import com.tasnimulhasan.quran.component.CustomFloatingToolBar
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
 import com.tasnimulhasan.quran.navigation.QuranNavHost
 import com.tasnimulhasan.quran.navigation.QuranRoute
+import com.tasnimulhasan.suggestion.navigation.SuggestionRoute
 import com.tasnimulhasan.suradetails.navigation.SuraDetailsRoute
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
@@ -137,6 +138,7 @@ internal fun QuranApp(
         CalendarRoute::class.qualifiedName -> Res.string.title_calendar
         CompassRoute::class.qualifiedName -> Res.string.title_compass
         ArabicLettersRoute::class.qualifiedName -> Res.string.title_arabic_letters
+        SuggestionRoute::class.qualifiedName -> Res.string.title_suggestion
         else -> Res.string.app_name
     }
 
@@ -327,6 +329,9 @@ private fun GetContent(appState: QuranAppState) {
             },
             navigateToArabicLettersScreen = {
                 appState.navigateToArabicLettersScreen()
+            },
+            navigateToSuggestionScreen = {
+                appState.navigateToSuggestionScreen()
             }
         )
     }

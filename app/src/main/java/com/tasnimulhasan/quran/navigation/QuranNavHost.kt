@@ -10,6 +10,7 @@ import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.home.navigation.homeScreen
 import com.tasnimulhasan.profile.navigation.profileScreen
 import com.tasnimulhasan.quran.ui.QuranAppState
+import com.tasnimulhasan.suggestion.navigation.suggestionScreen
 import com.tasnimulhasan.suradetails.navigation.suraDetailsScreen
 
 @Composable
@@ -20,6 +21,7 @@ fun QuranNavHost(
     navigateToCalendarScreen: () -> Unit,
     navigateToCompassScreen: () -> Unit,
     navigateToArabicLettersScreen: () -> Unit,
+    navigateToSuggestionScreen: () -> Unit,
     navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String, isLastRead: Boolean, lastReadAyaNumber: Int) -> Unit,
 ) {
     val navController = appState.navController
@@ -33,6 +35,7 @@ fun QuranNavHost(
             navigateToCalendarScreen = navigateToCalendarScreen,
             navigateToCompassScreen = navigateToCompassScreen,
             navigateToArabicLettersScreen = navigateToArabicLettersScreen,
+            navigateToSuggestionScreen = navigateToSuggestionScreen,
         )
         quranScreen(navigateToSuraDetails = navigateToSuraDetails)
         profileScreen()
@@ -40,5 +43,6 @@ fun QuranNavHost(
         calendarScreen(navigateBack = navigateBack)
         compassScreen(navigateBack = navigateBack)
         arabicLettersScreen(navigateBack = navigateBack)
+        suggestionScreen(navigateBack = navigateBack)
     }
 }

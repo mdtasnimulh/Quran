@@ -72,6 +72,7 @@ internal fun HomeScreen(
     navigateToCalendarScreen: () -> Unit,
     navigateToCompassScreen: () -> Unit,
     navigateToArabicLettersScreen: () -> Unit,
+    navigateToSuggestionScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -311,6 +312,29 @@ internal fun HomeScreen(
                                 title = "Arabic",
                                 onMenuClick = {
                                     navigateToArabicLettersScreen.invoke()
+                                }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ){
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Suggestions",
+                                onMenuClick = {
+                                    navigateToSuggestionScreen.invoke()
                                 }
                             )
                         }

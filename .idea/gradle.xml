@@ -45,6 +45,7 @@
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/quran" />
+            <option value="$PROJECT_DIR$/feature/suggestion" />
             <option value="$PROJECT_DIR$/feature/sura-details" />
           </set>
         </option>

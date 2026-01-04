@@ -91,6 +91,7 @@ dependencies {
         implementation(feature.calendar)
         implementation(feature.compass)
         implementation(feature.arabicLetters)
+        implementation(feature.suggestion)
     }
     /*** Feature Modules ***/
 

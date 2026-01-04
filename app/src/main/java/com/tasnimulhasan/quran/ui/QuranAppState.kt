@@ -18,6 +18,7 @@ import com.tasnimulhasan.home.navigation.navigateToHome
 import com.tasnimulhasan.profile.navigation.navigateToProfile
 import com.tasnimulhasan.quran.navigation.TopLevelDestination
 import com.tasnimulhasan.quran.navigation.navigateToQuran
+import com.tasnimulhasan.suggestion.navigation.navigateToSuggestionScreen
 import com.tasnimulhasan.suradetails.navigation.navigateToSuraDetails
 import kotlinx.coroutines.CoroutineScope
 
@@ -92,6 +93,8 @@ class QuranAppState(
     fun navigateToCompassScreen() = navController.navigateToCompassScreen()
 
     fun navigateToArabicLettersScreen() = navController.navigateToArabicLettersScreen()
+
+    fun navigateToSuggestionScreen() = navController.navigateToSuggestionScreen()
 
     fun navigateBack() {
         navController.navigateUp()
