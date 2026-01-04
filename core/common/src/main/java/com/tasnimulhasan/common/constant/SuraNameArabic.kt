@@ -3,7 +3,6 @@ package com.tasnimulhasan.common.constant
 import com.tasnimulhasan.entity.sura.SuraArabicEntity
 
 object SuraNameArabic {
-
     val suraList = listOf(
         SuraArabicEntity(1, "الفاتحة", 7),
         SuraArabicEntity(2, "البقرة", 286),
@@ -120,6 +119,4 @@ object SuraNameArabic {
         SuraArabicEntity(113, "الفلق", 5),
         SuraArabicEntity(114, "الناس", 6),
     )
-
-
 }
