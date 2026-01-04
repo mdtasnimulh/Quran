@@ -3,7 +3,7 @@ package com.tasnimulhasan.common.constant
 import com.tasnimulhasan.entity.QuranSuggestion
 
 object QuranSuggestions {
-    val quranicQuranSuggestions = listOf(
+    val quranSuggestions = listOf(
         QuranSuggestion(
             id = 1,
             suggestionTitle = "In the Remembrance of Allah, Hearts Find Peace",

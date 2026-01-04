@@ -1,11 +1,12 @@
 package com.tasnimulhasan.suggestion.ui.viewmodel
 
+import com.tasnimulhasan.domain.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SuggestionViewModel @Inject constructor(
 
-) {
+): BaseViewModel() {
 
 }
