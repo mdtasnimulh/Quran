@@ -6,10 +6,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.tasnimulhasan.common.constant.QuranSuggestions
+import com.tasnimulhasan.entity.QuranSuggestion
+import com.tasnimulhasan.suggestion.components.SuggestionDialog
 import com.tasnimulhasan.suggestion.components.SuggestionItem
 import com.tasnimulhasan.suggestion.ui.viewmodel.SuggestionViewModel
 
@@ -18,6 +24,7 @@ fun SuggestionScreen(
     navigateBack: () -> Unit,
     viewModel: SuggestionViewModel = hiltViewModel()
 ) {
+    var selectedSuggestion by remember { mutableStateOf<QuranSuggestion?>(null) }
 
     LazyColumn(
         modifier = Modifier
@@ -31,7 +38,7 @@ fun SuggestionScreen(
             SuggestionItem(
                 suggestion = item,
                 onSuggestionCLick = {
-                    // TODO will implement later
+                    selectedSuggestion = it
                 }
             )
         }
@@ -39,6 +46,13 @@ fun SuggestionScreen(
         item {
             Spacer(modifier = Modifier.height(32.dp))
         }
+    }
+
+    selectedSuggestion?.let {
+        SuggestionDialog(
+            suggestion = it,
+            onDismiss = { selectedSuggestion = null }
+        )
     }
 
 }
