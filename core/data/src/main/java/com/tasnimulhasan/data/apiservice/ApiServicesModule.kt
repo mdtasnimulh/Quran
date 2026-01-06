@@ -1,6 +1,7 @@
 package com.tasnimulhasan.data.apiservice
 
 import com.tasnimulhasan.di.qualifier.AppBaseUrl
+import com.tasnimulhasan.di.qualifier.HadithBaseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +19,14 @@ object ApiServicesModule {
         @AppBaseUrl retrofit: Retrofit
     ): PrayerTimesApiService {
         return retrofit.create(PrayerTimesApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHadithApiService(
+        @HadithBaseUrl retrofit: Retrofit
+    ): HadithApiService {
+        return retrofit.create(HadithApiService::class.java)
     }
 
 }

@@ -3,6 +3,7 @@ package com.tasnimulhasan.di.module
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tasnimulhasan.di.qualifier.AppBaseUrl
+import com.tasnimulhasan.di.qualifier.HadithBaseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,19 @@ object RetrofitModule {
     fun provideRetrofit(@AppBaseUrl baseUrl: String, okHttpClient: OkHttpClient, factory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(factory)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @HadithBaseUrl
+    @JvmStatic
+    fun provideHadithRetrofit(@HadithBaseUrl hadithBaseUrl: String, okHttpClient: OkHttpClient, factory: GsonConverterFactory): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(hadithBaseUrl)
             .client(okHttpClient)
             .addConverterFactory(factory)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
