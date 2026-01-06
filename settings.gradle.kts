@@ -48,8 +48,8 @@ include(":core:datastore")
 
 /*** Feature Modules ***/
 include(":feature:home")
-include(":feature:profile")
 include(":feature:quran")
+include(":feature:hadith")
 include(":feature:sura-details")
 include(":feature:calendar")
 include(":feature:compass")

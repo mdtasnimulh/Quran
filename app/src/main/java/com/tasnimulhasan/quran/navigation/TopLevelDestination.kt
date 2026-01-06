@@ -3,8 +3,8 @@ package com.tasnimulhasan.quran.navigation
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.tasnimulhasan.designsystem.icon.QuranIcons
+import com.tasnimulhasan.hadith.navigation.HadithRoute
 import com.tasnimulhasan.home.navigation.HomeRoute
-import com.tasnimulhasan.profile.navigation.ProfileRoute
 import kotlin.reflect.KClass
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -31,11 +31,11 @@ enum class TopLevelDestination(
         route = QuranRoute::class
     ),
 
-    PROFILE(
+    HADITH(
         selectedIcon = QuranIcons.Profile,
         unSelectedIcon = QuranIcons.ProfileOutline,
-        iconTextId = Res.string.title_profile,
-        titleTextId = Res.string.title_profile,
-        route = ProfileRoute::class
+        iconTextId = Res.string.title_hadith,
+        titleTextId = Res.string.title_hadith,
+        route = HadithRoute::class
     ),
 }

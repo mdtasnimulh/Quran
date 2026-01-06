@@ -14,8 +14,8 @@ import androidx.navigation.navOptions
 import com.example.calendar.navigation.navigateToCalendarScreen
 import com.tasnimulhasan.arabicletters.navigation.navigateToArabicLettersScreen
 import com.tasnimulhasan.compass.navigation.navigateToCompassScreen
+import com.tasnimulhasan.hadith.navigation.navigateToHadith
 import com.tasnimulhasan.home.navigation.navigateToHome
-import com.tasnimulhasan.profile.navigation.navigateToProfile
 import com.tasnimulhasan.quran.navigation.TopLevelDestination
 import com.tasnimulhasan.quran.navigation.navigateToQuran
 import com.tasnimulhasan.suggestion.navigation.navigateToSuggestionScreen
@@ -68,7 +68,7 @@ class QuranAppState(
         when (topLevelDestination) {
             TopLevelDestination.HOME -> navController.navigateToHome(topLevelNavOptions)
             TopLevelDestination.QURAN -> navController.navigateToQuran(topLevelNavOptions)
-            TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
+            TopLevelDestination.HADITH -> navController.navigateToHadith(topLevelNavOptions)
         }
     }
 

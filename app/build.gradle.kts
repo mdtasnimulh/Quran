@@ -85,8 +85,8 @@ dependencies {
     /*** Feature Modules ***/
     with(projects) {
         implementation(feature.home)
-        implementation(feature.profile)
         implementation(feature.quran)
+        implementation(feature.hadith)
         implementation(feature.suraDetails)
         implementation(feature.calendar)
         implementation(feature.compass)

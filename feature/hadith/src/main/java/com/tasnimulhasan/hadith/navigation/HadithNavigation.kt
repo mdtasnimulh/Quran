@@ -1,4 +1,4 @@
-package com.tasnimulhasan.profile.navigation
+package com.tasnimulhasan.hadith.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
@@ -7,24 +7,24 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.tasnimulhasan.profile.ui.ProfileScreen
+import com.tasnimulhasan.hadith.ui.HadithScreen
 import kotlinx.serialization.Serializable
 
-@Serializable object ProfileRoute
+@Serializable object HadithRoute
 
-fun NavController.navigateToProfile(navOptions: NavOptions) = navigate(route = ProfileRoute, navOptions)
+fun NavController.navigateToHadith(navOptions: NavOptions) = navigate(route = HadithRoute, navOptions)
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.profileScreen(
+fun NavGraphBuilder.hadithScreen(
     //navigateToPlayer: (musicId: String) -> Unit,
 ) {
-    composable<ProfileRoute>(
+    composable<HadithRoute>(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) {
-        ProfileScreen(
+        HadithScreen(
             animatedVisibilityScope = this@composable
         )
     }

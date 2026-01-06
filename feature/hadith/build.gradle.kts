@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tasnimulhasan.profile"
+    namespace = "com.tasnimulhasan.hadith"
 }
 
 dependencies {

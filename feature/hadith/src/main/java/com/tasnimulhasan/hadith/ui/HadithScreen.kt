@@ -1,4 +1,4 @@
-package com.tasnimulhasan.profile.ui
+package com.tasnimulhasan.hadith.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -11,14 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-internal fun ProfileScreen(
+internal fun HadithScreen(
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel = hiltViewModel(),
+    viewModel: HadithViewModel = hiltViewModel(),
 ) {
     Box(
         modifier = modifier
@@ -27,7 +27,7 @@ internal fun ProfileScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Profile Screen",
+            text = "Hadith Screen",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.align(Alignment.Center)
         )

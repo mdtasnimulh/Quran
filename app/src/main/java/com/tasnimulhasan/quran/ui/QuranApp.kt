@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
@@ -26,21 +25,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingToolbarDefaults
 import androidx.compose.material3.FloatingToolbarDefaults.ScreenOffset
-import androidx.compose.material3.FloatingToolbarExitDirection
-import androidx.compose.material3.FloatingToolbarScrollBehavior
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -55,7 +48,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -73,17 +65,13 @@ import com.example.calendar.navigation.CalendarRoute
 import com.tasnimulhasan.arabicletters.navigation.ArabicLettersRoute
 import com.tasnimulhasan.common.utils.coloredShadow
 import com.tasnimulhasan.compass.navigation.CompassRoute
-import com.tasnimulhasan.designsystem.component.MainTopAppBar
-import com.tasnimulhasan.designsystem.component.QuranNavigationBar
-import com.tasnimulhasan.designsystem.component.QuranNavigationBarItem
 import com.tasnimulhasan.designsystem.component.QuranTopAppBar
 import com.tasnimulhasan.designsystem.icon.QuranIcons
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
+import com.tasnimulhasan.hadith.navigation.HadithRoute
 import com.tasnimulhasan.home.navigation.HomeRoute
-import com.tasnimulhasan.profile.navigation.ProfileRoute
 import com.tasnimulhasan.quran.component.CustomDrawer
-import com.tasnimulhasan.quran.component.CustomFloatingToolBar
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
 import com.tasnimulhasan.quran.navigation.QuranNavHost
 import com.tasnimulhasan.quran.navigation.QuranRoute
@@ -134,7 +122,7 @@ internal fun QuranApp(
     val currentTitleRes = when (currentDestination?.route) {
         HomeRoute::class.qualifiedName -> Res.string.app_name
         QuranRoute::class.qualifiedName -> Res.string.title_quran
-        ProfileRoute::class.qualifiedName -> Res.string.title_profile
+        HadithRoute::class.qualifiedName -> Res.string.title_hadith
         CalendarRoute::class.qualifiedName -> Res.string.title_calendar
         CompassRoute::class.qualifiedName -> Res.string.title_compass
         ArabicLettersRoute::class.qualifiedName -> Res.string.title_arabic_letters

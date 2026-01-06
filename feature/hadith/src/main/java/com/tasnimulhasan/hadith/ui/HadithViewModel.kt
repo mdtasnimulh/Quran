@@ -1,16 +1,16 @@
-package com.tasnimulhasan.profile.ui
+package com.tasnimulhasan.hadith.ui
 
 import com.tasnimulhasan.domain.base.BaseViewModel
-import com.tasnimulhasan.profile.ui.viewmodel.ProfileUiAction
+import com.tasnimulhasan.hadith.ui.viewmodel.HadithUiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class HadithViewModel @Inject constructor(
 
 ) : BaseViewModel() {
 
-    val action: (ProfileUiAction) -> Unit = {
+    val action: (HadithUiAction) -> Unit = {
         when (it) {
             else -> {}
         }
