@@ -10,6 +10,8 @@ object AppConstants {
     const val DB_NAME = "quran_mobile.db"
 
     const val PRAYER_TIMES_BASE_URL = "https://api.aladhan.com/v1/"
+    const val HADITH_BASE_URL = "https://hadithapi.com/api/"
+    const val HADITH_API_KEY = $$"$2y$10$igEAXi4ASN4Z0fOZmBvOjKWKO6w0rGiSO52ub6d5YEZVNzAL7Xe"
 
     const val BISMILLAH = "بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ"
 
