@@ -42,8 +42,8 @@
             <option value="$PROJECT_DIR$/feature/arabic-letters" />
             <option value="$PROJECT_DIR$/feature/calendar" />
             <option value="$PROJECT_DIR$/feature/compass" />
+            <option value="$PROJECT_DIR$/feature/hadith" />
             <option value="$PROJECT_DIR$/feature/home" />
-            <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/quran" />
             <option value="$PROJECT_DIR$/feature/suggestion" />
             <option value="$PROJECT_DIR$/feature/sura-details" />
