@@ -2,30 +2,28 @@ package com.tasnimulhasan.designsystem.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.Segment
-import androidx.compose.material.icons.automirrored.outlined.MenuBook
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LibraryMusic
-import androidx.compose.material.icons.outlined.MusicNote
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import com.tasnimulhasan.designsystem.R as Res
 
 object QuranIcons {
-    val Home = Icons.Filled.Home
-    val HomeOutline = Icons.Outlined.Home
+    val Home = Res.drawable.home_filled
+    val HomeOutline = Res.drawable.home_outlined
 
     val Profile = Icons.Filled.Person
     val ProfileOutline = Icons.Outlined.Person
 
-    val Sura = Icons.AutoMirrored.Filled.MenuBook
-    val SuraOutline = Icons.AutoMirrored.Outlined.MenuBook
+    val Quran = Res.drawable.ic_quran_filled
+    val QuranOutline = Res.drawable.ic_quran_outline
+
+    val Hadith = Res.drawable.ic_hadith_filled
+    val HadithOutline = Res.drawable.ic_hadith_ouline
 
     val Playlists = Icons.Filled.LibraryMusic
     val PlaylistsOutline = Icons.Outlined.LibraryMusic

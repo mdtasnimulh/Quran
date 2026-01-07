@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -53,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -67,8 +70,11 @@ import com.tasnimulhasan.common.utils.coloredShadow
 import com.tasnimulhasan.compass.navigation.CompassRoute
 import com.tasnimulhasan.designsystem.component.QuranTopAppBar
 import com.tasnimulhasan.designsystem.icon.QuranIcons
+import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
+import com.tasnimulhasan.designsystem.theme.PixelOrange
 import com.tasnimulhasan.hadith.navigation.HadithRoute
 import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.quran.component.CustomDrawer
@@ -249,7 +255,7 @@ internal fun QuranApp(
                             .wrapContentWidth()
                             .wrapContentHeight()
                             .clip(RoundedCornerShape(100))
-                            .background(color = BackgroundWhite, shape = RoundedCornerShape(100))
+                            .background(color = if (isSystemInDarkTheme()) DullBlue else DullBlue, shape = RoundedCornerShape(100))
                             .padding(horizontal = 4.dp),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -262,19 +268,22 @@ internal fun QuranApp(
                             ),
                             content = {
                                 appState.topLevelDestination.forEach { destination ->
+                                    val selectedDestination = currentDestination.isRouteInHierarchy(destination.route)
                                     FilledIconButton(
                                         modifier = Modifier.width(64.dp),
                                         colors = IconButtonDefaults.iconButtonColors(
-                                            containerColor = if (currentDestination.isRouteInHierarchy(destination.route)) MaltaOrange else Color.Transparent
+                                            containerColor = if (selectedDestination) MaltaOrange else Color.Transparent
                                         ),
                                         onClick = { appState.navigateToTopLevelDestination(destination) }
                                     ) {
                                         Icon(
-                                            if (currentDestination.isRouteInHierarchy(destination.route))
-                                                destination.selectedIcon
-                                            else
-                                                destination.unSelectedIcon,
-                                            contentDescription = null
+                                            modifier = Modifier.size(24.dp),
+                                            painter = painterResource(
+                                                if (selectedDestination) destination.selectedIcon
+                                                else destination.unSelectedIcon,
+                                            ),
+                                            contentDescription = null,
+                                            tint = if (selectedDestination) BackgroundBlack else BackgroundWhite
                                         )
                                     }
 

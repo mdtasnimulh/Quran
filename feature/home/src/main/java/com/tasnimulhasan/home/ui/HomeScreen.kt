@@ -379,7 +379,7 @@ internal fun HomeScreen(
 
                     Text(
                         modifier = Modifier
-                            .fillParentMaxWidth()
+                            .fillMaxWidth()
                             .wrapContentHeight(),
                         text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
                         style = TextStyle(
