@@ -73,7 +73,10 @@ internal fun HadithScreen(
                 }
 
                 itemsIndexed(uiState.hadithBooks) { _, book ->
-                    HadithItem(book)
+                    HadithItem(
+                        hadithBook = book,
+                        onHadithClick = {}
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
@@ -87,13 +90,14 @@ internal fun HadithScreen(
 
 @Composable
 fun HadithItem(
-    hadithBook: HadithBookApiEntity
+    hadithBook: HadithBookApiEntity,
+    onHadithClick: (HadithBookApiEntity) -> Unit,
 ){
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(160.dp),
-        onClick = {}
+        onClick = { onHadithClick.invoke(hadithBook) }
     ) {
         Box(
             modifier = Modifier
@@ -131,7 +135,8 @@ fun PreviewHadithScreen() {
                 hadithsCount = "",
                 writerDeath = "",
                 writerName = ""
-            )
+            ),
+            onHadithClick = {}
         )
     }
 }
