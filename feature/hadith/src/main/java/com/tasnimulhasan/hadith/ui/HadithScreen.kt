@@ -1,7 +1,7 @@
 package com.tasnimulhasan.hadith.ui
 
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,25 +12,31 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.R as Res
+import com.tasnimulhasan.entity.hadith.HadithBookApiEntity
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun HadithScreen(
-    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
     viewModel: HadithViewModel = hiltViewModel(),
 ) {
@@ -67,21 +73,65 @@ internal fun HadithScreen(
                 }
 
                 itemsIndexed(uiState.hadithBooks) { _, book ->
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        text = book.bookName,
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium,
-                            fontFamily = RobotoFontFamily,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            textAlign = TextAlign.Start,
-                        ),
-                    )
+                    HadithItem(book)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(80.dp))
                 }
             }
         }
+    }
+}
+
+@Composable
+fun HadithItem(
+    hadithBook: HadithBookApiEntity
+){
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(160.dp),
+        onClick = {}
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                text = hadithBook.bookName,
+                style = TextStyle(
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = RobotoFontFamily,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center,
+                ),
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewHadithScreen() {
+    QuranTheme {
+        HadithItem(
+            hadithBook = HadithBookApiEntity(
+                id = 1,
+                aboutWriter = "",
+                bookName = "Sahih Bukhari",
+                bookSlug = "",
+                chaptersCount = "",
+                hadithsCount = "",
+                writerDeath = "",
+                writerName = ""
+            )
+        )
     }
 }

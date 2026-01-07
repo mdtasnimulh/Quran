@@ -25,6 +25,17 @@ object AppConstants {
     const val ACTION_PLAY_PAUSE = "play_pause"
     const val ACTION_NEXT = "next"
 
+    /* Hadith Book Names */
+    const val SAHIH_BUKHARI = "Sahih Bukhari"
+    const val SAHIH_MUSLIM = "Sahih Muslim"
+    const val JAMI_AL_TIRMIDHI = "Jami' Al-Tirmidhi"
+    const val SUNAN_ABU_DAWOOD = "Sunan Abu Dawood"
+    const val SUNAN_IBN_MAJAH = "Sunan Ibn-e-Majah"
+    const val SUNAN_AN_NASAI = "Sunan An-Nasa`i"
+    const val MISHKAT_AL_MASABIH = "Mishkat Al-Masabih"
+    const val MUSNAD_AHMAD = "Musnad Ahmad"
+    const val AL_SILSILA_SAHIHA = "Al-Silsila Sahiha"
+
     fun getHijriMonthName(month: Int): String {
         return when (month) {
             1 -> "Muharram"
