@@ -18,17 +18,60 @@ class HadithDetailsViewModel @Inject constructor(
 
     val action: (UiAction) -> Unit = {
         when (it) {
-            is UiAction.GetAllHadiths -> getAllHadiths(it.params)
+            is UiAction.GetAllHadiths -> getAllHadiths(it.params, reset = true)
+            UiAction.LoadNextPage -> loadNextPage()
         }
     }
 
-    private fun getAllHadiths(params: FetchHadithsUseCase.Params) {
+    private fun loadNextPage() {
+        val state = _uiState.value
+        if (state.isPaginating || state.isLastPage) return
+
+        getAllHadiths(
+            params = FetchHadithsUseCase.Params(
+                bookSlug = "",
+                chapterNumber = 0,
+                page = state.page + 1
+            ),
+            reset = false
+        )
+    }
+
+    private fun getAllHadiths(
+        params: FetchHadithsUseCase.Params,
+        reset: Boolean
+    ) {
         execute {
             fetchHadithsUseCase.execute(params).collect { result ->
                 when (result) {
-                    is DataResult.Loading -> _uiState.value = _uiState.value.copy(isLoading = result.loading)
-                    is DataResult.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
-                    is DataResult.Success -> _uiState.value = _uiState.value.copy(hadiths = result.data)
+                    is DataResult.Loading -> {
+                        _uiState.value = if (reset) {
+                            _uiState.value.copy(isLoading = true)
+                        } else {
+                            _uiState.value.copy(isPaginating = true)
+                        }
+                    }
+
+                    is DataResult.Error -> {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            isPaginating = false,
+                            errorMessage = result.message
+                        )
+                    }
+
+                    is DataResult.Success -> {
+                        val newData = result.data.data
+                        val isLastPage = newData.size < 25
+
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            isPaginating = false,
+                            hadiths = if (reset) newData else _uiState.value.hadiths + newData,
+                            page = params.page,
+                            isLastPage = isLastPage
+                        )
+                    }
                 }
             }
         }

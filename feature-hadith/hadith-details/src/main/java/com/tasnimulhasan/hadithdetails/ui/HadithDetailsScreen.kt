@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -20,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -44,16 +47,27 @@ internal fun HadithDetailsScreen(
     viewModel: HadithDetailsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val pageNumber by remember { mutableIntStateOf(1) }
+    val listState = rememberLazyListState()
 
-    LaunchedEffect(Unit, pageNumber) {
-        viewModel.action(UiAction.GetAllHadiths(
-            params = FetchHadithsUseCase.Params(
-                bookSlug = bookSlug,
-                chapterNumber = chapterNumber,
-                page = pageNumber
+    LaunchedEffect(Unit) {
+        viewModel.action(
+            UiAction.GetAllHadiths(
+                FetchHadithsUseCase.Params(
+                    bookSlug = bookSlug,
+                    chapterNumber = chapterNumber,
+                    page = 1
+                )
             )
-        ))
+        )
+    }
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastIndex ->
+                if (lastIndex == uiState.hadiths.lastIndex) {
+                    viewModel.action(UiAction.LoadNextPage)
+                }
+            }
     }
 
     when {
@@ -78,25 +92,27 @@ internal fun HadithDetailsScreen(
 
         else -> {
             LazyColumn(
+                state = listState,
                 modifier = modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
             ) {
-                item {
+                items(uiState.hadiths) { hadith ->
+                    HadithItem(hadith)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                uiState.hadiths?.data?.let { hadithData ->
-                    itemsIndexed(hadithData) { _, hadith ->
-                        HadithItem(
-                            hadith = hadith,
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
+                if (uiState.isPaginating) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(80.dp))
                 }
             }
         }
@@ -123,7 +139,7 @@ fun HadithItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                text = "(${hadith.hadithNumber}) ${hadith.hadithEnglish}",
+                text = "(${hadith.hadithNumber}) ${hadith.headingEnglish}",
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,

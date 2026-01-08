@@ -122,7 +122,7 @@ internal fun QuranApp(
     val currentDestination = appState.currentDestination
 
     val isTopLevelDestination = appState.topLevelDestination.any { destination ->
-        currentDestination?.route?.contains(destination.name, true) == true
+        currentDestination?.route == destination.route.qualifiedName
     }
 
     val currentTitleRes = when (currentDestination?.route) {
