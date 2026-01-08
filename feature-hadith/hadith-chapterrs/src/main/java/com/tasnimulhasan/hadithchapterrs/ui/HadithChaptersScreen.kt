@@ -1,7 +1,6 @@
-package com.tasnimulhasan.hadith.ui
+package com.tasnimulhasan.hadithchapterrs.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,16 +10,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,16 +30,25 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
-import com.tasnimulhasan.designsystem.R as Res
+import com.tasnimulhasan.domain.apiusecase.hadith.FetchHadithBookChaptersUseCase
 import com.tasnimulhasan.entity.hadith.HadithBookApiEntity
+import com.tasnimulhasan.entity.hadith.HadithChaptersApiEntity
+import com.tasnimulhasan.hadithchapterrs.ui.viewmodel.HadithChaptersViewModel
+import com.tasnimulhasan.hadithchapterrs.ui.viewmodel.UiAction
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-internal fun HadithScreen(
+internal fun HadithChaptersScreen(
+    bookSlug: String,
+    navigateToHadithDetails: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HadithViewModel = hiltViewModel(),
+    viewModel: HadithChaptersViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.action(UiAction.GetAllHadithBookChapters(params = FetchHadithBookChaptersUseCase.Params(bookSlug = bookSlug)))
+    }
 
     when {
         uiState.errorMessage != null -> {
@@ -72,9 +80,9 @@ internal fun HadithScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(uiState.hadithBooks) { _, book ->
+                itemsIndexed(uiState.hadithChapters) { _, chapters ->
                     HadithItem(
-                        hadithBook = book,
+                        hadithBook = chapters,
                         onHadithClick = {}
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -90,13 +98,14 @@ internal fun HadithScreen(
 
 @Composable
 fun HadithItem(
-    hadithBook: HadithBookApiEntity,
-    onHadithClick: (HadithBookApiEntity) -> Unit,
+    hadithBook: HadithChaptersApiEntity,
+    onHadithClick: (HadithChaptersApiEntity) -> Unit,
 ){
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(160.dp),
+        elevation = CardDefaults.cardElevation(6.dp),
         onClick = { onHadithClick.invoke(hadithBook) }
     ) {
         Box(
@@ -108,7 +117,7 @@ fun HadithItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                text = hadithBook.bookName,
+                text = "(${hadithBook.chapterNumber}) ${hadithBook.chapterEnglish}",
                 style = TextStyle(
                     fontSize = 26.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -126,15 +135,13 @@ fun HadithItem(
 fun PreviewHadithScreen() {
     QuranTheme {
         HadithItem(
-            hadithBook = HadithBookApiEntity(
+            hadithBook = HadithChaptersApiEntity(
                 id = 1,
-                aboutWriter = "",
-                bookName = "Sahih Bukhari",
                 bookSlug = "",
-                chaptersCount = "",
-                hadithsCount = "",
-                writerDeath = "",
-                writerName = ""
+                chapterArabic = "",
+                chapterEnglish = "",
+                chapterNumber = "",
+                chapterUrdu = ""
             ),
             onHadithClick = {}
         )

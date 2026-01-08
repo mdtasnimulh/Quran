@@ -39,10 +39,13 @@
             <option value="$PROJECT_DIR$/core/notification" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature-hadith" />
+            <option value="$PROJECT_DIR$/feature-hadith/hadith" />
+            <option value="$PROJECT_DIR$/feature-hadith/hadith-chapterrs" />
+            <option value="$PROJECT_DIR$/feature-hadith/hadith-details" />
             <option value="$PROJECT_DIR$/feature/arabic-letters" />
             <option value="$PROJECT_DIR$/feature/calendar" />
             <option value="$PROJECT_DIR$/feature/compass" />
-            <option value="$PROJECT_DIR$/feature/hadith" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/quran" />
             <option value="$PROJECT_DIR$/feature/suggestion" />

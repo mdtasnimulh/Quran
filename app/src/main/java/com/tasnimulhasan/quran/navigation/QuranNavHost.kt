@@ -7,6 +7,8 @@ import com.example.calendar.navigation.calendarScreen
 import com.tasnimulhasan.arabicletters.navigation.arabicLettersScreen
 import com.tasnimulhasan.compass.navigation.compassScreen
 import com.tasnimulhasan.hadith.navigation.hadithScreen
+import com.tasnimulhasan.hadithchapterrs.navigation.hadithChaptersScreen
+import com.tasnimulhasan.hadithdetails.navigation.hadithDetailsScreen
 import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.home.navigation.homeScreen
 import com.tasnimulhasan.quran.ui.QuranAppState
@@ -22,6 +24,8 @@ fun QuranNavHost(
     navigateToCompassScreen: () -> Unit,
     navigateToArabicLettersScreen: () -> Unit,
     navigateToSuggestionScreen: () -> Unit,
+    navigateToHadithChapters: (bookSlug: String) -> Unit,
+    navigateToHadithDetails: () -> Unit,
     navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String, isLastRead: Boolean, lastReadAyaNumber: Int) -> Unit,
 ) {
     val navController = appState.navController
@@ -38,11 +42,17 @@ fun QuranNavHost(
             navigateToSuggestionScreen = navigateToSuggestionScreen,
         )
         quranScreen(navigateToSuraDetails = navigateToSuraDetails)
-        hadithScreen()
         suraDetailsScreen(navigateBack = navigateBack)
         calendarScreen(navigateBack = navigateBack)
         compassScreen(navigateBack = navigateBack)
         arabicLettersScreen(navigateBack = navigateBack)
         suggestionScreen(navigateBack = navigateBack)
+        hadithScreen(
+            navigateToHadithChapters = navigateToHadithChapters
+        )
+        hadithChaptersScreen(
+            navigateToHadithDetails = navigateToHadithDetails
+        )
+        hadithDetailsScreen()
     }
 }

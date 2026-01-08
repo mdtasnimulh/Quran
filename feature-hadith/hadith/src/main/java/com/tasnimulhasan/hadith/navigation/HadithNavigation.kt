@@ -15,13 +15,17 @@ import kotlinx.serialization.Serializable
 fun NavController.navigateToHadith(navOptions: NavOptions) = navigate(route = HadithRoute, navOptions)
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.hadithScreen() {
+fun NavGraphBuilder.hadithScreen(
+    navigateToHadithChapters: (bookSlug: String) -> Unit,
+) {
     composable<HadithRoute>(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) {
-        HadithScreen()
+        HadithScreen(
+            navigateToHadithChapters = navigateToHadithChapters
+        )
     }
 }

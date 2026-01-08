@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="Quran.feature.hadith" target="21" />
       <module name="Quran.feature.profile" target="21" />
     </bytecodeTargetLevel>
   </component>

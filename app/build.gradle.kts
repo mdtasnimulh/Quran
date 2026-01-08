@@ -86,12 +86,16 @@ dependencies {
     with(projects) {
         implementation(feature.home)
         implementation(feature.quran)
-        implementation(feature.hadith)
         implementation(feature.suraDetails)
         implementation(feature.calendar)
         implementation(feature.compass)
         implementation(feature.arabicLetters)
         implementation(feature.suggestion)
+
+        /* Hadith Modules */
+        implementation(featureHadith.hadith)
+        implementation(featureHadith.hadithChapterrs)
+        implementation(featureHadith.hadithDetails)
     }
     /*** Feature Modules ***/
 

@@ -49,10 +49,13 @@ include(":core:datastore")
 /*** Feature Modules ***/
 include(":feature:home")
 include(":feature:quran")
-include(":feature:hadith")
 include(":feature:sura-details")
 include(":feature:calendar")
 include(":feature:compass")
 include(":feature:arabic-letters")
 include(":feature:suggestion")
-/*** Feature Modules ***/
+
+/* Hadith Modules */
+include(":feature-hadith:hadith")
+include(":feature-hadith:hadith-chapterrs")
+include(":feature-hadith:hadith-details")
