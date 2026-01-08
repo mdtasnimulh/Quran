@@ -119,7 +119,7 @@ fun HadithItem(
                     .wrapContentHeight(),
                 text = "${hadithBook.chapterNumber}-${hadithBook.chapterEnglish}",
                 style = TextStyle(
-                    fontSize = 26.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = RobotoFontFamily,
                     color = MaterialTheme.colorScheme.onBackground,
