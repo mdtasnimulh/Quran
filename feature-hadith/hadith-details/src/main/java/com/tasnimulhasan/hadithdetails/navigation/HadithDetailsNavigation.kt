@@ -10,10 +10,10 @@ import androidx.navigation.compose.composable
 import com.tasnimulhasan.hadithdetails.ui.HadithDetailsScreen
 import kotlinx.serialization.Serializable
 
-@Serializable object HadithDetailsRoute
+@Serializable class HadithDetailsRoute(val bookSlug: String, val chapterNumber: Int)
 
-fun NavController.navigateToHadithDetails(navOptions: NavOptionsBuilder.() -> Unit = {}){
-    navigate(route = HadithDetailsRoute){
+fun NavController.navigateToHadithDetails(bookSlug: String, chapterNumber: Int, navOptions: NavOptionsBuilder.() -> Unit = {}) {
+    navigate(route = HadithDetailsRoute(bookSlug = bookSlug, chapterNumber = chapterNumber)){
         navOptions()
     }
 }
@@ -25,7 +25,13 @@ fun NavGraphBuilder.hadithDetailsScreen() {
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
-    ) {
-        HadithDetailsScreen()
+    ) { backStackEntry ->
+        val bookSlug = backStackEntry.arguments?.getString("bookSlug") ?: ""
+        val chapterNumber = backStackEntry.arguments?.getInt("chapterNumber") ?: -1
+
+        HadithDetailsScreen(
+            bookSlug = bookSlug,
+            chapterNumber = chapterNumber
+        )
     }
 }

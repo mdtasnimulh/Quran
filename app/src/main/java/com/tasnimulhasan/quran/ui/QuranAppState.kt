@@ -100,7 +100,7 @@ class QuranAppState(
 
     fun navigateToHadithChaptersScreen(bookSlug: String) = navController.navigateToHadithChapters(bookSlug)
 
-    fun navigateToHadithDetailsScreen() = navController.navigateToHadithDetails()
+    fun navigateToHadithDetailsScreen(bookSlug: String, chapterNumber: Int) = navController.navigateToHadithDetails(bookSlug = bookSlug, chapterNumber = chapterNumber)
 
     fun navigateBack() {
         navController.navigateUp()

@@ -25,7 +25,7 @@ fun QuranNavHost(
     navigateToArabicLettersScreen: () -> Unit,
     navigateToSuggestionScreen: () -> Unit,
     navigateToHadithChapters: (bookSlug: String) -> Unit,
-    navigateToHadithDetails: () -> Unit,
+    navigateToHadithDetails: (bookSlug: String, chapterNumber: Int) -> Unit,
     navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String, isLastRead: Boolean, lastReadAyaNumber: Int) -> Unit,
 ) {
     val navController = appState.navController

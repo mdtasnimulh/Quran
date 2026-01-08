@@ -18,7 +18,7 @@ fun NavController.navigateToHadithChapters(bookSlug: String, navOptions: NavOpti
 }
 
 fun NavGraphBuilder.hadithChaptersScreen(
-    navigateToHadithDetails: () -> Unit,
+    navigateToHadithDetails: (bookSlug: String, chapterNumber: Int) -> Unit,
 ) {
     composable<HadithChaptersRoute>(
         enterTransition = { fadeIn() },

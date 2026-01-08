@@ -3,7 +3,7 @@ package com.tasnimulhasan.data.mapper
 import com.tasnimulhasan.apiresponse.hadith.HadithApiResponse
 import com.tasnimulhasan.entity.hadith.Book
 import com.tasnimulhasan.entity.hadith.Chapter
-import com.tasnimulhasan.entity.hadith.Data
+import com.tasnimulhasan.entity.hadith.HadithData
 import com.tasnimulhasan.entity.hadith.HadithApiEntity
 import com.tasnimulhasan.entity.hadith.Link
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class FetchHadithApiMapper @Inject constructor() : Mapper<HadithApiResponse, Had
         return HadithApiEntity(
             currentPage = type.hadiths?.current_page ?: 0,
             data = type.hadiths?.data?.map { data ->
-                Data(
+                HadithData(
                     book = Book(
                         aboutWriter = data?.book?.aboutWriter ?: "",
                         bookName = data?.book?.bookName ?: "",

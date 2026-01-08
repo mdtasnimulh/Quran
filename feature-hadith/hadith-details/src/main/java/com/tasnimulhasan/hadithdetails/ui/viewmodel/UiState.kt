@@ -1,9 +1,9 @@
 package com.tasnimulhasan.hadithdetails.ui.viewmodel
 
-import com.tasnimulhasan.entity.hadith.HadithBookApiEntity
+import com.tasnimulhasan.entity.hadith.HadithApiEntity
 
 data class UiState(
     val isLoading: Boolean = false,
-    val hadithBooks: List<HadithBookApiEntity> = emptyList(),
+    val hadiths: HadithApiEntity? = null,
     val errorMessage: String? = null
 )

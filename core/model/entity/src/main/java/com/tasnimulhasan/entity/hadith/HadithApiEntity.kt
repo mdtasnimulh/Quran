@@ -2,7 +2,7 @@ package com.tasnimulhasan.entity.hadith
 
 data class HadithApiEntity(
     val currentPage: Int,
-    val `data`: List<Data>,
+    val `data`: List<HadithData>,
     val firstPageUrl: String,
     val from: Int,
     val lastPage: Int,
@@ -16,7 +16,7 @@ data class HadithApiEntity(
     val total: Int
 )
 
-data class Data(
+data class HadithData(
     val book: Book,
     val bookSlug: String,
     val chapter: Chapter,

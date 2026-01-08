@@ -16,29 +16,45 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
-import com.tasnimulhasan.entity.hadith.HadithBookApiEntity
+import com.tasnimulhasan.domain.apiusecase.hadith.FetchHadithsUseCase
+import com.tasnimulhasan.entity.hadith.HadithData
 import com.tasnimulhasan.hadithdetails.ui.viewmodel.HadithDetailsViewModel
+import com.tasnimulhasan.hadithdetails.ui.viewmodel.UiAction
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun HadithDetailsScreen(
+    bookSlug: String,
+    chapterNumber: Int,
     modifier: Modifier = Modifier,
     viewModel: HadithDetailsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val pageNumber by remember { mutableIntStateOf(1) }
+
+    LaunchedEffect(Unit, pageNumber) {
+        viewModel.action(UiAction.GetAllHadiths(
+            params = FetchHadithsUseCase.Params(
+                bookSlug = bookSlug,
+                chapterNumber = chapterNumber,
+                page = pageNumber
+            )
+        ))
+    }
 
     when {
         uiState.errorMessage != null -> {
@@ -70,12 +86,13 @@ internal fun HadithDetailsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(uiState.hadithBooks) { _, book ->
-                    HadithItem(
-                        hadithBook = book,
-                        onHadithClick = {}
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+                uiState.hadiths?.data?.let { hadithData ->
+                    itemsIndexed(hadithData) { _, hadith ->
+                        HadithItem(
+                            hadith = hadith,
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
 
                 item {
@@ -88,54 +105,33 @@ internal fun HadithDetailsScreen(
 
 @Composable
 fun HadithItem(
-    hadithBook: HadithBookApiEntity,
-    onHadithClick: (HadithBookApiEntity) -> Unit,
+    hadith: HadithData,
 ){
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp),
+            .wrapContentHeight(),
         elevation = CardDefaults.cardElevation(6.dp),
-        onClick = { onHadithClick.invoke(hadithBook) }
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                text = hadithBook.bookName,
+                text = "(${hadith.hadithNumber}) ${hadith.hadithEnglish}",
                 style = TextStyle(
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = RobotoFontFamily,
                     color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Justify,
                 ),
             )
         }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewHadithScreen() {
-    QuranTheme {
-        HadithItem(
-            hadithBook = HadithBookApiEntity(
-                id = 1,
-                aboutWriter = "",
-                bookName = "Sahih Bukhari",
-                bookSlug = "",
-                chaptersCount = "",
-                hadithsCount = "",
-                writerDeath = "",
-                writerName = ""
-            ),
-            onHadithClick = {}
-        )
     }
 }

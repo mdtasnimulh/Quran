@@ -1,6 +1,6 @@
 package com.tasnimulhasan.hadithdetails.ui.viewmodel
 
-import com.tasnimulhasan.domain.apiusecase.hadith.FetchHadithBooksUseCase
+import com.tasnimulhasan.domain.apiusecase.hadith.FetchHadithsUseCase
 import com.tasnimulhasan.domain.base.BaseViewModel
 import com.tasnimulhasan.domain.base.DataResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HadithDetailsViewModel @Inject constructor(
-    private val fetchHadithBooksUseCase: FetchHadithBooksUseCase,
+    private val fetchHadithsUseCase: FetchHadithsUseCase,
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -18,23 +18,17 @@ class HadithDetailsViewModel @Inject constructor(
 
     val action: (UiAction) -> Unit = {
         when (it) {
-            is UiAction.GetAllHadithBooks -> getAllHadithBooks()
+            is UiAction.GetAllHadiths -> getAllHadiths(it.params)
         }
     }
 
-    init {
+    private fun getAllHadiths(params: FetchHadithsUseCase.Params) {
         execute {
-            getAllHadithBooks()
-        }
-    }
-
-    private fun getAllHadithBooks() {
-        execute {
-            fetchHadithBooksUseCase.execute().collect { result ->
+            fetchHadithsUseCase.execute(params).collect { result ->
                 when (result) {
                     is DataResult.Loading -> _uiState.value = _uiState.value.copy(isLoading = result.loading)
                     is DataResult.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
-                    is DataResult.Success -> _uiState.value = _uiState.value.copy(hadithBooks = result.data)
+                    is DataResult.Success -> _uiState.value = _uiState.value.copy(hadiths = result.data)
                 }
             }
         }

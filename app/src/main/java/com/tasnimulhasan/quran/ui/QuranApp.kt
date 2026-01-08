@@ -333,8 +333,8 @@ private fun GetContent(appState: QuranAppState) {
             navigateToHadithChapters = { bookSlug ->
                 appState.navigateToHadithChaptersScreen( bookSlug = bookSlug)
             },
-            navigateToHadithDetails = {
-                appState.navigateToHadithDetailsScreen()
+            navigateToHadithDetails = { bookSlug, chapterNumber ->
+                appState.navigateToHadithDetailsScreen(bookSlug = bookSlug, chapterNumber = chapterNumber)
             }
         )
     }

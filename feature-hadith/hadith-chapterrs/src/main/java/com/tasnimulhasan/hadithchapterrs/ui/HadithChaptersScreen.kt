@@ -40,7 +40,7 @@ import com.tasnimulhasan.hadithchapterrs.ui.viewmodel.UiAction
 @Composable
 internal fun HadithChaptersScreen(
     bookSlug: String,
-    navigateToHadithDetails: () -> Unit,
+    navigateToHadithDetails: (bookSlug: String, chapterNumber: Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HadithChaptersViewModel = hiltViewModel(),
 ) {
@@ -83,7 +83,12 @@ internal fun HadithChaptersScreen(
                 itemsIndexed(uiState.hadithChapters) { _, chapters ->
                     HadithItem(
                         hadithBook = chapters,
-                        onHadithClick = {}
+                        onHadithClick = {
+                            navigateToHadithDetails.invoke(
+                                chapters.bookSlug,
+                                chapters.chapterNumber.toInt()
+                            )
+                        }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
