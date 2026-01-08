@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -96,8 +97,8 @@ internal fun HadithDetailsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                items(uiState.hadiths) { hadith ->
-                    HadithItem(hadith)
+                itemsIndexed(uiState.hadiths) { index, hadith ->
+                    HadithItem(hadith = hadith, index = index)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 

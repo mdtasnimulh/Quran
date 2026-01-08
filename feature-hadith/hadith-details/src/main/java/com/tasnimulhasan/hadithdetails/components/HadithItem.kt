@@ -32,6 +32,7 @@ import com.tasnimulhasan.entity.hadith.HadithData
 @Composable
 fun HadithItem(
     hadith: HadithData,
+    index: Int,
 ){
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -52,7 +53,7 @@ fun HadithItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    text = "(${hadith.hadithNumber}) Chapter: ${hadith.headingEnglish}",
+                    text = "(${hadith.hadithNumber}) ${hadith.headingEnglish}",
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -60,6 +61,8 @@ fun HadithItem(
                         color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Start,
                     ),
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 2,
+                    overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -101,11 +104,43 @@ fun HadithItem(
 
             Text(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                text = "Reference: ${hadith.book.bookName} ${hadith.hadithNumber}",
+                style = TextStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = RobotoFontFamily,
+                    color = DullBlue.copy(alpha = 0.75f),
+                    textAlign = TextAlign.Start,
+                )
+            )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                text = "In-book reference: Book ${hadith.chapter.chapterNumber} (${hadith.chapter.chapterEnglish}), Hadith ${index+1}",
+                style = TextStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = RobotoFontFamily,
+                    color = DullBlue.copy(alpha = 0.75f),
+                    textAlign = TextAlign.Start,
+                )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                modifier = Modifier
                     .clickable { isExpanded = !isExpanded }
                     .padding(horizontal = 6.dp, vertical = 2.dp),
                 text = if (isExpanded) "Show Less" else "View Full...",
                 style = TextStyle(
-                    fontSize = 12.sp,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = RobotoFontFamily,
                     color = DullBlue,
