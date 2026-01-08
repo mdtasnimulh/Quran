@@ -19,18 +19,18 @@ class HadithDetailsViewModel @Inject constructor(
     val action: (UiAction) -> Unit = {
         when (it) {
             is UiAction.GetAllHadiths -> getAllHadiths(it.params, reset = true)
-            UiAction.LoadNextPage -> loadNextPage()
+            is UiAction.LoadNextPage -> loadNextPage(it.bookSlug, it.chapterNumber)
         }
     }
 
-    private fun loadNextPage() {
+    private fun loadNextPage(bookSlug: String, chapterNumber: Int) {
         val state = _uiState.value
         if (state.isPaginating || state.isLastPage) return
 
         getAllHadiths(
             params = FetchHadithsUseCase.Params(
-                bookSlug = "",
-                chapterNumber = 0,
+                bookSlug = bookSlug,
+                chapterNumber = chapterNumber,
                 page = state.page + 1
             ),
             reset = false

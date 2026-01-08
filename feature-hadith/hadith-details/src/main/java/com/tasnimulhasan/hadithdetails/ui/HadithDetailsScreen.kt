@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,8 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,7 +62,10 @@ internal fun HadithDetailsScreen(
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastIndex ->
                 if (lastIndex == uiState.hadiths.lastIndex) {
-                    viewModel.action(UiAction.LoadNextPage)
+                    viewModel.action(UiAction.LoadNextPage(
+                        bookSlug = bookSlug,
+                        chapterNumber = chapterNumber,
+                    ))
                 }
             }
     }
@@ -139,7 +139,7 @@ fun HadithItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                text = "(${hadith.hadithNumber}) ${hadith.headingEnglish}",
+                text = "(${hadith.hadithNumber}) ${hadith.hadithEnglish}",
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
