@@ -117,7 +117,7 @@ fun HadithItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                text = "(${hadithBook.chapterNumber}) ${hadithBook.chapterEnglish}",
+                text = "${hadithBook.chapterNumber}-${hadithBook.chapterEnglish}",
                 style = TextStyle(
                     fontSize = 26.sp,
                     fontWeight = FontWeight.SemiBold,
