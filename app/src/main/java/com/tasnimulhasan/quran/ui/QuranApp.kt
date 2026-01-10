@@ -76,6 +76,8 @@ import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
 import com.tasnimulhasan.designsystem.theme.PixelOrange
 import com.tasnimulhasan.hadith.navigation.HadithRoute
+import com.tasnimulhasan.hadithchapterrs.navigation.HadithChaptersRoute
+import com.tasnimulhasan.hadithdetails.navigation.HadithDetailsRoute
 import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.quran.component.CustomDrawer
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
@@ -129,6 +131,8 @@ internal fun QuranApp(
         HomeRoute::class.qualifiedName -> Res.string.app_name
         QuranRoute::class.qualifiedName -> Res.string.title_quran
         HadithRoute::class.qualifiedName -> Res.string.title_hadith
+        HadithChaptersRoute::class.qualifiedName.plus("/{bookSlug}") -> Res.string.title_hadith
+        HadithDetailsRoute::class.qualifiedName.plus("/{bookSlug}/{chapterNumber}") -> Res.string.title_hadith
         CalendarRoute::class.qualifiedName -> Res.string.title_calendar
         CompassRoute::class.qualifiedName -> Res.string.title_compass
         ArabicLettersRoute::class.qualifiedName -> Res.string.title_arabic_letters
@@ -255,7 +259,10 @@ internal fun QuranApp(
                             .wrapContentWidth()
                             .wrapContentHeight()
                             .clip(RoundedCornerShape(100))
-                            .background(color = if (isSystemInDarkTheme()) DullBlue else DullBlue, shape = RoundedCornerShape(100))
+                            .background(
+                                color = if (isSystemInDarkTheme()) DullBlue else DullBlue,
+                                shape = RoundedCornerShape(100)
+                            )
                             .padding(horizontal = 4.dp),
                         contentAlignment = Alignment.Center,
                     ) {
