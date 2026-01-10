@@ -1,6 +1,7 @@
 package com.tasnimulhasan.hadithdetails.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,10 +24,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.BackgroundBlack
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.entity.hadith.Book
+import com.tasnimulhasan.entity.hadith.Chapter
 import com.tasnimulhasan.entity.hadith.HadithData
 
 @Composable
@@ -40,11 +47,15 @@ fun HadithItem(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        elevation = CardDefaults.cardElevation(6.dp),
+        elevation = CardDefaults.cardElevation(3.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite
+        )
     ) {
         Column (
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .wrapContentHeight()
                 .padding(12.dp),
             horizontalAlignment = Alignment.End
         ) {
@@ -148,5 +159,47 @@ fun HadithItem(
                 ),
             )
         }
+    }
+}
+
+@Preview(showBackground = false, showSystemUi = false)
+@Composable
+fun PreviewHadithItem() {
+    QuranTheme {
+        HadithItem(
+            hadith = HadithData(
+                book = Book(
+                    aboutWriter = "Imam Bukhari was a prominent Islamic scholar and compiler of hadith.",
+                    bookName = "Sahih Bukhari",
+                    bookSlug = "sahih-bukhari",
+                    id = 1,
+                    writerDeath = "870 CE",
+                    writerName = "Imam Bukhari"
+                ),
+                bookSlug = "sahih-bukhari",
+                chapter = Chapter(
+                    bookSlug = "sahih-bukhari",
+                    chapterArabic = "كتاب الصلاة",
+                    chapterEnglish = "Book of Prayer",
+                    chapterNumber = "1",
+                    chapterUrdu = "کتاب الصلوٰة",
+                    id = 1
+                ),
+                chapterId = "1",
+                englishNarrator = "Abu Huraira",
+                hadithArabic = "حَدَّثَنَا أَبُو عَامِرٍ الْمَقْرَئِيُّ قَالَ حَدَّثَنَا سُفْيَانُ عَنْ يَحْيَىٰ بْنِ سَعِيدٍ عَنْ عَامِرِ بْنِ شُرَيْحٍ عَنْ عُمَرَ رَضِيَ اللَّهُ عَنْهُ قَالَ",
+                hadithEnglish = "Narrated 'Umar bin Al-Khattab: The Messenger of Allah (peace be upon him) said...",
+                hadithNumber = "1",
+                hadithUrdu = "حضرت عمر بن الخطاب رضی اللہ عنہ نے کہا کہ رسول اللہ صلی اللہ علیہ وسلم نے فرمایا...",
+                headingArabic = "كتاب الصلاة",
+                headingEnglish = "Book of Prayer",
+                headingUrdu = "کتاب الصلوٰة",
+                id = 1,
+                status = "authentic",
+                urduNarrator = "ابو ہریرہ",
+                volume = "1"
+            ),
+            index = 0
+        )
     }
 }
