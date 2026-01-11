@@ -198,16 +198,6 @@ internal fun QuranApp(
             topBar = {
                 if (!currentDestination.isRouteInHierarchy(SuraDetailsRoute::class) &&
                     !currentDestination.isRouteInHierarchy(CalendarRoute::class)) {
-                    /*MainTopAppBar(
-                        appBarTitle = context.getString(currentTitleRes),
-                        onBackClick = {
-                            if (!isTopLevelDestination) appState.navigateBack()
-                            else customDrawerState = customDrawerState.opposite()
-                        },
-                        navigationIcon = navigationIcon,
-                        isMenuIconVisible = true,
-                        onMenuIconClick = { onTopAppBarActionClick() }
-                    )*/
                     QuranTopAppBar(
                         titleRes = currentTitleRes,
                         navigationIcon = navigationIcon,
@@ -215,6 +205,7 @@ internal fun QuranApp(
                         actionIcon = QuranIcons.ActionMore,
                         actionIconsContentDescription = stringResource(id = Res.string.title_settings),
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
+                        isTopLevelDestination = isTopLevelDestination,
                         onActionClick = { onTopAppBarActionClick() },
                         onNavigationClick = {
                             if (!isTopLevelDestination) appState.navigateBack()
@@ -223,21 +214,6 @@ internal fun QuranApp(
                     )
                 }
             },
-            /*bottomBar = {
-                if (isTopLevelDestination){
-                    QuranNavigationBar {
-                        appState.topLevelDestination.forEach { destination ->
-                            QuranNavigationBarItem(
-                                selected = currentDestination.isRouteInHierarchy(destination.route),
-                                onClick = { appState.navigateToTopLevelDestination(destination) },
-                                icon = { Icon(imageVector = destination.unSelectedIcon, contentDescription = null) },
-                                selectedIcon = { Icon(imageVector = destination.selectedIcon, contentDescription = null) },
-                                label = { Text(stringResource(destination.iconTextId)) },
-                            )
-                        }
-                    }
-                }
-            },*/
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             contentWindowInsets = WindowInsets(0, 0, 0, 0),

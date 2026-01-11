@@ -29,8 +29,9 @@ fun QuranTopAppBar(
     navigationIconContentDescription: String,
     actionIcon: ImageVector,
     actionIconsContentDescription: String,
+    isTopLevelDestination: Boolean,
     modifier: Modifier = Modifier,
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {}
 ) {
@@ -53,12 +54,14 @@ fun QuranTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = onActionClick) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = actionIconsContentDescription,
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
+            if (isTopLevelDestination) {
+                IconButton(onClick = onActionClick) {
+                    Icon(
+                        imageVector = actionIcon,
+                        contentDescription = actionIconsContentDescription,
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
         },
         colors = colors,
@@ -76,6 +79,7 @@ private fun QuranTopAppBarPreview() {
             navigationIcon = QuranIcons.NavigationMenu,
             navigationIconContentDescription = "Navigation Icon",
             actionIcon = QuranIcons.ActionMore,
+            isTopLevelDestination = true,
             actionIconsContentDescription = "See More"
         )
     }
