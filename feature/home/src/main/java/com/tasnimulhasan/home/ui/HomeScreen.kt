@@ -294,7 +294,7 @@ internal fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             OtherMenuItem(
-                                title = "Compass",
+                                title = "Qibla",
                                 onMenuClick = {
                                     navigateToCompassScreen.invoke()
                                 }
@@ -332,7 +332,7 @@ internal fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             OtherMenuItem(
-                                title = "Suggestions",
+                                title = "Qur’an Reflections",
                                 onMenuClick = {
                                     navigateToSuggestionScreen.invoke()
                                 }
