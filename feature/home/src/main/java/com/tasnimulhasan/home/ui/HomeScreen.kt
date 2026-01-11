@@ -65,6 +65,7 @@ import com.tasnimulhasan.home.component.TranslationSelectionDialog
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
 import java.util.Locale
+import com.tasnimulhasan.designsystem.R as Res
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -280,6 +281,7 @@ internal fun HomeScreen(
                         ) {
                             OtherMenuItem(
                                 title = "Calendar",
+                                cardImage = Res.drawable.img_calendar,
                                 onMenuClick = {
                                     navigateToCalendarScreen.invoke()
                                 }
@@ -295,29 +297,15 @@ internal fun HomeScreen(
                         ) {
                             OtherMenuItem(
                                 title = "Qibla",
+                                cardImage = Res.drawable.img_qibla,
                                 onMenuClick = {
                                     navigateToCompassScreen.invoke()
                                 }
                             )
                         }
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            OtherMenuItem(
-                                title = "Arabic",
-                                onMenuClick = {
-                                    navigateToArabicLettersScreen.invoke()
-                                }
-                            )
-                        }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     Row(modifier = Modifier
                         .fillMaxWidth()
@@ -332,7 +320,24 @@ internal fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             OtherMenuItem(
-                                title = "Qur’an Reflections",
+                                title = "Arabic",
+                                cardImage = Res.drawable.img_arabic_language,
+                                onMenuClick = {
+                                    navigateToArabicLettersScreen.invoke()
+                                }
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Qur’an\nReflections",
+                                cardImage = Res.drawable.img_quran,
                                 onMenuClick = {
                                     navigateToSuggestionScreen.invoke()
                                 }
