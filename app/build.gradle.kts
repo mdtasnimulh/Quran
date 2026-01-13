@@ -92,6 +92,7 @@ dependencies {
         implementation(feature.arabicLetters)
         implementation(feature.suggestion)
         implementation(feature.settings)
+        implementation(feature.about)
 
         /* Hadith Modules */
         implementation(featureHadith.hadith)

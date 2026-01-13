@@ -180,7 +180,9 @@ internal fun QuranApp(
     ) {
         CustomDrawer(
             onDrawerCloseClick = { customDrawerState = CustomDrawerState.Closed },
-            onAboutClick = { Toast.makeText(context, "About Click", Toast.LENGTH_SHORT).show() },
+            onAboutClick = {
+                appState.navigateToAboutScreen()
+            },
             onSettingsClick = {
                 appState.navigateToSettingsScreen()
             },

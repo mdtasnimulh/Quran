@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.example.calendar.navigation.calendarScreen
+import com.tasnimulhasan.about.navigation.aboutScreen
 import com.tasnimulhasan.arabicletters.navigation.arabicLettersScreen
 import com.tasnimulhasan.compass.navigation.compassScreen
 import com.tasnimulhasan.hadith.navigation.hadithScreen
@@ -56,5 +57,6 @@ fun QuranNavHost(
         )
         hadithDetailsScreen()
         settingsScreen()
+        aboutScreen()
     }
 }

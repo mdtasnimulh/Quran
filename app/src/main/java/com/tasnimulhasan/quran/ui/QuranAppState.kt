@@ -12,6 +12,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.calendar.navigation.navigateToCalendarScreen
+import com.tasnimulhasan.about.navigation.navigateToAboutScreen
 import com.tasnimulhasan.arabicletters.navigation.navigateToArabicLettersScreen
 import com.tasnimulhasan.compass.navigation.navigateToCompassScreen
 import com.tasnimulhasan.hadith.navigation.navigateToHadith
@@ -104,6 +105,8 @@ class QuranAppState(
     fun navigateToHadithDetailsScreen(bookSlug: String, chapterNumber: Int) = navController.navigateToHadithDetails(bookSlug = bookSlug, chapterNumber = chapterNumber)
 
     fun navigateToSettingsScreen() = navController.navigateToSettings()
+
+    fun navigateToAboutScreen() = navController.navigateToAboutScreen()
 
     fun navigateBack() {
         navController.navigateUp()
