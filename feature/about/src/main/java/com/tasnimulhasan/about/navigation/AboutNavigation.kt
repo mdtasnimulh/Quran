@@ -19,13 +19,15 @@ fun NavController.navigateToAboutScreen(navOptions: NavOptionsBuilder.() -> Unit
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.aboutScreen() {
+fun NavGraphBuilder.aboutScreen(
+    navigateBack: () -> Unit
+) {
     composable<AboutRoute>(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) {
-        AboutScreen()
+        AboutScreen(navigateBack = navigateBack)
     }
 }

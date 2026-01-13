@@ -54,7 +54,7 @@ fun QuranTopAppBar(
             }
         },
         actions = {
-            if (isTopLevelDestination) {
+            /*if (isTopLevelDestination) {
                 IconButton(onClick = onActionClick) {
                     Icon(
                         imageVector = actionIcon,
@@ -62,7 +62,7 @@ fun QuranTopAppBar(
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
-            }
+            }*/
         },
         colors = colors,
         modifier = modifier.testTag("melodicTopAppBar"),

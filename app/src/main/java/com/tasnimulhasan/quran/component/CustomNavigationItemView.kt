@@ -2,9 +2,11 @@ package com.tasnimulhasan.quran.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,29 +29,33 @@ fun CustomNavigationItemView(
     navigationItem: CustomNavigationItem,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(size = 99.dp))
-            .clickable { onClick() }
-            .background(
-                color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
-                shape = RoundedCornerShape(99.dp)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(size = 99.dp))
+                .clickable { onClick() }
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+                    shape = RoundedCornerShape(99.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = navigationItem.icon),
+                contentDescription = "Navigation Item Icon",
+                tint = MaterialTheme.colorScheme.primary
             )
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = navigationItem.icon),
-            contentDescription = "Navigation Item Icon",
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = navigationItem.title,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Medium,
-            lineHeight = 20.sp
-        )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = navigationItem.title,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Medium,
+                lineHeight = 20.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }

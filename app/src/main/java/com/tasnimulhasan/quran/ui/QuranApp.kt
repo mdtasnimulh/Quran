@@ -65,6 +65,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.xr.compose.material3.ExperimentalMaterial3XrApi
 import androidx.xr.compose.material3.HorizontalFloatingToolbar
 import com.example.calendar.navigation.CalendarRoute
+import com.tasnimulhasan.about.navigation.AboutRoute
 import com.tasnimulhasan.arabicletters.navigation.ArabicLettersRoute
 import com.tasnimulhasan.common.utils.coloredShadow
 import com.tasnimulhasan.compass.navigation.CompassRoute
@@ -74,7 +75,6 @@ import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
-import com.tasnimulhasan.designsystem.theme.PixelOrange
 import com.tasnimulhasan.hadith.navigation.HadithRoute
 import com.tasnimulhasan.hadithchapterrs.navigation.HadithChaptersRoute
 import com.tasnimulhasan.hadithdetails.navigation.HadithDetailsRoute
@@ -201,14 +201,15 @@ internal fun QuranApp(
                 },
             topBar = {
                 if (!currentDestination.isRouteInHierarchy(SuraDetailsRoute::class) &&
-                    !currentDestination.isRouteInHierarchy(CalendarRoute::class)) {
+                    !currentDestination.isRouteInHierarchy(CalendarRoute::class) &&
+                    !currentDestination.isRouteInHierarchy(AboutRoute::class)) {
                     QuranTopAppBar(
                         titleRes = currentTitleRes,
                         navigationIcon = navigationIcon,
                         navigationIconContentDescription = navigationIconContentDescription,
                         actionIcon = QuranIcons.ActionMore,
                         actionIconsContentDescription = stringResource(id = Res.string.title_settings),
-                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
+                        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                         isTopLevelDestination = isTopLevelDestination,
                         onActionClick = { onTopAppBarActionClick() },
                         onNavigationClick = {

@@ -57,6 +57,6 @@ fun QuranNavHost(
         )
         hadithDetailsScreen()
         settingsScreen()
-        aboutScreen()
+        aboutScreen(navigateBack = navigateBack)
     }
 }
