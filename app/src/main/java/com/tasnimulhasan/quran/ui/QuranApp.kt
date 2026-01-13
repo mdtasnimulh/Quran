@@ -181,7 +181,9 @@ internal fun QuranApp(
         CustomDrawer(
             onDrawerCloseClick = { customDrawerState = CustomDrawerState.Closed },
             onAboutClick = { Toast.makeText(context, "About Click", Toast.LENGTH_SHORT).show() },
-            onSettingsClick = { Toast.makeText(context, "Settings Click", Toast.LENGTH_SHORT).show() },
+            onSettingsClick = {
+                appState.navigateToSettingsScreen()
+            },
         )
         Scaffold(
             modifier = modifier

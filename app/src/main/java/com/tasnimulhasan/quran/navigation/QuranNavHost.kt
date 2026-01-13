@@ -12,6 +12,7 @@ import com.tasnimulhasan.hadithdetails.navigation.hadithDetailsScreen
 import com.tasnimulhasan.home.navigation.HomeRoute
 import com.tasnimulhasan.home.navigation.homeScreen
 import com.tasnimulhasan.quran.ui.QuranAppState
+import com.tasnimulhasan.settings.navigation.settingsScreen
 import com.tasnimulhasan.suggestion.navigation.suggestionScreen
 import com.tasnimulhasan.suradetails.navigation.suraDetailsScreen
 
@@ -54,5 +55,6 @@ fun QuranNavHost(
             navigateToHadithDetails = navigateToHadithDetails
         )
         hadithDetailsScreen()
+        settingsScreen()
     }
 }

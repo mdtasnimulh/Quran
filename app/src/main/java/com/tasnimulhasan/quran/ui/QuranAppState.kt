@@ -20,6 +20,7 @@ import com.tasnimulhasan.hadithdetails.navigation.navigateToHadithDetails
 import com.tasnimulhasan.home.navigation.navigateToHome
 import com.tasnimulhasan.quran.navigation.TopLevelDestination
 import com.tasnimulhasan.quran.navigation.navigateToQuran
+import com.tasnimulhasan.settings.navigation.navigateToSettings
 import com.tasnimulhasan.suggestion.navigation.navigateToSuggestionScreen
 import com.tasnimulhasan.suradetails.navigation.navigateToSuraDetails
 import kotlinx.coroutines.CoroutineScope
@@ -101,6 +102,8 @@ class QuranAppState(
     fun navigateToHadithChaptersScreen(bookSlug: String) = navController.navigateToHadithChapters(bookSlug)
 
     fun navigateToHadithDetailsScreen(bookSlug: String, chapterNumber: Int) = navController.navigateToHadithDetails(bookSlug = bookSlug, chapterNumber = chapterNumber)
+
+    fun navigateToSettingsScreen() = navController.navigateToSettings()
 
     fun navigateBack() {
         navController.navigateUp()

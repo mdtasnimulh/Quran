@@ -48,6 +48,7 @@
             <option value="$PROJECT_DIR$/feature/compass" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/quran" />
+            <option value="$PROJECT_DIR$/feature/settings" />
             <option value="$PROJECT_DIR$/feature/suggestion" />
             <option value="$PROJECT_DIR$/feature/sura-details" />
           </set>

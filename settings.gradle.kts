@@ -54,6 +54,7 @@ include(":feature:calendar")
 include(":feature:compass")
 include(":feature:arabic-letters")
 include(":feature:suggestion")
+include(":feature:settings")
 
 /* Hadith Modules */
 include(":feature-hadith:hadith")
