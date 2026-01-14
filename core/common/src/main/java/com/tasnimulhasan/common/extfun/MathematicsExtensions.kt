@@ -19,7 +19,7 @@ fun buildAnnotatedString(verse: String, ayaNumber: Int, color: Color): Annotated
         withStyle(
             style = SpanStyle(
                 color = color,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
         ) {
             append(convertToArabicNumber(ayaNumber))

@@ -42,6 +42,7 @@ import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DigitalRed
+import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.LilacViolet
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
 import com.tasnimulhasan.designsystem.theme.MediumBlue
@@ -94,7 +95,7 @@ fun SuraDetailsItem(
             )
 
             IconButton(
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(24.dp),
                 onClick = {}
             ) {
                 Icon(
@@ -108,7 +109,7 @@ fun SuraDetailsItem(
             Spacer(modifier = Modifier.width(4.dp))
 
             IconButton(
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(24.dp),
                 onClick = {}
             ) {
                 Icon(
@@ -122,7 +123,7 @@ fun SuraDetailsItem(
             Spacer(modifier = Modifier.width(4.dp))
 
             IconButton(
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(24.dp),
                 onClick = {}
             ) {
                 Icon(
@@ -136,7 +137,7 @@ fun SuraDetailsItem(
             Spacer(modifier = Modifier.width(4.dp))
 
             IconButton(
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(24.dp),
                 onClick = {
                     exampleStrArabic = verse.ayaText
                     exampleStr = verseEnglishTransliteration.ayaText
@@ -148,7 +149,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(1.dp),
                     imageVector = Icons.Default.Info,
                     contentDescription = "Information Icon",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = DullBlue.copy(alpha = 0.5f)
                 )
             }
         }
@@ -164,9 +165,9 @@ fun SuraDetailsItem(
                 },
             text = buildAnnotatedString(verse = verse.ayaText, ayaNumber = verse.index, color = MaterialTheme.colorScheme.primary),
             style = TextStyle(
-                fontSize = 26.sp,
+                fontSize = 18.sp,
                 color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.End
             ),
         )
@@ -174,10 +175,9 @@ fun SuraDetailsItem(
         Text(
             modifier = Modifier
                 .constrainAs(verseEnglishTransliterationRef) {
-                    top.linkTo(verseArabicText.bottom, margin = 12.dp)
+                    top.linkTo(verseArabicText.bottom, margin = 8.dp)
                     end.linkTo(parent.end)
                     start.linkTo(parent.start)
-                    bottom.linkTo(parent.bottom, margin = 16.dp)
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 },
@@ -185,7 +185,7 @@ fun SuraDetailsItem(
             style = TextStyle(
                 fontSize = 16.sp,
                 color = DeepSeaGreen,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Start
             ),
         )
@@ -193,7 +193,7 @@ fun SuraDetailsItem(
         Text(
             modifier = Modifier
                 .constrainAs(verseEnglishText) {
-                    top.linkTo(verseEnglishTransliterationRef.bottom, margin = 8.dp)
+                    top.linkTo(verseEnglishTransliterationRef.bottom, margin = 12.dp)
                     end.linkTo(parent.end)
                     start.linkTo(parent.start)
                     bottom.linkTo(parent.bottom, margin = 16.dp)
@@ -202,7 +202,7 @@ fun SuraDetailsItem(
                 },
             text = verseEnglish.ayaText,
             style = TextStyle(
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Start
