@@ -13,6 +13,8 @@ import androidx.core.text.HtmlCompat
 import com.tasnimulhasan.designsystem.theme.HeavyLetterColor
 import com.tasnimulhasan.designsystem.theme.LongVowelColor
 import com.tasnimulhasan.designsystem.theme.ShaddahColor
+import com.tasnimulhasan.entity.enum.TajweedRule
+import com.tasnimulhasan.entity.enum.tajweedColor
 
 fun htmlToAnnotatedString(html: String): AnnotatedString {
     val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -50,35 +52,43 @@ fun htmlToTajweedAnnotatedString(html: String): AnnotatedString {
     val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
     return buildAnnotatedString {
-        append(spanned.toString())
+        val text = spanned.toString()
 
         spanned.getSpans(0, spanned.length, Any::class.java).forEach { span ->
             val start = spanned.getSpanStart(span)
             val end = spanned.getSpanEnd(span)
 
-            when (span) {
-                is UnderlineSpan -> {
-                    addStyle(
-                        SpanStyle(color = LongVowelColor),
-                        start,
-                        end
-                    )
-                }
+            val rule = when (span) {
+                is UnderlineSpan -> TajweedRule.MADD
+                is StyleSpan -> if (span.style == Typeface.BOLD) TajweedRule.SHADDAH else TajweedRule.NORMAL
+                else -> TajweedRule.NORMAL
+            }
 
-                is StyleSpan -> {
-                    if (span.style == Typeface.BOLD) {
-                        addStyle(
-                            SpanStyle(
-                                fontWeight = FontWeight.Bold,
-                                color = ShaddahColor
-                            ),
-                            start,
-                            end
-                        )
-                    }
-                }
+            addStyle(
+                SpanStyle(
+                    color = tajweedColor(rule),
+                    fontWeight = if (rule == TajweedRule.SHADDAH) FontWeight.Bold else FontWeight.Normal
+                ),
+                start,
+                end
+            )
+        }
+
+        text.forEachIndexed { index, char ->
+            val rule = if (char in listOf('S', 'D', 'T', 'Z', 'H')) TajweedRule.HEAVY_LETTER else TajweedRule.NORMAL
+            if (rule == TajweedRule.HEAVY_LETTER) {
+                addStyle(
+                    SpanStyle(
+                        color = tajweedColor(rule),
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    index,
+                    index + 1
+                )
             }
         }
+
+        append(text)
     }
 }
 

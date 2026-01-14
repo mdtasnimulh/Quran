@@ -61,6 +61,7 @@ import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
+import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
@@ -420,7 +421,7 @@ internal fun HomeScreen(
                                 },
                             imageVector = Icons.Default.Info,
                             contentDescription = "How to read transliteration",
-                            tint = BackgroundWhite
+                            tint = DullBlue.copy(alpha = 0.25f)
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
