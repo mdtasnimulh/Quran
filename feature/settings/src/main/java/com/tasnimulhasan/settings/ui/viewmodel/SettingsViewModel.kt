@@ -29,6 +29,7 @@ class SettingsViewModel @Inject constructor(
     val translationOptions = listOf(
         "quran_en_sahih" to "English (Sahih International)",
         "quran_en_yusuf_ali" to "English (Yusuf Ali)",
+        "quran_en_pickthall" to "English (Pickthall)",
         "bn_mohiuddin_khan" to "Bangla (Mohiuddin Khan)",
     )
 

@@ -11,4 +11,5 @@ sealed interface HomeUiAction {
     data class FetchQuranEnglishSahih(val params: FetchQuranEnglishSahihUseCase.Params) : HomeUiAction
     data class SavePreferredTranslationName(val translation: String): HomeUiAction
     data object GetPreferredTranslationName : HomeUiAction
+    data class FetchQuranTransliteration(val params: FetchQuranEnglishSahihUseCase.Params) : HomeUiAction
 }

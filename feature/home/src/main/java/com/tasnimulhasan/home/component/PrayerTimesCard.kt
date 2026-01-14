@@ -2,6 +2,7 @@ package com.tasnimulhasan.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,11 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,16 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.tasnimulhasan.common.dateparser.DateTimeFormat
-import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
-import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.Locale
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -191,7 +183,7 @@ fun PrayerTimesCard(
                         height = Dimension.wrapContent
                     }
                     .background(
-                        BackgroundWhite,
+                        if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
                         RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
                     ),
                 horizontalArrangement = Arrangement.SpaceAround,
@@ -212,7 +204,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (isCurrent) MaterialTheme.colorScheme.primary else BackgroundBlack,
+                                color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                                 fontWeight = if (isCurrent) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
@@ -225,11 +217,13 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (isCurrent) MaterialTheme.colorScheme.primary else BackgroundBlack,
+                                color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                                 fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
                         )
+
+                        Spacer(Modifier.height(8.dp))
 
                         if (isCurrent) {
                             Spacer(Modifier.height(6.dp))

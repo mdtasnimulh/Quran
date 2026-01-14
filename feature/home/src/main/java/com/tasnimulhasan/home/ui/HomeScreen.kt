@@ -50,7 +50,10 @@ import com.google.android.gms.location.LocationServices
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
+import com.tasnimulhasan.common.extfun.htmlToAnnotatedString
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
+import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
+import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
@@ -88,6 +91,7 @@ internal fun HomeScreen(
     var latitude by remember { mutableStateOf<String?>(null) }
     var longitude by remember { mutableStateOf<String?>(null) }
     val suraEnglish by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
+    val quranTransliteration by viewModel.quranTransliteration.collectAsStateWithLifecycle()
     val prayerCountdown by viewModel.prayerCountdownState.collectAsStateWithLifecycle()
     val translationName by viewModel.translationName.collectAsStateWithLifecycle()
 
@@ -182,6 +186,12 @@ internal fun HomeScreen(
             FetchQuranEnglishSahihUseCase.Params(
                 suraNumber = 1,
                 translationName = translationName.ifEmpty { "quran_en_sahih" }
+            )
+        ))
+        viewModel.action(HomeUiAction.FetchQuranTransliteration(
+            FetchQuranEnglishSahihUseCase.Params(
+                suraNumber = 1,
+                translationName = "en_transliteration"
             )
         ))
     }
@@ -390,11 +400,25 @@ internal fun HomeScreen(
                         style = TextStyle(
                             textAlign = TextAlign.Right,
                             fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.SemiBold
                         ),
                     )
 
-                    Spacer(modifier = Modifier.height(2.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(
+                        modifier = Modifier,
+                        text = htmlToAnnotatedString(quranTransliteration[index].ayaText),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            color = DeepSeaGreen,
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.Justify,
+                            fontFamily = RobotoFontFamily,
+                        ),
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         modifier = Modifier,
@@ -402,7 +426,7 @@ internal fun HomeScreen(
                         style = TextStyle(
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.secondary,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Justify,
                             fontFamily = RobotoFontFamily,
                         ),
@@ -450,14 +474,8 @@ internal fun HomeScreen(
                     )
 
                     viewModel.action(HomeUiAction.FetchAllLocalDbSura(1))
-                    viewModel.action(
-                        HomeUiAction.FetchQuranEnglishSahih(
-                            FetchQuranEnglishSahihUseCase.Params(
-                                suraNumber = 1,
-                                translationName = translation
-                            )
-                        )
-                    )
+                    viewModel.action(HomeUiAction.FetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(suraNumber = 1, translationName = translation)))
+                    viewModel.action(HomeUiAction.FetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(suraNumber = 1, translationName = "en_transliteration")))
                 }
                 showTranslationDialog = false
             },

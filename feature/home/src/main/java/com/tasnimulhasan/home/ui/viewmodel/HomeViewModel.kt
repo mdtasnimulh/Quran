@@ -54,10 +54,12 @@ class HomeViewModel @Inject constructor(
     val translationOptions = listOf(
         "quran_en_sahih" to "English (Sahih International)",
         "quran_en_yusuf_ali" to "English (Yusuf Ali)",
+        "quran_en_pickthall" to "English (Pickthall)",
         "bn_mohiuddin_khan" to "Bangla (Mohiuddin Khan)",
     )
 
     val suraEnSahiList = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
+    val quranTransliteration = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> get() = _uiState
@@ -83,6 +85,7 @@ class HomeViewModel @Inject constructor(
             is HomeUiAction.FetchQuranEnglishSahih -> fetchQuranEnglishSahih(it.params)
             is HomeUiAction.SavePreferredTranslationName -> saveTranslationName(it.translation)
             is HomeUiAction.GetPreferredTranslationName -> getPreferredTranslationName()
+            is HomeUiAction.FetchQuranTransliteration -> fetchQuranTransliteration(it.params)
         }
     }
 
@@ -197,6 +200,24 @@ class HomeViewModel @Inject constructor(
                     is DataResult.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
                     is DataResult.Success -> {
                         suraEnSahiList.value = result.data
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fetchQuranTransliteration(params: FetchQuranEnglishSahihUseCase.Params) {
+        execute {
+            fetchQuranEnglishSahihUseCase.invoke(params).collectLatest { result ->
+                when (result) {
+                    is DataResult.Loading -> _uiState.value = _uiState.value.copy(isLoading = result.loading)
+                    is DataResult.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
+                    is DataResult.Success -> {
+                        quranTransliteration.value = result.data
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
                             errorMessage = null
