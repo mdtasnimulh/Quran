@@ -19,9 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
 
 @Composable
@@ -36,7 +39,7 @@ fun CustomNavigationItemView(
                 .clip(RoundedCornerShape(size = 99.dp))
                 .clickable { onClick() }
                 .background(
-                    color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+                    color = DullBlue.copy(alpha = 0.1f),
                     shape = RoundedCornerShape(99.dp)
                 )
                 .padding(horizontal = 12.dp, vertical = 10.dp),
@@ -45,14 +48,20 @@ fun CustomNavigationItemView(
             Icon(
                 painter = painterResource(id = navigationItem.icon),
                 contentDescription = "Navigation Item Icon",
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.onBackground
             )
+
             Spacer(modifier = Modifier.width(12.dp))
+
             Text(
                 text = navigationItem.title,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium,
-                lineHeight = 20.sp
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    fontFamily = RobotoFontFamily,
+                    lineHeight = 20.sp,
+                )
             )
         }
 

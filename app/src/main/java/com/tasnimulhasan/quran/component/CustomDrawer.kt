@@ -1,6 +1,8 @@
 package com.tasnimulhasan.quran.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,10 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.PeachOrange
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -39,34 +40,27 @@ fun CustomDrawer(
             .fillMaxWidth(fraction = 0.7f)
             .fillMaxHeight()
             .padding(horizontal = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row (modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 24.dp),
+            .padding(top = 48.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onDrawerCloseClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back Arrow Icon",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
             Text(
                 modifier = Modifier.fillMaxWidth().wrapContentHeight().weight(1f),
                 text = stringResource(id = Res.string.app_name),
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
+                    fontFamily = RobotoFontFamily,
+                    fontSize = 26.sp,
+                    textAlign = TextAlign.Center,
                 )
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Image(
             modifier = Modifier.fillMaxWidth(),
@@ -74,26 +68,32 @@ fun CustomDrawer(
             contentDescription = "App Logo"
         )
 
-        Spacer(modifier = Modifier.height(75.dp))
+        Spacer(modifier = Modifier.height(48.dp))
 
-        CustomNavigationItem.entries.toTypedArray().forEach { navigationItem ->
-            CustomNavigationItemView(
-                navigationItem = navigationItem,
-                onClick = {
-                    when (navigationItem) {
-                        CustomNavigationItem.ABOUT -> {
-                            onAboutClick.invoke()
-                            onDrawerCloseClick.invoke()
-                        }
+        Column(
+            modifier = Modifier.weight(1f),
+        ) {
+            CustomNavigationItem.entries.toTypedArray().forEach { navigationItem ->
+                CustomNavigationItemView(
+                    navigationItem = navigationItem,
+                    onClick = {
+                        when (navigationItem) {
+                            CustomNavigationItem.ABOUT -> {
+                                onAboutClick.invoke()
+                                onDrawerCloseClick.invoke()
+                            }
 
-                        CustomNavigationItem.SETTINGS -> {
-                            onSettingsClick.invoke()
-                            onDrawerCloseClick.invoke()
+                            CustomNavigationItem.SETTINGS -> {
+                                onSettingsClick.invoke()
+                                onDrawerCloseClick.invoke()
+                            }
                         }
                     }
-                }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
+
+        Spacer(modifier = Modifier.height(48.dp))
     }
 }
