@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,13 +38,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.common.components.TransliterationGuideSheet
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
-import com.tasnimulhasan.designsystem.theme.DigitalRed
 import com.tasnimulhasan.designsystem.theme.DullBlue
-import com.tasnimulhasan.designsystem.theme.LilacViolet
-import com.tasnimulhasan.designsystem.theme.MaltaOrange
-import com.tasnimulhasan.designsystem.theme.MediumBlue
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
 
