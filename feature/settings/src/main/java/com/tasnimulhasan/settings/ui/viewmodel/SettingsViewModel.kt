@@ -27,7 +27,8 @@ class SettingsViewModel @Inject constructor(
     var showPreferredDialog = false
 
     val translationOptions = listOf(
-        "quran_en_sahih" to "Sahih International",
+        "quran_en_sahih" to "English (Sahih International)",
+        "quran_en_yusuf_ali" to "English (Yusuf Ali)",
         "bn_mohiuddin_khan" to "Bangla (Mohiuddin Khan)",
     )
 
