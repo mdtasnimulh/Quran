@@ -1,5 +1,6 @@
 package com.tasnimulhasan.common.extfun
 
+import android.graphics.Typeface
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import androidx.compose.ui.text.AnnotatedString
@@ -7,7 +8,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.core.text.HtmlCompat
+import com.tasnimulhasan.designsystem.theme.HeavyLetterColor
+import com.tasnimulhasan.designsystem.theme.LongVowelColor
+import com.tasnimulhasan.designsystem.theme.ShaddahColor
 
 fun htmlToAnnotatedString(html: String): AnnotatedString {
     val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -36,6 +41,62 @@ fun htmlToAnnotatedString(html: String): AnnotatedString {
                         end
                     )
                 }
+            }
+        }
+    }
+}
+
+fun htmlToTajweedAnnotatedString(html: String): AnnotatedString {
+    val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+    return buildAnnotatedString {
+        append(spanned.toString())
+
+        spanned.getSpans(0, spanned.length, Any::class.java).forEach { span ->
+            val start = spanned.getSpanStart(span)
+            val end = spanned.getSpanEnd(span)
+
+            when (span) {
+                is UnderlineSpan -> {
+                    addStyle(
+                        SpanStyle(color = LongVowelColor),
+                        start,
+                        end
+                    )
+                }
+
+                is StyleSpan -> {
+                    if (span.style == Typeface.BOLD) {
+                        addStyle(
+                            SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                color = ShaddahColor
+                            ),
+                            start,
+                            end
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun applyHeavyLetterColor(text: String): AnnotatedString {
+    return buildAnnotatedString {
+        text.forEachIndexed { index, char ->
+            val isHeavy = char in listOf('S', 'D', 'T', 'Z', 'H')
+            if (isHeavy) {
+                withStyle(
+                    SpanStyle(
+                        color = HeavyLetterColor,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                ) {
+                    append(char)
+                }
+            } else {
+                append(char)
             }
         }
     }

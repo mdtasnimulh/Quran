@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,12 +20,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,13 +53,14 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.location.LocationServices
+import com.tasnimulhasan.common.components.TransliterationGuideSheet
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
-import com.tasnimulhasan.common.extfun.htmlToAnnotatedString
+import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
-import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
@@ -101,6 +108,10 @@ internal fun HomeScreen(
 
     var showTranslationDialog by remember { mutableStateOf(false) }
     var selectedTranslation by remember { mutableStateOf<String?>(null) }
+    var showGuide by remember { mutableStateOf(false) }
+    var exampleStrArabic by remember { mutableStateOf("") }
+    var exampleStr by remember { mutableStateOf("") }
+    var exampleStrTranslation by remember { mutableStateOf("") }
 
     val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -392,23 +403,47 @@ internal fun HomeScreen(
                 itemsIndexed(uiState.surahList) { index, item ->
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
-                        text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
-                        style = TextStyle(
-                            textAlign = TextAlign.Right,
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                    )
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable {
+                                    exampleStrArabic = item.ayaText
+                                    exampleStr = quranTransliteration[index].ayaText
+                                    exampleStrTranslation = suraEnglish[index].ayaText.replace("-", "")
+                                    showGuide = true
+                                },
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "How to read transliteration",
+                            tint = BackgroundWhite
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
+                            style = TextStyle(
+                                textAlign = TextAlign.Right,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(6.dp))
 
                     Text(
                         modifier = Modifier,
-                        text = htmlToAnnotatedString(quranTransliteration[index].ayaText),
+                        text = htmlToTajweedAnnotatedString(quranTransliteration[index].ayaText),
                         style = TextStyle(
                             fontSize = 12.sp,
                             color = DeepSeaGreen,
@@ -485,5 +520,14 @@ internal fun HomeScreen(
         )
     }
 
+    if (showGuide) {
+        TransliterationGuideSheet(
+            exampleStrArabic = exampleStrArabic,
+            exampleStr = exampleStr,
+            exampleStrTranslation = exampleStrTranslation
+        ) {
+            showGuide = false
+        }
+    }
 
 }

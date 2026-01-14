@@ -10,6 +10,10 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
+val LongVowelColor = Color(0xFF2E7D32)   // Green
+val ShaddahColor   = Color(0xFF1565C0)   // Blue
+val HeavyLetterColor = Color(0xFFC62828) // Red
+
 val BrandGreen = Color(0xff57c063)
 
 val BackgroundWhite = Color(0xFFF5F5F5)
