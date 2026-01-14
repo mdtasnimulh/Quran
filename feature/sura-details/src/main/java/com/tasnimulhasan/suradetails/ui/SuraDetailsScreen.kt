@@ -54,6 +54,7 @@ internal fun SuraDetailsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val suraArabicList by viewModel.suraArabicList.collectAsStateWithLifecycle()
     val suraEnglishSahihList by viewModel.suraEnSahiList.collectAsStateWithLifecycle()
+    val quranTransliteration by viewModel.quranTransliteration.collectAsStateWithLifecycle()
     val ayaCount by viewModel.ayaCount.collectAsStateWithLifecycle()
     val translationName by viewModel.translationName.collectAsStateWithLifecycle()
 
@@ -72,6 +73,12 @@ internal fun SuraDetailsScreen(
             FetchQuranEnglishSahihUseCase.Params(
                 suraNumber = suraNumber,
                 translationName = translationName.ifEmpty { "quran_en_sahih" }
+            )
+        ))
+        viewModel.action(UiAction.FetchQuranTransliteration(
+            FetchQuranEnglishSahihUseCase.Params(
+                suraNumber = suraNumber,
+                translationName = "en_transliteration"
             )
         ))
     }
@@ -120,20 +127,25 @@ internal fun SuraDetailsScreen(
                         .padding(horizontal = 16.dp),
                     state = listState
                 ) {
-                    viewModel.action(UiAction.SetLastReadSura(
-                        LastReadSuraInfoEntity(
-                            suraNumber,
-                            suraArabicList[listState.firstVisibleItemIndex].ayaNumber,
-                            suraArabicList[listState.firstVisibleItemIndex].ayaText,
-                            suraEnglishSahihList[listState.firstVisibleItemIndex].ayaText,
-                            suraNameEnglish,
-                            suraNameEnglish,
-                            suraNameMeaning,
-                            suraType,
-                            suraArabicList.size,
-                            translationName
+                    val firstVisibleIndex = listState.firstVisibleItemIndex
+                    if (firstVisibleIndex in suraArabicList.indices && firstVisibleIndex in suraEnglishSahihList.indices && firstVisibleIndex in quranTransliteration.indices) {
+                        viewModel.action(
+                            UiAction.SetLastReadSura(
+                                LastReadSuraInfoEntity(
+                                    suraNumber,
+                                    suraArabicList[firstVisibleIndex].ayaNumber,
+                                    suraArabicList[firstVisibleIndex].ayaText,
+                                    suraEnglishSahihList[firstVisibleIndex].ayaText,
+                                    suraNameEnglish,
+                                    suraNameEnglish,
+                                    suraNameMeaning,
+                                    suraType,
+                                    suraArabicList.size,
+                                    translationName
+                                )
+                            )
                         )
-                    ))
+                    }
 
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
@@ -156,7 +168,8 @@ internal fun SuraDetailsScreen(
                     itemsIndexed(suraArabicList) { index, item ->
                         SuraDetailsItem(
                             verse = item,
-                            verseEnglish = suraEnglishSahihList[index]
+                            verseEnglish = suraEnglishSahihList[index],
+                            verseEnglishTransliteration = quranTransliteration[index]
                         )
 
                         if (index != suraArabicList.size -1) {

@@ -30,6 +30,7 @@ class SuraDetailsViewModel @Inject constructor(
 
     val suraArabicList = MutableStateFlow<List<QuranLocalDbEntity>>(emptyList())
     val suraEnSahiList = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
+    val quranTransliteration = MutableStateFlow<List<QuranEnglishSahihEntity>>(emptyList())
 
     val ayaCount = MutableStateFlow(0)
 
@@ -47,6 +48,7 @@ class SuraDetailsViewModel @Inject constructor(
             is UiAction.SetLastReadSuraAvailable -> setLastReadSuraAvailable(it.available)
             is UiAction.SavePreferredTranslationName -> saveTranslationName(it.translation)
             is UiAction.GetPreferredTranslationName -> getPreferredTranslationName()
+            is UiAction.FetchQuranTransliteration -> fetchQuranTransliteration(it.params)
         }
     }
 
@@ -77,6 +79,21 @@ class SuraDetailsViewModel @Inject constructor(
                     is DataResult.Loading -> UiState.Loading(apiResult.loading)
                     is DataResult.Success -> {
                         suraEnSahiList.value = apiResult.data
+                        UiState.Ready
+                    }
+                    is DataResult.Error -> UiState.Error(apiResult.message)
+                }
+            }
+        }
+    }
+
+    private fun fetchQuranTransliteration(params: FetchQuranEnglishSahihUseCase.Params) {
+        execute {
+            fetchQuranEnglishSahihUseCase.invoke(params).collectLatest { apiResult ->
+                _uiState.value = when (apiResult) {
+                    is DataResult.Loading -> UiState.Loading(apiResult.loading)
+                    is DataResult.Success -> {
+                        quranTransliteration.value = apiResult.data
                         UiState.Ready
                     }
                     is DataResult.Error -> UiState.Error(apiResult.message)
@@ -122,6 +139,7 @@ sealed interface UiState {
 sealed interface UiAction {
     data class FetchAllLocalDbSura(val suraNumber: Int) : UiAction
     data class FetchQuranEnglishSahih(val params: FetchQuranEnglishSahihUseCase.Params) : UiAction
+    data class FetchQuranTransliteration(val params: FetchQuranEnglishSahihUseCase.Params) : UiAction
     data class SetLastReadSura(val sura: LastReadSuraInfoEntity) : UiAction
     data class SetLastReadSuraAvailable(val available: Boolean) : UiAction
     data class SavePreferredTranslationName(val translation: String): UiAction
