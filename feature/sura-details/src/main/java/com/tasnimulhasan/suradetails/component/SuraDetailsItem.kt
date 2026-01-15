@@ -1,6 +1,5 @@
 package com.tasnimulhasan.suradetails.component
 
-import android.graphics.Bitmap
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,8 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OfflineShare
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.IosShare
-import androidx.compose.material.icons.filled.OfflineShare
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,13 +27,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,9 +46,6 @@ import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
-import dev.shreyaspatil.capturable.capturable
-import dev.shreyaspatil.capturable.controller.rememberCaptureController
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -65,14 +56,12 @@ fun SuraDetailsItem(
     isLoading: Boolean,
     isPlaying: Boolean,
     onPlayAyaClick: (QuranLocalDbEntity) -> Unit,
+    onShareClick: (QuranLocalDbEntity, QuranEnglishSahihEntity, QuranEnglishSahihEntity) -> Unit,
 ) {
     var showGuide by remember { mutableStateOf(false) }
     var exampleStrArabic by remember { mutableStateOf("") }
     var exampleStr by remember { mutableStateOf("") }
     var exampleStrTranslation by remember { mutableStateOf("") }
-    val captureController = rememberCaptureController()
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     val rowBackgroundColor by animateColorAsState(
         targetValue = if (isPlaying)
@@ -86,7 +75,6 @@ fun SuraDetailsItem(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .capturable(captureController)
     ) {
         val (verseArabicText, verseEnglishText, verseEnglishTransliterationRef, verseNoRow) = createRefs()
 
@@ -123,15 +111,7 @@ fun SuraDetailsItem(
             IconButton(
                 modifier = Modifier.size(24.dp),
                 onClick = {
-                    scope.launch {
-                        try {
-                            val imageBitmap = captureController.captureAsync().await() // ImageBitmap
-                            val bitmap: Bitmap = imageBitmap.asAndroidBitmap() // convert to Bitmap
-                            shareBitmap(context, bitmap)
-                        } catch (error: Throwable) {
-                            error.printStackTrace()
-                        }
-                    }
+                    onShareClick.invoke(verse, verseEnglishTransliteration, verseEnglish)
                 }
             ) {
                 Icon(
@@ -291,6 +271,7 @@ fun PreviewVSuraDetailsItem() {
         ),
         isLoading = false,
         isPlaying = false,
-        onPlayAyaClick = {}
+        onPlayAyaClick = {},
+        onShareClick = {_, _, _ ->}
     )
 }

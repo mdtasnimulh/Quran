@@ -44,6 +44,7 @@ import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.suradetails.component.CustomTopAppBar
 import com.tasnimulhasan.suradetails.component.SuraDetailsHeader
 import com.tasnimulhasan.suradetails.component.SuraDetailsItem
+import com.tasnimulhasan.suradetails.component.VerseDialog
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -75,6 +76,13 @@ internal fun SuraDetailsScreen(
     var loadingAyah by remember { mutableIntStateOf(-1) }
     var playingAyah by remember { mutableIntStateOf(-1) }
     var isPlaying by remember { mutableStateOf(false) }
+    var showShareDialog by remember { mutableStateOf(false) }
+
+    var suraName by remember { mutableStateOf("") }
+    var ayaNumber by remember { mutableStateOf("") }
+    var arabicVerse by remember { mutableStateOf("") }
+    var ayaTransliteration by remember { mutableStateOf("") }
+    var ayaTranslation by remember { mutableStateOf("") }
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
@@ -299,6 +307,14 @@ internal fun SuraDetailsScreen(
                                     playWhenReady = true
                                 }
                             },
+                            onShareClick = { arabic, transliteration, translation ->
+                                suraName = arabic.suraName
+                                ayaNumber = arabic.ayaNumber.toString()
+                                arabicVerse = arabic.ayaText
+                                ayaTransliteration = transliteration.ayaText
+                                ayaTranslation = translation.ayaText
+                                showShareDialog = true
+                            }
                         )
 
                         if (index != suraArabicList.size -1) {
@@ -313,6 +329,17 @@ internal fun SuraDetailsScreen(
             }
 
         }
+    }
+
+    if (showShareDialog) {
+        VerseDialog(
+            suraName = suraName,
+            ayahNumber = ayaNumber.toInt(),
+            arabicText = arabicVerse,
+            transliteration = ayaTransliteration,
+            translation = ayaTranslation,
+            onDismiss = {showShareDialog = false},
+        )
     }
 }
 
