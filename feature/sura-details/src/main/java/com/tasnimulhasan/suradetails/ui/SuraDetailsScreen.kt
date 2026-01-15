@@ -19,6 +19,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -70,7 +71,10 @@ internal fun SuraDetailsScreen(
     val translationName by viewModel.translationName.collectAsStateWithLifecycle()
 
     val reciter = "Alafasy_128kbps"
+
     var loadingAyah by remember { mutableIntStateOf(-1) }
+    var playingAyah by remember { mutableIntStateOf(-1) }
+    var isPlaying by remember { mutableStateOf(false) }
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
@@ -109,24 +113,62 @@ internal fun SuraDetailsScreen(
         ))
     }
 
+    fun playNextAyah() {
+        val currentIndex =
+            suraArabicList.indexOfFirst { it.ayaNumber == playingAyah }
+
+        if (currentIndex == -1) return
+
+        val nextIndex = currentIndex + 1
+        if (nextIndex >= suraArabicList.size) return // last ayah reached
+
+        val nextAyah = suraArabicList[nextIndex]
+
+        loadingAyah = nextAyah.ayaNumber
+        playingAyah = nextAyah.ayaNumber
+
+        val audioUrl = buildAyahAudioUrl(
+            suraNumber = suraNumber,
+            ayahNumber = nextAyah.ayaNumber,
+            reciter = reciter
+        )
+
+        exoPlayer.apply {
+            setMediaItem(MediaItem.fromUri(audioUrl))
+            prepare()
+            playWhenReady = true
+        }
+    }
+
     DisposableEffect(exoPlayer) {
 
         val listener = object : Player.Listener {
+
             override fun onPlaybackStateChanged(state: Int) {
                 when (state) {
                     Player.STATE_BUFFERING -> {
-                        // keep loadingAyah as is
+                        // spinner already shown
                     }
 
-                    Player.STATE_READY,
-                    Player.STATE_ENDED -> {
+                    Player.STATE_READY -> {
                         loadingAyah = -1
+                        isPlaying = true
+                    }
+
+                    Player.STATE_ENDED -> {
+                        isPlaying = false
+                        playNextAyah()
                     }
                 }
             }
 
+            override fun onIsPlayingChanged(isPlayingNow: Boolean) {
+                isPlaying = isPlayingNow
+            }
+
             override fun onPlayerError(error: PlaybackException) {
                 loadingAyah = -1
+                isPlaying = false
             }
         }
 
@@ -226,8 +268,22 @@ internal fun SuraDetailsScreen(
                             verseEnglish = suraEnglishSahihList[index],
                             verseEnglishTransliteration = quranTransliteration[index],
                             isLoading = loadingAyah == item.ayaNumber,
+                            isPlaying = playingAyah == item.ayaNumber && isPlaying,
                             onPlayAyaClick = {
+
+                                // Same ayah → toggle play/pause
+                                if (playingAyah == item.ayaNumber) {
+                                    if (isPlaying) {
+                                        exoPlayer.pause()
+                                    } else {
+                                        exoPlayer.play()
+                                    }
+                                    return@SuraDetailsItem
+                                }
+
+                                // New ayah clicked
                                 loadingAyah = item.ayaNumber
+                                playingAyah = item.ayaNumber
 
                                 val audioUrl = buildAyahAudioUrl(
                                     suraNumber = suraNumber,
@@ -235,12 +291,10 @@ internal fun SuraDetailsScreen(
                                     reciter = reciter
                                 )
 
-                                val mediaItem = MediaItem.fromUri(audioUrl)
-
                                 exoPlayer.apply {
                                     stop()
                                     clearMediaItems()
-                                    setMediaItem(mediaItem)
+                                    setMediaItem(MediaItem.fromUri(audioUrl))
                                     prepare()
                                     playWhenReady = true
                                 }

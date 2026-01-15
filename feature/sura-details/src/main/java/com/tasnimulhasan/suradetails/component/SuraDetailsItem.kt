@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.IosShare
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -50,6 +51,7 @@ fun SuraDetailsItem(
     verseEnglish: QuranEnglishSahihEntity,
     verseEnglishTransliteration: QuranEnglishSahihEntity,
     isLoading: Boolean,
+    isPlaying: Boolean,
     onPlayAyaClick: (QuranLocalDbEntity) -> Unit,
 ) {
     var showGuide by remember { mutableStateOf(false) }
@@ -120,20 +122,19 @@ fun SuraDetailsItem(
                 } else {
                     IconButton(
                         modifier = Modifier.size(24.dp),
-                        onClick = {
-                            onPlayAyaClick.invoke(verse)
-                        }
+                        onClick = { onPlayAyaClick(verse) }
                     ) {
                         Icon(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(1.dp),
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Play Icon",
+                            imageVector = if (isPlaying)
+                                Icons.Default.Pause
+                            else
+                                Icons.Default.PlayArrow,
+                            contentDescription = "Play Pause",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
+
             }
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -252,6 +253,7 @@ fun PreviewVSuraDetailsItem() {
             index = 1, suraNumber = 1, ayaNumber = 1, ayaText = "In the name of Allah, the Entirely Merciful, the Especially Merciful."
         ),
         isLoading = false,
+        isPlaying = false,
         onPlayAyaClick = {}
     )
 }
