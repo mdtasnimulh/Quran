@@ -16,6 +16,10 @@ class HadithDetailsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> get() = _uiState
 
+    val bookName = MutableStateFlow("")
+    val chapterName = MutableStateFlow("")
+    val totalCount = MutableStateFlow("")
+
     val action: (UiAction) -> Unit = {
         when (it) {
             is UiAction.GetAllHadiths -> getAllHadiths(it.params, reset = true)
@@ -63,6 +67,9 @@ class HadithDetailsViewModel @Inject constructor(
                     is DataResult.Success -> {
                         val newData = result.data.data
                         val isLastPage = newData.size < 25
+                        bookName.value = result.data.data.first().book.bookName
+                        chapterName.value = result.data.data.first().chapter.chapterEnglish
+                        totalCount.value = result.data.total.toString()
 
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,

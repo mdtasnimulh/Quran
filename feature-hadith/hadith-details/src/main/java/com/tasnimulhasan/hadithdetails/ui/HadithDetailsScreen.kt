@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.domain.apiusecase.hadith.FetchHadithsUseCase
+import com.tasnimulhasan.hadithdetails.components.HadithDetailsHeader
 import com.tasnimulhasan.hadithdetails.components.HadithItem
 import com.tasnimulhasan.hadithdetails.ui.viewmodel.HadithDetailsViewModel
 import com.tasnimulhasan.hadithdetails.ui.viewmodel.UiAction
@@ -90,9 +91,19 @@ internal fun HadithDetailsScreen(
                 state = listState,
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
             ) {
                 item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    HadithDetailsHeader(
+                        bookName = viewModel.bookName.collectAsStateWithLifecycle().value,
+                        chapterName = viewModel.chapterName.collectAsStateWithLifecycle().value,
+                        chapterNumber = chapterNumber.toString(),
+                        totalCount = viewModel.totalCount.collectAsStateWithLifecycle().value,
+                    )
+
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 

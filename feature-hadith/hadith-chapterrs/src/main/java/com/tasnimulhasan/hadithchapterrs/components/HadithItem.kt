@@ -1,4 +1,4 @@
-package com.tasnimulhasan.hadith.components
+package com.tasnimulhasan.hadithchapterrs.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -29,33 +29,33 @@ import com.tasnimulhasan.designsystem.theme.Harvest
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.TechnoTeal
-import com.tasnimulhasan.entity.hadith.HadithBookApiEntity
+import com.tasnimulhasan.entity.hadith.HadithChaptersApiEntity
 import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun HadithItem(
-    hadithBook: HadithBookApiEntity,
-    hadithIndex: Int,
-    onHadithClick: (HadithBookApiEntity) -> Unit,
-) {
-    val textWidthFraction = when (hadithIndex % 3) {
+    hadithBook: HadithChaptersApiEntity,
+    chapterIndex: Int,
+    onHadithClick: (HadithChaptersApiEntity) -> Unit,
+){
+    val textWidthFraction = when (chapterIndex % 3) {
         0 -> 0.4f
         1 -> 0.4f
         else -> 1f
     }
 
-    val textColor = when (hadithIndex % 3) {
+    val textColor = when (chapterIndex % 3) {
         0 -> BackgroundWhite
         1 -> BackgroundBlack
         else -> BackgroundWhite
     }
 
-    val textAlign = when (hadithIndex % 3) {
+    val textAlign = when (chapterIndex % 3) {
         0, 1 -> TextAlign.Left
         else -> TextAlign.Center
     }
 
-    val cardShadowColor = when (hadithIndex % 3) {
+    val cardShadowColor = when (chapterIndex % 3) {
         0 -> Harvest
         1 -> Chartreuse
         else -> TechnoTeal
@@ -81,18 +81,19 @@ fun HadithItem(
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(hadithBackground(hadithIndex)),
+                painter = painterResource(hadithBackground(chapterIndex)),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )
+
             Text(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .fillMaxWidth(textWidthFraction)
                     .wrapContentHeight(),
-                text = hadithBook.bookName,
+                text = "${hadithBook.chapterNumber}-${hadithBook.chapterEnglish}",
                 style = TextStyle(
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = RobotoFontFamily,
                     color = textColor,
@@ -115,17 +116,15 @@ private fun hadithBackground(index: Int) = when (index % 3) {
 fun PreviewHadithScreen() {
     QuranTheme {
         HadithItem(
-            hadithBook = HadithBookApiEntity(
+            hadithBook = HadithChaptersApiEntity(
                 id = 1,
-                aboutWriter = "",
-                bookName = "Sahih Bukhari",
                 bookSlug = "",
-                chaptersCount = "",
-                hadithsCount = "",
-                writerDeath = "",
-                writerName = ""
+                chapterArabic = "",
+                chapterEnglish = "Revelation",
+                chapterNumber = "1",
+                chapterUrdu = ""
             ),
-            hadithIndex = 0,
+            chapterIndex = 1,
             onHadithClick = {}
         )
     }

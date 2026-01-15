@@ -45,6 +45,7 @@ fun HadithItem(
 
     ElevatedCard(
         modifier = Modifier
+            .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         elevation = CardDefaults.cardElevation(3.dp),

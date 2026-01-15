@@ -34,4 +34,8 @@
     <string name="msg_repeat_off">Repeat Off</string>
 
     <string name="desc_top_app_bar_back_icon">Top App Bar Back Icon</string>
+
+    <string name="format_hadith_book_name">Book: <b>%s</b></string>
+    <string name="format_hadith_chapter_name">Chapter: <b>%s - %s</b></string>
+    <string name="format_hadith_total_count">Total Hadith: <b>%s</b></string>
 </resources>
