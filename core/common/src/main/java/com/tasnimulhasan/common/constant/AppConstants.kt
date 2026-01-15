@@ -36,6 +36,8 @@ object AppConstants {
     const val MUSNAD_AHMAD = "Musnad Ahmad"
     const val AL_SILSILA_SAHIHA = "Al-Silsila Sahiha"
 
+    const val DEMO_URL_FOR_QURAN_MP3 = "https://everyayah.com/data/Alafasy_128kbps/001001.mp3"
+
     fun getHijriMonthName(month: Int): String {
         return when (month) {
             1 -> "Muharram"

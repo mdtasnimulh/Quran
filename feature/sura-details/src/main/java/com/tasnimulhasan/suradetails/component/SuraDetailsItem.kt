@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.IosShare
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +49,8 @@ fun SuraDetailsItem(
     verse: QuranLocalDbEntity,
     verseEnglish: QuranEnglishSahihEntity,
     verseEnglishTransliteration: QuranEnglishSahihEntity,
+    isLoading: Boolean,
+    onPlayAyaClick: (QuranLocalDbEntity) -> Unit,
 ) {
     var showGuide by remember { mutableStateOf(false) }
     var exampleStrArabic by remember { mutableStateOf("") }
@@ -104,14 +107,33 @@ fun SuraDetailsItem(
 
             IconButton(
                 modifier = Modifier.size(24.dp),
-                onClick = {}
+                onClick = {
+                    onPlayAyaClick.invoke(verse)
+                }
             ) {
-                Icon(
-                    modifier = Modifier.fillMaxSize().padding(1.dp),
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Play Icon",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                } else {
+                    IconButton(
+                        modifier = Modifier.size(24.dp),
+                        onClick = {
+                            onPlayAyaClick.invoke(verse)
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(1.dp),
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "Play Icon",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -228,6 +250,8 @@ fun PreviewVSuraDetailsItem() {
         ),
         verseEnglish = QuranEnglishSahihEntity(
             index = 1, suraNumber = 1, ayaNumber = 1, ayaText = "In the name of Allah, the Entirely Merciful, the Especially Merciful."
-        )
+        ),
+        isLoading = false,
+        onPlayAyaClick = {}
     )
 }
