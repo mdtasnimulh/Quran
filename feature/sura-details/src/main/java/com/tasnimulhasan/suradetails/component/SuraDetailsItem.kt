@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OfflineShare
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.IosShare
+import androidx.compose.material.icons.filled.OfflineShare
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
@@ -134,7 +136,7 @@ fun SuraDetailsItem(
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize().padding(2.dp),
-                    imageVector = Icons.Default.IosShare,
+                    imageVector = Icons.AutoMirrored.Filled.OfflineShare,
                     contentDescription = "Share Icon",
                     tint = MaterialTheme.colorScheme.primary
                 )
