@@ -1,5 +1,6 @@
 package com.tasnimulhasan.suradetails.component
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -59,6 +60,14 @@ fun SuraDetailsItem(
     var exampleStr by remember { mutableStateOf("") }
     var exampleStrTranslation by remember { mutableStateOf("") }
 
+    val rowBackgroundColor by animateColorAsState(
+        targetValue = if (isPlaying)
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+        else
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+        label = "AyahRowBg"
+    )
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,7 +84,10 @@ fun SuraDetailsItem(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 }
-                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = RoundedCornerShape(15.dp))
+                .background(
+                    color = rowBackgroundColor,
+                    shape = RoundedCornerShape(15.dp)
+                )
                 .padding(vertical = 8.dp, horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
