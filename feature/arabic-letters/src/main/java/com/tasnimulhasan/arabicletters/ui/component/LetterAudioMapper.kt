@@ -32,6 +32,8 @@ object LetterAudioMapper {
         "ه" -> Res.raw.haah
         "و" -> Res.raw.waw
         "ي" -> Res.raw.yaa
+        "ء" -> Res.raw.hamzah
+        "لا" -> Res.raw.laaa
         else -> Res.raw.alif
     }
 }
