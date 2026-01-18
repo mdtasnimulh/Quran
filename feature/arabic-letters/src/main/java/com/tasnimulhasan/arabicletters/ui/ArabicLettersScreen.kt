@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.tasnimulhasan.arabicletters.ui.component.ArabicLetterDetailsBottomSheet
 import com.tasnimulhasan.arabicletters.ui.component.ArabicLetterDetailsDialog
 import com.tasnimulhasan.arabicletters.ui.component.LetterItem
 import com.tasnimulhasan.arabicletters.ui.viewmodel.ArabicLettersViewModel
@@ -45,6 +46,7 @@ internal fun ArabicLettersScreen(
     viewModel: ArabicLettersViewModel = hiltViewModel(),
 ) {
     var selectedLetter by remember { mutableStateOf<ArabicAlphabet?>(null) }
+    var showSheet by remember { mutableStateOf(false) }
 
     ConstraintLayout(
         modifier = modifier
@@ -85,6 +87,7 @@ internal fun ArabicLettersScreen(
                         item = item,
                         onItemClick = {
                             selectedLetter = it
+                            showSheet = true
                         }
                     )
                 }
@@ -96,10 +99,13 @@ internal fun ArabicLettersScreen(
         }
     }
 
-    selectedLetter?.let { letter ->
-        ArabicLetterDetailsDialog(
-            letter = letter,
-            onDismiss = { selectedLetter = null }
+    if (showSheet && selectedLetter != null) {
+        ArabicLetterDetailsBottomSheet(
+            letter = selectedLetter!!,
+            onDismiss = {
+                showSheet = false
+                selectedLetter = null
+            }
         )
     }
 }
