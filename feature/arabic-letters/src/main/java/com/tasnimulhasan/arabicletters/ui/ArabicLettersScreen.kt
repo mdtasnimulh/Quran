@@ -15,6 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
@@ -24,12 +28,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.tasnimulhasan.arabicletters.ui.component.ArabicLetterDetailsDialog
 import com.tasnimulhasan.arabicletters.ui.component.LetterItem
 import com.tasnimulhasan.arabicletters.ui.viewmodel.ArabicLettersViewModel
 import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.entity.ArabicAlphabet
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -38,6 +44,8 @@ internal fun ArabicLettersScreen(
     modifier: Modifier = Modifier,
     viewModel: ArabicLettersViewModel = hiltViewModel(),
 ) {
+    var selectedLetter by remember { mutableStateOf<ArabicAlphabet?>(null) }
+
     ConstraintLayout(
         modifier = modifier
             .fillMaxSize()
@@ -52,16 +60,14 @@ internal fun ArabicLettersScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxSize()
-                    .constrainAs(lazyColumn){
+                    .constrainAs(lazyColumn) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
             ) {
-                item(
-                    span = { GridItemSpan(4) }
-                ) {
+                item(span = { GridItemSpan(4) }) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = "Arabic Letters",
@@ -71,21 +77,30 @@ internal fun ArabicLettersScreen(
                         color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.End
                     )
-
-                    Spacer(modifier = modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                itemsIndexed(AppConstants.arabicLetters) {_, item ->
-                    LetterItem(item = item)
+                itemsIndexed(AppConstants.arabicLetters) { _, item ->
+                    LetterItem(
+                        item = item,
+                        onItemClick = {
+                            selectedLetter = it
+                        }
+                    )
                 }
 
-                item(
-                    span = { GridItemSpan(4) }
-                ) {
+                item(span = { GridItemSpan(4) }) {
                     Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
+    }
+
+    selectedLetter?.let { letter ->
+        ArabicLetterDetailsDialog(
+            letter = letter,
+            onDismiss = { selectedLetter = null }
+        )
     }
 }
 

@@ -26,20 +26,15 @@ import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
-import com.tasnimulhasan.designsystem.theme.EggshellWhite
-import com.tasnimulhasan.designsystem.theme.Harvest
-import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
-import com.tasnimulhasan.designsystem.theme.SaladGreen
-import com.tasnimulhasan.designsystem.theme.ScreamGreen
 import com.tasnimulhasan.entity.ArabicAlphabet
 
 @Composable
 fun LetterItem(
     item: ArabicAlphabet,
-    onItemClick: (item: ArabicAlphabet) -> Unit = {},
+    onItemClick: (item: ArabicAlphabet) -> Unit,
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -111,7 +106,8 @@ fun LetterItem(
 fun PreviewLetterItem() {
     QuranTheme {
         LetterItem(
-            item = AppConstants.arabicLetters.first()
+            item = AppConstants.arabicLetters.first(),
+            onItemClick = {}
         )
     }
 }
