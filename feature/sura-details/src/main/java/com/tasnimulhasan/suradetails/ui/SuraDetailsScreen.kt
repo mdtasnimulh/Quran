@@ -352,3 +352,12 @@ fun buildAyahAudioUrl(
     val ayah = ayahNumber.toString().padStart(3, '0')
     return "https://everyayah.com/data/$reciter/$sura$ayah.mp3"
 }
+
+fun buildEnglishTranslationAudioUrl(
+    suraNumber: Int,
+    ayahNumber: Int,
+): String {
+    val sura = suraNumber.toString().padStart(3, '0')
+    val ayah = ayahNumber.toString().padStart(3, '0')
+    return "https://everyayah.com/data/English/Sahih_Intnl_Ibrahim_Walk_192kbps/$sura$ayah.mp3" // --- English Translation Audio
+}
