@@ -30,8 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.tasnimulhasan.arabicletters.ui.component.ArabicLetterDetailsBottomSheet
-import com.tasnimulhasan.arabicletters.ui.component.ArabicLetterDetailsDialog
+import com.tasnimulhasan.arabicletters.ui.component.LetterAudioMapper
 import com.tasnimulhasan.arabicletters.ui.component.LetterItem
+import com.tasnimulhasan.arabicletters.ui.viewmodel.ArabicLettersUiAction
 import com.tasnimulhasan.arabicletters.ui.viewmodel.ArabicLettersViewModel
 import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.QuranTheme
@@ -102,6 +103,13 @@ internal fun ArabicLettersScreen(
     if (showSheet && selectedLetter != null) {
         ArabicLetterDetailsBottomSheet(
             letter = selectedLetter!!,
+            onPlayAudio = { letter ->
+                viewModel.action(
+                    ArabicLettersUiAction.PlayAudio(
+                        LetterAudioMapper.isolated(letter)
+                    )
+                )
+            },
             onDismiss = {
                 showSheet = false
                 selectedLetter = null

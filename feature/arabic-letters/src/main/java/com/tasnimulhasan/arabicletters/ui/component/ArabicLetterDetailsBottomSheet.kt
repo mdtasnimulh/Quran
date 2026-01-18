@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -33,6 +35,7 @@ import com.tasnimulhasan.entity.ArabicAlphabet
 @Composable
 fun ArabicLetterDetailsBottomSheet(
     letter: ArabicAlphabet,
+    onPlayAudio: (String) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -41,7 +44,85 @@ fun ArabicLetterDetailsBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
     ) {
-        LetterDetailsContent(letter)
+        LetterDetailsContent(
+            letter,
+            onPlayAudio = {
+                onPlayAudio.invoke(it)
+            }
+        )
+    }
+}
+
+@Composable
+private fun LetterDetailsContent(
+    letter: ArabicAlphabet,
+    onPlayAudio: (String) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+    ) {
+
+        Text(
+            text = letter.isolatedForm,
+            fontFamily = ArabicKsaFontFamily,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Text(
+            text = letter.name,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        PronunciationButton {
+            onPlayAudio.invoke(letter.isolatedForm)
+        }
+
+        FormsTableAnimated(letter)
+
+        ExamplesTable(
+            examples = listOf("بَيت", "كِتاب", "نَبِيّ")
+        )
+    }
+}
+
+@Composable
+private fun FormsTableAnimated(
+    letter: ArabicAlphabet
+) {
+    var selected by remember { mutableStateOf("Isolated") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+    ) {
+
+        TableHeader("Form", "Letter")
+
+        DividerThin()
+
+        TableRowAnimated("Isolated", letter.isolatedForm, selected) {
+            selected = "Isolated"
+        }
+        TableRowAnimated("Initial", letter.initialForm, selected) {
+            selected = "Initial"
+        }
+        TableRowAnimated("Medial", letter.medialForm, selected) {
+            selected = "Medial"
+        }
+        TableRowAnimated("Final", letter.finalForm, selected) {
+            selected = "Final"
+        }
     }
 }
 
@@ -75,40 +156,11 @@ private fun AnimatedLetterCell(
     Text(
         text = text,
         fontFamily = ArabicKsaFontFamily,
-        fontSize = 26.sp,
+        fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.scale(scale),
         color = color
     )
-}
-
-@Composable
-private fun FormsTableAnimated(letter: ArabicAlphabet) {
-    var selected by remember { mutableStateOf("Isolated") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp)
-    ) {
-
-        TableHeader("Form", "Letter")
-
-        DividerThin()
-
-        TableRowAnimated("Isolated", letter.isolatedForm, selected) {
-            selected = "Isolated"
-        }
-        TableRowAnimated("Initial", letter.initialForm, selected) {
-            selected = "Initial"
-        }
-        TableRowAnimated("Medial", letter.medialForm, selected) {
-            selected = "Medial"
-        }
-        TableRowAnimated("Final", letter.finalForm, selected) {
-            selected = "Final"
-        }
-    }
 }
 
 
@@ -123,7 +175,7 @@ private fun TableRowAnimated(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 10.dp),
+            .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -141,7 +193,6 @@ private fun TableRowAnimated(
     DividerThin()
 }
 
-
 @Composable
 private fun ExamplesTable(
     examples: List<String>
@@ -149,7 +200,7 @@ private fun ExamplesTable(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp)
+            .padding(top = 16.dp)
     ) {
 
         TableHeader("Examples", "")
@@ -166,7 +217,7 @@ private fun ExamplesTable(
                 Text(
                     text = example,
                     fontFamily = ArabicKsaFontFamily,
-                    fontSize = 24.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -206,42 +257,4 @@ private fun DividerThin() {
         thickness = 0.5.dp,
         color = MaterialTheme.colorScheme.outlineVariant
     )
-}
-
-
-@Composable
-private fun LetterDetailsContent(letter: ArabicAlphabet) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-
-        Text(
-            text = letter.isolatedForm,
-            fontFamily = ArabicKsaFontFamily,
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Text(
-            text = letter.name,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
-
-        PronunciationButton {
-            // TODO: play audio
-        }
-
-        FormsTableAnimated(letter)
-
-        ExamplesTable(
-            examples = listOf("بَيت", "كِتاب", "نَبِيّ")
-        )
-    }
 }
