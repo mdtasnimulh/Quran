@@ -434,7 +434,7 @@ internal fun HomeScreen(
                             text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
                             style = TextStyle(
                                 textAlign = TextAlign.Right,
-                                fontSize = 24.sp,
+                                fontSize = 26.sp,
                                 fontWeight = FontWeight.SemiBold
                             ),
                         )

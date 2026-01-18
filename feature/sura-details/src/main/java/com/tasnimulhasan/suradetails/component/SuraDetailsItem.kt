@@ -199,7 +199,7 @@ fun SuraDetailsItem(
                 },
             text = buildAnnotatedString(verse = verse.ayaText, ayaNumber = verse.index, color = MaterialTheme.colorScheme.primary),
             style = TextStyle(
-                fontSize = 18.sp,
+                fontSize = 26.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.End
