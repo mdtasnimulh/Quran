@@ -1,5 +1,6 @@
 package com.tasnimulhasan.quran.di
 
+import com.tasnimulhasan.data.repoimpl.AudioPlayerRepoImpl
 import com.tasnimulhasan.data.repoimpl.CalendarRepoImpl
 import com.tasnimulhasan.data.repoimpl.CompassRepoImpl
 import com.tasnimulhasan.data.repoimpl.PreferencesDataStoreRepoImpl
@@ -8,6 +9,7 @@ import com.tasnimulhasan.data.repoimpl.QuranSuraRepoImpl
 import com.tasnimulhasan.data.repoimpl.SuraNameRepoImpl
 import com.tasnimulhasan.data.repoimpl.remote.HadithRepoImpl
 import com.tasnimulhasan.data.repoimpl.remote.PrayerTimesRepoImpl
+import com.tasnimulhasan.domain.repository.AudioPlayerRepository
 import com.tasnimulhasan.domain.repository.CalendarRepository
 import com.tasnimulhasan.domain.repository.CompassRepository
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
@@ -48,5 +50,8 @@ interface RepositoryModule {
 
     @Binds
     fun bindHadithRepository(hadithRepoImpl: HadithRepoImpl): HadithRepository
+
+    @Binds
+    fun bindAudioPlayerRepository(audioPlayerRepoImpl: AudioPlayerRepoImpl): AudioPlayerRepository
 
 }

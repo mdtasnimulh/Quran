@@ -1,22 +1,22 @@
-package com.tasnimulhasan.arabicletters.ui
+package com.tasnimulhasan.data.repoimpl
 
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
-import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import com.tasnimulhasan.domain.repository.AudioPlayerRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AudioPlayer @Inject constructor(
+class AudioPlayerRepoImpl @Inject constructor(
     @ApplicationContext context: Context
-) {
+) : AudioPlayerRepository {
+
     private val player: ExoPlayer = ExoPlayer.Builder(context).build().apply {
         setAudioAttributes(
             AudioAttributes.Builder()
@@ -27,14 +27,13 @@ class AudioPlayer @Inject constructor(
         )
     }
 
-    @OptIn(UnstableApi::class)
-    fun playRaw(resId: Int) {
-        val rawResourceUri = Uri.Builder()
+    override fun playRaw(resId: Int) {
+        val uri = Uri.Builder()
             .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
             .path(resId.toString())
             .build()
-        val mediaItem = MediaItem.fromUri(rawResourceUri)
 
+        val mediaItem = MediaItem.fromUri(uri)
         player.apply {
             stop()
             clearMediaItems()
@@ -44,11 +43,11 @@ class AudioPlayer @Inject constructor(
         }
     }
 
-    fun stop() {
+    override fun stop() {
         player.stop()
     }
 
-    fun release() {
+    override fun release() {
         player.release()
     }
 }
