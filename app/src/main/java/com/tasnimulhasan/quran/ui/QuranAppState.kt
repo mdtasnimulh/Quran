@@ -15,6 +15,7 @@ import com.example.calendar.navigation.navigateToCalendarScreen
 import com.tasnimulhasan.about.navigation.navigateToAboutScreen
 import com.tasnimulhasan.arabicletters.navigation.navigateToArabicLettersScreen
 import com.tasnimulhasan.compass.navigation.navigateToCompassScreen
+import com.tasnimulhasan.dua.navigation.navigateToDuaScreen
 import com.tasnimulhasan.hadith.navigation.navigateToHadith
 import com.tasnimulhasan.hadithchapterrs.navigation.navigateToHadithChapters
 import com.tasnimulhasan.hadithdetails.navigation.navigateToHadithDetails
@@ -99,6 +100,8 @@ class QuranAppState(
     fun navigateToArabicLettersScreen() = navController.navigateToArabicLettersScreen()
 
     fun navigateToSuggestionScreen() = navController.navigateToSuggestionScreen()
+
+    fun navigateToDuaScreen() = navController.navigateToDuaScreen()
 
     fun navigateToHadithChaptersScreen(bookSlug: String) = navController.navigateToHadithChapters(bookSlug)
 

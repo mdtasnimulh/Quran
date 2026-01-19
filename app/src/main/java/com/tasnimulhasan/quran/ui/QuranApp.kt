@@ -80,6 +80,7 @@ import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
+import com.tasnimulhasan.dua.navigation.DuaRoute
 import com.tasnimulhasan.hadith.navigation.HadithRoute
 import com.tasnimulhasan.hadithchapterrs.navigation.HadithChaptersRoute
 import com.tasnimulhasan.hadithdetails.navigation.HadithDetailsRoute
@@ -142,6 +143,7 @@ internal fun QuranApp(
         CompassRoute::class.qualifiedName -> Res.string.title_compass
         ArabicLettersRoute::class.qualifiedName -> Res.string.title_arabic_letters
         SuggestionRoute::class.qualifiedName -> Res.string.title_suggestion
+        DuaRoute::class.qualifiedName -> Res.string.title_dua
         else -> Res.string.app_name
     }
 
@@ -322,6 +324,9 @@ private fun GetContent(appState: QuranAppState) {
             },
             navigateToSuggestionScreen = {
                 appState.navigateToSuggestionScreen()
+            },
+            navigateToDuaScreen = {
+                appState.navigateToDuaScreen()
             },
             navigateToHadithChapters = { bookSlug ->
                 appState.navigateToHadithChaptersScreen( bookSlug = bookSlug)

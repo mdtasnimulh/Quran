@@ -93,6 +93,7 @@ dependencies {
         implementation(feature.suggestion)
         implementation(feature.settings)
         implementation(feature.about)
+        implementation(feature.dua)
 
         /* Hadith Modules */
         implementation(featureHadith.hadith)

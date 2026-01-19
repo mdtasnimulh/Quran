@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":feature:about")
-
-
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -58,6 +55,8 @@ include(":feature:compass")
 include(":feature:arabic-letters")
 include(":feature:suggestion")
 include(":feature:settings")
+include(":feature:about")
+include(":feature:dua")
 
 /* Hadith Modules */
 include(":feature-hadith:hadith")

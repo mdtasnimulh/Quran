@@ -84,6 +84,7 @@ internal fun HomeScreen(
     navigateToCompassScreen: () -> Unit,
     navigateToArabicLettersScreen: () -> Unit,
     navigateToSuggestionScreen: () -> Unit,
+    navigateToDuaScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -434,7 +435,7 @@ internal fun HomeScreen(
                                 title = "Dua's",
                                 cardImage = Res.drawable.img_dua,
                                 onMenuClick = {
-                                    //TODO will implement later
+                                    navigateToDuaScreen.invoke()
                                 }
                             )
                         }

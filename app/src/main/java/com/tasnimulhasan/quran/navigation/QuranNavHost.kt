@@ -7,6 +7,7 @@ import com.example.calendar.navigation.calendarScreen
 import com.tasnimulhasan.about.navigation.aboutScreen
 import com.tasnimulhasan.arabicletters.navigation.arabicLettersScreen
 import com.tasnimulhasan.compass.navigation.compassScreen
+import com.tasnimulhasan.dua.navigation.duaScreen
 import com.tasnimulhasan.hadith.navigation.hadithScreen
 import com.tasnimulhasan.hadithchapterrs.navigation.hadithChaptersScreen
 import com.tasnimulhasan.hadithdetails.navigation.hadithDetailsScreen
@@ -26,6 +27,7 @@ fun QuranNavHost(
     navigateToCompassScreen: () -> Unit,
     navigateToArabicLettersScreen: () -> Unit,
     navigateToSuggestionScreen: () -> Unit,
+    navigateToDuaScreen: () -> Unit,
     navigateToHadithChapters: (bookSlug: String) -> Unit,
     navigateToHadithDetails: (bookSlug: String, chapterNumber: Int) -> Unit,
     navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String, isLastRead: Boolean, lastReadAyaNumber: Int) -> Unit,
@@ -42,6 +44,7 @@ fun QuranNavHost(
             navigateToCompassScreen = navigateToCompassScreen,
             navigateToArabicLettersScreen = navigateToArabicLettersScreen,
             navigateToSuggestionScreen = navigateToSuggestionScreen,
+            navigateToDuaScreen = navigateToDuaScreen,
         )
         quranScreen(navigateToSuraDetails = navigateToSuraDetails)
         suraDetailsScreen(navigateBack = navigateBack)
@@ -58,5 +61,6 @@ fun QuranNavHost(
         hadithDetailsScreen()
         settingsScreen()
         aboutScreen(navigateBack = navigateBack)
+        duaScreen(navigateBack = navigateBack)
     }
 }
