@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
+import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.entity.ArabicAlphabet
@@ -78,10 +79,13 @@ private fun LetterDetailsContent(
 
         Text(
             text = letter.isolatedForm,
-            fontFamily = ArabicKsaFontFamily,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontFamily = ArabicKsaFontFamily,
+                fontSize = 44.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = PumpkinOrange,
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
