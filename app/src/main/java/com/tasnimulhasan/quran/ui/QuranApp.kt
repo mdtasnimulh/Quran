@@ -78,8 +78,13 @@ import com.tasnimulhasan.designsystem.component.QuranTopAppBar
 import com.tasnimulhasan.designsystem.icon.QuranIcons
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.Chartreuse
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.MaltaOrange
+import com.tasnimulhasan.designsystem.theme.MintWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.dua.navigation.DuaRoute
 import com.tasnimulhasan.hadith.navigation.HadithRoute
 import com.tasnimulhasan.hadithchapterrs.navigation.HadithChaptersRoute
@@ -248,7 +253,7 @@ internal fun QuranApp(
                             .wrapContentHeight()
                             .clip(RoundedCornerShape(100))
                             .background(
-                                color = if (isSystemInDarkTheme()) DullBlue else DullBlue,
+                                color = if (isSystemInDarkTheme()) BottleGreen else BottleGreen,
                                 shape = RoundedCornerShape(100)
                             )
                             .padding(horizontal = 4.dp),
@@ -267,7 +272,7 @@ internal fun QuranApp(
                                     FilledIconButton(
                                         modifier = Modifier.width(64.dp),
                                         colors = IconButtonDefaults.iconButtonColors(
-                                            containerColor = if (selectedDestination) MaltaOrange else Color.Transparent
+                                            containerColor = if (selectedDestination) SaladGreen else Color.Transparent
                                         ),
                                         onClick = { appState.navigateToTopLevelDestination(destination) }
                                     ) {
@@ -278,7 +283,7 @@ internal fun QuranApp(
                                                 else destination.unSelectedIcon,
                                             ),
                                             contentDescription = null,
-                                            tint = if (selectedDestination) BackgroundBlack else BackgroundWhite
+                                            tint = if (selectedDestination) MintWhite else EggshellWhite
                                         )
                                     }
 

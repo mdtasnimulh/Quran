@@ -22,6 +22,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -57,7 +59,7 @@ fun QuranScreenHeader(
                         height = Dimension.wrapContent
                     }
             ) {
-                DashedHorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+                DashedHorizontalDivider(color = EggshellWhite.copy(alpha = 0.75f))
             }
 
             Image(
@@ -85,7 +87,7 @@ fun QuranScreenHeader(
                 text = "Last Read: ${lastReadSura.lastSuraNumber}. ${lastReadSura.lastSuraName}",
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = BackgroundWhite,
+                    color = SaladGreen,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -102,7 +104,7 @@ fun QuranScreenHeader(
                 text = lastReadSura.lastSuraNameMeaning,
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = SaladGreen,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -120,7 +122,7 @@ fun QuranScreenHeader(
                 text = " (${lastReadSura.lastSuraType})",
                 style = TextStyle(
                     fontSize = 13.sp,
-                    color = BackgroundWhite,
+                    color = SaladGreen,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -137,7 +139,7 @@ fun QuranScreenHeader(
                 text = "Last Verse: ${lastReadSura.lastAyahNumber} / Total Verse: ${lastReadSura.lasReadSuraTotalAya}",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -155,7 +157,7 @@ fun QuranScreenHeader(
                 text = lastReadSura.lastAyaTextTranslation,
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -174,7 +176,7 @@ fun QuranScreenHeader(
                 text = "Translation: ${lastReadSura.lastReadSuraTranslationName}",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),

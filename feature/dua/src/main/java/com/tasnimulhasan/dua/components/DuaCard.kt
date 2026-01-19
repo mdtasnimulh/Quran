@@ -97,7 +97,7 @@ fun DuaCard(
                         style = TextStyle(
                             fontFamily = RobotoFontFamily,
                             fontSize = 14.sp,
-                            textAlign = TextAlign.Justify,
+                            textAlign = TextAlign.Left,
                             color = Color.DarkGray
                         )
                     )
@@ -113,7 +113,7 @@ fun DuaCard(
                     fontFamily = RobotoFontFamily,
                     fontSize = 14.sp,
                     color = EggshellWhite,
-                    textAlign = TextAlign.Justify,
+                    textAlign = TextAlign.Left,
                 )
             )
 

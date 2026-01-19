@@ -61,7 +61,9 @@ import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.GamingRed
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.entity.location.UserLocationEntity
@@ -512,7 +514,7 @@ internal fun HomeScreen(
                                 },
                             imageVector = Icons.Default.Info,
                             contentDescription = "How to read transliteration",
-                            tint = DullBlue.copy(alpha = 0.25f)
+                            tint = SaladGreen.copy(alpha = 0.75f)
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
@@ -525,7 +527,7 @@ internal fun HomeScreen(
                             text = buildAnnotatedString(
                                 verse = item.ayaText,
                                 ayaNumber = item.index,
-                                color = MaterialTheme.colorScheme.primary
+                                color = SaladGreen
                             ),
                             style = TextStyle(
                                 textAlign = TextAlign.Right,
@@ -542,7 +544,7 @@ internal fun HomeScreen(
                         text = htmlToTajweedAnnotatedString(quranTransliteration[index].ayaText),
                         style = TextStyle(
                             fontSize = 12.sp,
-                            color = DeepSeaGreen,
+                            color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
                             fontWeight = FontWeight.Medium,
                             textAlign = TextAlign.Justify,
                             fontFamily = RobotoFontFamily,
@@ -556,7 +558,7 @@ internal fun HomeScreen(
                         text = suraEnglish[index].ayaText.replace("-", ""),
                         style = TextStyle(
                             fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = MaterialTheme.colorScheme.onBackground,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Justify,
                             fontFamily = RobotoFontFamily,
@@ -566,7 +568,7 @@ internal fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     if (index != suraEnglish.size - 1) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f))
                     }
                 }
 

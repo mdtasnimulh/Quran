@@ -2,6 +2,7 @@ package com.tasnimulhasan.suradetails.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,6 +45,8 @@ import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
 
@@ -65,9 +68,9 @@ fun SuraDetailsItem(
 
     val rowBackgroundColor by animateColorAsState(
         targetValue = if (isPlaying)
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.75f)
         else
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+            MaterialTheme.colorScheme.primary.copy(alpha = 1f),
         label = "AyahRowBg"
     )
 
@@ -102,7 +105,7 @@ fun SuraDetailsItem(
                 text = verse.ayaNumber.toString(),
                 style = TextStyle(
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.tertiary,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -118,7 +121,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(2.dp),
                     imageVector = Icons.AutoMirrored.Filled.OfflineShare,
                     contentDescription = "Share Icon",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = SaladGreen
                 )
             }
 
@@ -147,7 +150,7 @@ fun SuraDetailsItem(
                             else
                                 Icons.Default.PlayArrow,
                             contentDescription = "Play Pause",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = SaladGreen
                         )
                     }
                 }
@@ -164,7 +167,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(1.dp),
                     imageVector = Icons.Default.BookmarkBorder,
                     contentDescription = "BookMark Icon",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = SaladGreen
                 )
             }
 
@@ -183,7 +186,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(1.dp),
                     imageVector = Icons.Default.Info,
                     contentDescription = "Information Icon",
-                    tint = DullBlue.copy(alpha = 0.5f)
+                    tint = SaladGreen.copy(alpha = 0.5f)
                 )
             }
         }
@@ -197,7 +200,7 @@ fun SuraDetailsItem(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 },
-            text = buildAnnotatedString(verse = verse.ayaText, ayaNumber = verse.index, color = MaterialTheme.colorScheme.primary),
+            text = buildAnnotatedString(verse = verse.ayaText, ayaNumber = verse.index, color = SaladGreen),
             style = TextStyle(
                 fontSize = 26.sp,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -218,7 +221,7 @@ fun SuraDetailsItem(
             text = htmlToTajweedAnnotatedString(verseEnglishTransliteration.ayaText),
             style = TextStyle(
                 fontSize = 16.sp,
-                color = DeepSeaGreen,
+                color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Start
             ),
@@ -237,7 +240,7 @@ fun SuraDetailsItem(
             text = verseEnglish.ayaText,
             style = TextStyle(
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.secondary,
+                color = if (isSystemInDarkTheme()) EggshellWhite.copy(0.75f) else MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Start
             ),

@@ -13,24 +13,24 @@ import androidx.compose.ui.platform.LocalContext
 import com.tasnimulhasan.designsystem.theme.CoralRed
 
 private val DarkColorScheme = darkColorScheme(
-    primary = LilacViolet,
-    secondary = DullBlueDark,
-    tertiary = MediumBlue,
-    onBackground = BackgroundWhite,
+    primary = BottleGreen,
+    secondary = TimberGreen,
+    tertiary = PumpkinOrange,
+    onBackground = EggshellWhite,
     background = Color(0xff020202),
     surface = BackgroundBlack,
-    onSurface = BackgroundWhite,
+    onSurface = EggshellWhite,
     error = CoralRed,
     errorContainer = PeachOrange,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = LilacViolet,
-    secondary = DullBlue,
-    tertiary = MediumBlue,
+    primary = BottleGreen,
+    secondary = SaladGreen,
+    tertiary = PumpkinOrange,
     background = Color(0xFFFFFBFE),
     onBackground = BackgroundBlack,
-    surface = BackgroundWhite,
+    surface = EggshellWhite,
     onSurface = BackgroundBlack,
     error = CoralRed,
     errorContainer = PeachOrange,

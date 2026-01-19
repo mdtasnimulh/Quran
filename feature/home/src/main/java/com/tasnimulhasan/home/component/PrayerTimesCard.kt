@@ -35,7 +35,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -91,7 +94,7 @@ fun PrayerTimesCard(
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = RobotoFontFamily,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -110,7 +113,7 @@ fun PrayerTimesCard(
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontFamily = RobotoFontFamily,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -128,7 +131,7 @@ fun PrayerTimesCard(
                 style = TextStyle(
                     fontSize = 24.sp,
                     fontFamily = RobotoFontFamily,
-                    color = BackgroundWhite,
+                    color = SaladGreen,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -165,7 +168,7 @@ fun PrayerTimesCard(
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontFamily = RobotoFontFamily,
-                        color = BackgroundWhite,
+                        color = EggshellWhite,
                         fontWeight = FontWeight.Medium,
                         textAlign = TextAlign.Start
                     ),
@@ -204,7 +207,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                                color = if (isCurrent) SaladGreen else MaterialTheme.colorScheme.onBackground,
                                 fontWeight = if (isCurrent) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
@@ -217,7 +220,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                                color = if (isCurrent) SaladGreen else MaterialTheme.colorScheme.onBackground,
                                 fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
@@ -233,7 +236,7 @@ fun PrayerTimesCard(
                                     .fillMaxWidth()
                                     .padding(horizontal = 4.dp)
                                     .background(
-                                        MaterialTheme.colorScheme.primary,
+                                        SaladGreen,
                                         RoundedCornerShape(10.dp)
                                     )
                             )

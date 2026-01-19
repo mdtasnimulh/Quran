@@ -60,6 +60,7 @@ val MorningDew = Color(0xFFF6FEF9)
 val FreshSprout = Color(0xFF83C441)
 val Harvest = Color(0xFF003023)
 
+// App Theme Color Set
 val PumpkinOrange = Color(0xFFFF6400)
 val EggshellWhite = Color(0xFFF5EBE1)
 val SaladGreen = Color(0xFF8CC850)

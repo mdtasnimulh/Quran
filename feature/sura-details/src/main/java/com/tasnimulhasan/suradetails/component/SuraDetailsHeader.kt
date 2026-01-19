@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
@@ -58,7 +59,7 @@ fun SuraDetailsHeader(
                         height = Dimension.wrapContent
                     }
             ) {
-                DashedHorizontalDivider(color = MaterialTheme.colorScheme.onSurface)
+                DashedHorizontalDivider(color = EggshellWhite.copy(alpha = 0.75f))
             }
 
             Image(
@@ -85,7 +86,7 @@ fun SuraDetailsHeader(
                 text = suraName,
                 style = TextStyle(
                     fontSize = 18.sp,
-                    color = BackgroundWhite,
+                    color = SaladGreen,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -102,7 +103,7 @@ fun SuraDetailsHeader(
                 text = suraNameMeaning,
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = SaladGreen,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -119,7 +120,7 @@ fun SuraDetailsHeader(
                 text = "Type: ",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -137,7 +138,7 @@ fun SuraDetailsHeader(
                 text = suraType,
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -154,7 +155,7 @@ fun SuraDetailsHeader(
                 text = "Total Verse: $ayahCount",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -171,7 +172,7 @@ fun SuraDetailsHeader(
                 text = "Translation: $translationName",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = BackgroundWhite,
+                    color = EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
