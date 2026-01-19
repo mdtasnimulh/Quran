@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -29,7 +28,7 @@ fun YoutubePlayerDialog(
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = MaterialTheme.shapes.large,
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.85f)
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
 
@@ -40,8 +39,7 @@ fun YoutubePlayerDialog(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 AndroidView(
-                    modifier = Modifier
-                        .weight(1f).rotate(90f),
+                    modifier = Modifier.fillMaxWidth(),
                     factory = { context ->
                         YouTubePlayerView(context).apply {
                             enableAutomaticInitialization = false
