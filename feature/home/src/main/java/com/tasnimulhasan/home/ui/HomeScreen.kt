@@ -59,7 +59,6 @@ import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
@@ -89,7 +88,8 @@ internal fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
-    val fusedLocationProviderClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+    val fusedLocationProviderClient =
+        remember { LocationServices.getFusedLocationProviderClient(context) }
     val geoCoder = Geocoder(context, Locale.getDefault())
     var permissionGranted by remember { mutableStateOf(false) }
     var showPermissionRequestDialog by remember { mutableStateOf(false) }
@@ -120,11 +120,16 @@ internal fun HomeScreen(
     )
 
     val locationPermissionRequestLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
         val isGranted = permissions.entries.all { it.value }
         if (isGranted) permissionGranted = true
         else {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(context as Activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                    context as Activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
                 showPermissionRequestDialog = true
             } else {
                 permissionGranted = false
@@ -133,15 +138,23 @@ internal fun HomeScreen(
         }
     }
 
-    val openSettingsLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        permissionGranted = when {
-            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
-                true
+    val openSettingsLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            permissionGranted = when {
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED ||
+                        ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED -> {
+                    true
+                }
+
+                else -> false
             }
-            else -> false
         }
-    }
 
     LaunchedEffect(permissionGranted) {
         if (isLocationSaved && permissionGranted) {
@@ -151,12 +164,20 @@ internal fun HomeScreen(
             latitude = locations?.latitude
             longitude = locations?.longitude
         } else {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
                     if (location != null) {
                         placeName = try {
-                            val address = geoCoder.getFromLocation(location.latitude, location.longitude, 4)
+                            val address =
+                                geoCoder.getFromLocation(location.latitude, location.longitude, 4)
                             cityName = address?.firstOrNull()?.locality
                             countryName = address?.firstOrNull()?.countryName
                             "${address?.firstOrNull()?.locality}, ${address?.firstOrNull()?.countryName}"
@@ -166,9 +187,16 @@ internal fun HomeScreen(
                         }
                         latitude = location.latitude.toString()
                         longitude = location.longitude.toString()
-                        viewModel.action(HomeUiAction.SaveUserLocation(
-                            location = UserLocationEntity(latitude = latitude ?: "", longitude = longitude ?: "", cityName = cityName ?: "", countryName = countryName ?: "")
-                        ))
+                        viewModel.action(
+                            HomeUiAction.SaveUserLocation(
+                                location = UserLocationEntity(
+                                    latitude = latitude ?: "",
+                                    longitude = longitude ?: "",
+                                    cityName = cityName ?: "",
+                                    countryName = countryName ?: ""
+                                )
+                            )
+                        )
                     }
                 }
             }
@@ -194,18 +222,21 @@ internal fun HomeScreen(
         if (translationName.isEmpty() && viewModel.showPreferredDialog) {
             showTranslationDialog = true
         }
-        viewModel.action(HomeUiAction.FetchQuranEnglishSahih(
-            FetchQuranEnglishSahihUseCase.Params(
-                suraNumber = 1,
-                translationName = translationName.ifEmpty { "quran_en_sahih" }
+        viewModel.action(
+            HomeUiAction.FetchQuranEnglishSahih(
+                FetchQuranEnglishSahihUseCase.Params(
+                    suraNumber = 1,
+                    translationName = translationName.ifEmpty { "quran_en_sahih" }
+                )
+            ))
+        viewModel.action(
+            HomeUiAction.FetchQuranTransliteration(
+                FetchQuranEnglishSahihUseCase.Params(
+                    suraNumber = 1,
+                    translationName = "en_transliteration"
+                )
             )
-        ))
-        viewModel.action(HomeUiAction.FetchQuranTransliteration(
-            FetchQuranEnglishSahihUseCase.Params(
-                suraNumber = 1,
-                translationName = "en_transliteration"
-            )
-        ))
+        )
     }
 
     when {
@@ -264,11 +295,26 @@ internal fun HomeScreen(
                         if (uiState.prayerTimes != null) {
                             PrayerTimesCard(
                                 prayerTimes = listOf(
-                                    PrayerTImeEntity("Fajr", uiState.prayerTimes?.prayerTimings?.fajr ?: ""),
-                                    PrayerTImeEntity("Dhuhr", uiState.prayerTimes?.prayerTimings?.dhuhr ?: ""),
-                                    PrayerTImeEntity("Asr", uiState.prayerTimes?.prayerTimings?.asr ?: ""),
-                                    PrayerTImeEntity("Maghrib", uiState.prayerTimes?.prayerTimings?.maghrib ?: ""),
-                                    PrayerTImeEntity("Isha", uiState.prayerTimes?.prayerTimings?.isha ?: "")
+                                    PrayerTImeEntity(
+                                        "Fajr",
+                                        uiState.prayerTimes?.prayerTimings?.fajr ?: ""
+                                    ),
+                                    PrayerTImeEntity(
+                                        "Dhuhr",
+                                        uiState.prayerTimes?.prayerTimings?.dhuhr ?: ""
+                                    ),
+                                    PrayerTImeEntity(
+                                        "Asr",
+                                        uiState.prayerTimes?.prayerTimings?.asr ?: ""
+                                    ),
+                                    PrayerTImeEntity(
+                                        "Maghrib",
+                                        uiState.prayerTimes?.prayerTimings?.maghrib ?: ""
+                                    ),
+                                    PrayerTImeEntity(
+                                        "Isha",
+                                        uiState.prayerTimes?.prayerTimings?.isha ?: ""
+                                    )
                                 ),
                                 currentPrayer = prayerCountdown.currentPrayer,
                                 nextPrayer = prayerCountdown.nextPrayer,
@@ -289,11 +335,12 @@ internal fun HomeScreen(
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ){
+                    ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -329,11 +376,12 @@ internal fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ){
+                    ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -362,6 +410,47 @@ internal fun HomeScreen(
                                 cardImage = Res.drawable.img_quran,
                                 onMenuClick = {
                                     navigateToSuggestionScreen.invoke()
+                                }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Dua's",
+                                cardImage = Res.drawable.img_dua,
+                                onMenuClick = {
+                                    //TODO will implement later
+                                }
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            OtherMenuItem(
+                                title = "Recitation's",
+                                cardImage = Res.drawable.img_recitation,
+                                onMenuClick = {
+                                    //TODO will implement later
                                 }
                             )
                         }
@@ -416,7 +505,8 @@ internal fun HomeScreen(
                                 .clickable {
                                     exampleStrArabic = item.ayaText
                                     exampleStr = quranTransliteration[index].ayaText
-                                    exampleStrTranslation = suraEnglish[index].ayaText.replace("-", "")
+                                    exampleStrTranslation =
+                                        suraEnglish[index].ayaText.replace("-", "")
                                     showGuide = true
                                 },
                             imageVector = Icons.Default.Info,
@@ -431,7 +521,11 @@ internal fun HomeScreen(
                                 .fillMaxWidth()
                                 .wrapContentHeight()
                                 .weight(1f),
-                            text = buildAnnotatedString(verse = item.ayaText, ayaNumber = item.index, color = MaterialTheme.colorScheme.primary),
+                            text = buildAnnotatedString(
+                                verse = item.ayaText,
+                                ayaNumber = item.index,
+                                color = MaterialTheme.colorScheme.primary
+                            ),
                             style = TextStyle(
                                 textAlign = TextAlign.Right,
                                 fontSize = 26.sp,
@@ -470,7 +564,7 @@ internal fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    if (index != suraEnglish.size -1) {
+                    if (index != suraEnglish.size - 1) {
                         HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
                     }
                 }
@@ -510,8 +604,22 @@ internal fun HomeScreen(
                     )
 
                     viewModel.action(HomeUiAction.FetchAllLocalDbSura(1))
-                    viewModel.action(HomeUiAction.FetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(suraNumber = 1, translationName = translation)))
-                    viewModel.action(HomeUiAction.FetchQuranEnglishSahih(FetchQuranEnglishSahihUseCase.Params(suraNumber = 1, translationName = "en_transliteration")))
+                    viewModel.action(
+                        HomeUiAction.FetchQuranEnglishSahih(
+                            FetchQuranEnglishSahihUseCase.Params(
+                                suraNumber = 1,
+                                translationName = translation
+                            )
+                        )
+                    )
+                    viewModel.action(
+                        HomeUiAction.FetchQuranEnglishSahih(
+                            FetchQuranEnglishSahihUseCase.Params(
+                                suraNumber = 1,
+                                translationName = "en_transliteration"
+                            )
+                        )
+                    )
                 }
                 showTranslationDialog = false
             },
