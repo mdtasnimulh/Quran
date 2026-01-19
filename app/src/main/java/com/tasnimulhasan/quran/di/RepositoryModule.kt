@@ -4,6 +4,7 @@ import com.tasnimulhasan.data.repoimpl.AudioPlayerRepoImpl
 import com.tasnimulhasan.data.repoimpl.CalendarRepoImpl
 import com.tasnimulhasan.data.repoimpl.CompassRepoImpl
 import com.tasnimulhasan.data.repoimpl.PreferencesDataStoreRepoImpl
+import com.tasnimulhasan.data.repoimpl.QuranRecitationRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraFromLocalDbDbRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraRepoImpl
 import com.tasnimulhasan.data.repoimpl.SuraNameRepoImpl
@@ -13,6 +14,7 @@ import com.tasnimulhasan.domain.repository.AudioPlayerRepository
 import com.tasnimulhasan.domain.repository.CalendarRepository
 import com.tasnimulhasan.domain.repository.CompassRepository
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
+import com.tasnimulhasan.domain.repository.local.QuranRecitationRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraFromLocalDbRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraRepository
 import com.tasnimulhasan.domain.repository.local.SuraNameRepository
@@ -53,5 +55,8 @@ interface RepositoryModule {
 
     @Binds
     fun bindAudioPlayerRepository(audioPlayerRepoImpl: AudioPlayerRepoImpl): AudioPlayerRepository
+
+    @Binds
+    fun bindQuranRecitationRepository(quranRecitationRepoImpl: QuranRecitationRepoImpl): QuranRecitationRepository
 
 }

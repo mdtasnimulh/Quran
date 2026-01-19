@@ -333,6 +333,9 @@ private fun GetContent(appState: QuranAppState) {
             navigateToDuaScreen = {
                 appState.navigateToDuaScreen()
             },
+            navigateToQuranRecitationScreen = {
+                appState.navigateToQuranRecitationScreen()
+            },
             navigateToHadithChapters = { bookSlug ->
                 appState.navigateToHadithChaptersScreen( bookSlug = bookSlug)
             },

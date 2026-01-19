@@ -2,6 +2,7 @@
 accompanistSwiperefresh = "0.36.0"
 androidGradlePlugin = "8.13.2"
 capturable = "3.0.1"
+youtubePlayer = "13.0.0"
 glideVersion = "1.0.0-beta01"
 datastorePreferences = "1.2.0"
 kotlin = "2.2.21"
@@ -107,6 +108,7 @@ androidx-palette-compose = { group = "androidx.palette", name = "palette-ktx", v
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
 compose-graphics-shapes = { group = "androidx.graphics", name = "graphics-shapes", version.ref = "composeShapes" }
 
+youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtubePlayer" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "mapLocationVersion" }
 play-services-places = { group = "com.google.android.gms", name = "play-services-places", version.ref = "mapPlaceVersion" }
 

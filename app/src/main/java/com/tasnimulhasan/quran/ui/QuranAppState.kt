@@ -22,6 +22,7 @@ import com.tasnimulhasan.hadithdetails.navigation.navigateToHadithDetails
 import com.tasnimulhasan.home.navigation.navigateToHome
 import com.tasnimulhasan.quran.navigation.TopLevelDestination
 import com.tasnimulhasan.quran.navigation.navigateToQuran
+import com.tasnimulhasan.quranrecitation.navigation.navigateToQuranRecitationScreen
 import com.tasnimulhasan.settings.navigation.navigateToSettings
 import com.tasnimulhasan.suggestion.navigation.navigateToSuggestionScreen
 import com.tasnimulhasan.suradetails.navigation.navigateToSuraDetails
@@ -102,6 +103,8 @@ class QuranAppState(
     fun navigateToSuggestionScreen() = navController.navigateToSuggestionScreen()
 
     fun navigateToDuaScreen() = navController.navigateToDuaScreen()
+
+    fun navigateToQuranRecitationScreen() = navController.navigateToQuranRecitationScreen()
 
     fun navigateToHadithChaptersScreen(bookSlug: String) = navController.navigateToHadithChapters(bookSlug)
 

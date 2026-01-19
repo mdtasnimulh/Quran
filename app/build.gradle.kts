@@ -94,6 +94,7 @@ dependencies {
         implementation(feature.settings)
         implementation(feature.about)
         implementation(feature.dua)
+        implementation(feature.quranRecitation)
 
         /* Hadith Modules */
         implementation(featureHadith.hadith)

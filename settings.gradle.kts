@@ -57,6 +57,7 @@ include(":feature:suggestion")
 include(":feature:settings")
 include(":feature:about")
 include(":feature:dua")
+include(":feature:quran-recitation")
 
 /* Hadith Modules */
 include(":feature-hadith:hadith")

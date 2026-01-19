@@ -87,6 +87,7 @@ internal fun HomeScreen(
     navigateToArabicLettersScreen: () -> Unit,
     navigateToSuggestionScreen: () -> Unit,
     navigateToDuaScreen: () -> Unit,
+    navigateToQuranRecitationScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -453,7 +454,7 @@ internal fun HomeScreen(
                                 title = "Recitation's",
                                 cardImage = Res.drawable.img_recitation,
                                 onMenuClick = {
-                                    //TODO will implement later
+                                    navigateToQuranRecitationScreen.invoke()
                                 }
                             )
                         }
