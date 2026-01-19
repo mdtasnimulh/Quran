@@ -1,6 +1,7 @@
 package com.tasnimulhasan.common.constant
 
 import com.tasnimulhasan.entity.ArabicAlphabet
+import com.tasnimulhasan.entity.ExampleWord
 
 object AppConstants {
     const val CHANNEL_ID = "quran_channel_id"
@@ -71,36 +72,276 @@ object AppConstants {
     }
 
     val arabicLetters = listOf(
-        ArabicAlphabet("Alif", "ا", "ا", "ـا", "ـا", "a / ā"),
-        ArabicAlphabet("Baa", "ب", "بـ", "ـبـ", "ـب", "b"),
-        ArabicAlphabet("Taa", "ت", "تـ", "ـتـ", "ـت", "t"),
-        ArabicAlphabet("Thaa", "ث", "ثـ", "ـثـ", "ـث", "th"),
-        ArabicAlphabet("Jeem", "ج", "جـ", "ـجـ", "ـج", "j"),
-        ArabicAlphabet("Haa", "ح", "حـ", "ـحـ", "ـح", "ḥ"),
-        ArabicAlphabet("Khaa", "خ", "خـ", "ـخـ", "ـخ", "kh"),
-        ArabicAlphabet("Dal", "د", "د", "ـد", "ـد", "d"),
-        ArabicAlphabet("Dhal", "ذ", "ذ", "ـذ", "ـذ", "dh"),
-        ArabicAlphabet("Raa", "ر", "ر", "ـر", "ـر", "r"),
-        ArabicAlphabet("Zaay", "ز", "ز", "ـز", "ـز", "z"),
-        ArabicAlphabet("Seen", "س", "سـ", "ـسـ", "ـس", "s"),
-        ArabicAlphabet("Sheen", "ش", "شـ", "ـشـ", "ـش", "sh"),
-        ArabicAlphabet("Saad", "ص", "صـ", "ـصـ", "ـص", "ṣ"),
-        ArabicAlphabet("Daad", "ض", "ضـ", "ـضـ", "ـض", "ḍ"),
-        ArabicAlphabet("Taa", "ط", "طـ", "ـطـ", "ـط", "ṭ"),
-        ArabicAlphabet("Dhaa", "ظ", "ظـ", "ـظـ", "ـظ", "ẓ"),
-        ArabicAlphabet("A\'yen", "ع", "عـ", "ـعـ", "ـع", "\'"),
-        ArabicAlphabet("Ghayn", "غ", "غـ", "ـغـ", "ـغ", "gh"),
-        ArabicAlphabet("Faa", "ف", "فـ", "ـفـ", "ـف", "f"),
-        ArabicAlphabet("Qaaf", "ق", "قـ", "ـقـ", "ـق", "q"),
-        ArabicAlphabet("Kaaf", "ك", "كـ", "ـكـ", "ـك", "k"),
-        ArabicAlphabet("Laam", "ل", "لـ", "ـلـ", "ـل", "l"),
-        ArabicAlphabet("Meem", "م", "مـ", "ـمـ", "ـم", "m"),
-        ArabicAlphabet("Noon", "ن", "نـ", "ـنـ", "ـن", "n"),
-        ArabicAlphabet("Haa\'", "ه", "هـ", "ـهـ", "ـه", "h"),
-        ArabicAlphabet("Waw", "و", "و", "ـو", "ـو", "w"),
-        ArabicAlphabet("Yaa\'", "ي", "يـ", "ـيـ", "ـي", "y"),
-        ArabicAlphabet("Hamzah", "ء", "ء", "ء", "ء", "\'"),
-        ArabicAlphabet("Laam Alif", "لا", "لا", "ـلا", "ـلا", "lā")
+
+        ArabicAlphabet(
+            "Alif", "ا", "ا", "ـا", "ـا", "a / ā",
+            listOf(
+                ExampleWord("آمَنُوا", "āmanū", "they believed"),
+                ExampleWord("ٱلْكِتَابُ", "al-kitābu", "the Book"),
+                ExampleWord("أَحَدٌ", "aḥad", "one")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Baa", "ب", "بـ", "ـبـ", "ـب", "b",
+            listOf(
+                ExampleWord("بِسْمِ", "bismi", "in the name"),
+                ExampleWord("بَلَىٰ", "balā", "yes"),
+                ExampleWord("عِبَادِ", "ʿibād", "servants")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Taa", "ت", "تـ", "ـتـ", "ـت", "t",
+            listOf(
+                ExampleWord("تَقْوَىٰ", "taqwā", "God-consciousness"),
+                ExampleWord("تُوبُوا", "tūbū", "repent"),
+                ExampleWord("جَنَّاتٍ", "jannāt", "gardens")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Thaa", "ث", "ثـ", "ـثـ", "ـث", "th",
+            listOf(
+                ExampleWord("ثَوَابٌ", "thawāb", "reward"),
+                ExampleWord("ثُمَّ", "thumma", "then"),
+                ExampleWord("يَبْعَثُ", "yabʿathu", "He resurrects")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Jeem", "ج", "جـ", "ـجـ", "ـج", "j",
+            listOf(
+                ExampleWord("جَنَّةٍ", "jannah", "garden"),
+                ExampleWord("يَجْعَلْ", "yajʿal", "He makes"),
+                ExampleWord("أَجْرٌ", "ajr", "reward")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Haa", "ح", "حـ", "ـحـ", "ـح", "ḥ",
+            listOf(
+                ExampleWord("حَقٌّ", "ḥaqq", "truth"),
+                ExampleWord("رَحْمَةً", "raḥmah", "mercy"),
+                ExampleWord("يُحِبُّ", "yuḥibbu", "He loves")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Khaa", "خ", "خـ", "ـخـ", "ـخ", "kh",
+            listOf(
+                ExampleWord("خَالِدِينَ", "khālidīn", "abiding forever"),
+                ExampleWord("خَيْرٌ", "khayr", "good"),
+                ExampleWord("أَخَذْنَا", "akhadhnā", "We took")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Dal", "د", "د", "ـد", "ـد", "d",
+            listOf(
+                ExampleWord("دِينِ", "dīn", "religion"),
+                ExampleWord("قَدْ", "qad", "indeed"),
+                ExampleWord("هُدًى", "hudā", "guidance")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Dhal", "ذ", "ذ", "ـذ", "ـذ", "dh",
+            listOf(
+                ExampleWord("ذَٰلِكَ", "dhālika", "that"),
+                ExampleWord("إِذَا", "idhā", "when"),
+                ExampleWord("يُعَذِّبُ", "yuʿadhdhibu", "He punishes")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Raa", "ر", "ر", "ـر", "ـر", "r",
+            listOf(
+                ExampleWord("رَسُولُ", "rasūl", "messenger"),
+                ExampleWord("رَحِيمٌ", "raḥīm", "merciful"),
+                ExampleWord("يَرْزُقُ", "yarzuqu", "He provides")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Zaay", "ز", "ز", "ـز", "ـز", "z",
+            listOf(
+                ExampleWord("زَكَاةَ", "zakāh", "charity"),
+                ExampleWord("يَزِيدُ", "yazīdu", "He increases"),
+                ExampleWord("رِزْقٍ", "rizq", "provision")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Seen", "س", "سـ", "ـسـ", "ـس", "s",
+            listOf(
+                ExampleWord("سَمِيعٌ", "samīʿ", "All-Hearing"),
+                ExampleWord("سُبْحَانَ", "subḥān", "glory be"),
+                ExampleWord("مُسْلِمِينَ", "muslimīn", "Muslims")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Sheen", "ش", "شـ", "ـشـ", "ـش", "sh",
+            listOf(
+                ExampleWord("شَيْءٍ", "shayʾ", "thing"),
+                ExampleWord("شَاكِرٌ", "shākir", "thankful"),
+                ExampleWord("مُشْرِكِينَ", "mushrikīn", "polytheists")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Saad", "ص", "صـ", "ـصـ", "ـص", "ṣ",
+            listOf(
+                ExampleWord("صِرَاطَ", "ṣirāṭ", "path"),
+                ExampleWord("صَابِرِينَ", "ṣābirīn", "patient ones"),
+                ExampleWord("مُصِيبَةٌ", "muṣībah", "calamity")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Daad", "ض", "ضـ", "ـضـ", "ـض", "ḍ",
+            listOf(
+                ExampleWord("ضَالِّينَ", "ḍāllīn", "those astray"),
+                ExampleWord("يَضْرِبُ", "yaḍribu", "He strikes"),
+                ExampleWord("أَرْضِ", "arḍ", "earth")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Taa", "ط", "طـ", "ـطـ", "ـط", "ṭ",
+            listOf(
+                ExampleWord("طَيِّبَاتِ", "ṭayyibāt", "good things"),
+                ExampleWord("طَاعَةٌ", "ṭāʿah", "obedience"),
+                ExampleWord("يُطْعِمُ", "yuṭʿimu", "He feeds")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Dhaa", "ظ", "ظـ", "ـظـ", "ـظ", "ẓ",
+            listOf(
+                ExampleWord("ظَالِمِينَ", "ẓālimīn", "wrongdoers"),
+                ExampleWord("يَظْلِمُ", "yaẓlimu", "He wrongs"),
+                ExampleWord("ظَنًّا", "ẓannan", "assumption")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Ayn", "ع", "عـ", "ـعـ", "ـع", "ʿ",
+            listOf(
+                ExampleWord("عَالَمِينَ", "ʿālamīn", "worlds"),
+                ExampleWord("عِبَادِ", "ʿibād", "servants"),
+                ExampleWord("يَعْلَمُ", "yaʿlamu", "He knows")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Ghayn", "غ", "غـ", "ـغـ", "ـغ", "gh",
+            listOf(
+                ExampleWord("غَفُورٌ", "ghafūr", "All-Forgiving"),
+                ExampleWord("مَغْفِرَةٌ", "maghfirah", "forgiveness"),
+                ExampleWord("يَغْفِرُ", "yaghfiru", "He forgives")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Faa", "ف", "فـ", "ـفـ", "ـف", "f",
+            listOf(
+                ExampleWord("فَضْلُ", "faḍl", "bounty"),
+                ExampleWord("فِرْعَوْنَ", "firʿawn", "Pharaoh"),
+                ExampleWord("يَفْعَلُ", "yafʿalu", "He does")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Qaaf", "ق", "قـ", "ـقـ", "ـق", "q",
+            listOf(
+                ExampleWord("قُرْآنٌ", "qurʾān", "Qur’an"),
+                ExampleWord("قَدِيرٌ", "qadīr", "All-Powerful"),
+                ExampleWord("يَقُولُ", "yaqūlu", "He says")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Kaaf", "ك", "كـ", "ـكـ", "ـك", "k",
+            listOf(
+                ExampleWord("كِتَابٌ", "kitāb", "book"),
+                ExampleWord("كَانَ", "kāna", "was"),
+                ExampleWord("يُكَلِّمُ", "yukallimu", "He speaks")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Laam", "ل", "لـ", "ـلـ", "ـل", "l",
+            listOf(
+                ExampleWord("اللَّهُ", "allāh", "Allah"),
+                ExampleWord("لَعَلَّكُمْ", "laʿallakum", "so that you may"),
+                ExampleWord("قُلْ", "qul", "say")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Meem", "م", "مـ", "ـمـ", "ـم", "m",
+            listOf(
+                ExampleWord("مُؤْمِنِينَ", "muʾminīn", "believers"),
+                ExampleWord("مَغْفِرَةٌ", "maghfirah", "forgiveness"),
+                ExampleWord("رَحْمَةٌ", "raḥmah", "mercy")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Noon", "ن", "نـ", "ـنـ", "ـن", "n",
+            listOf(
+                ExampleWord("نُورٌ", "nūr", "light"),
+                ExampleWord("نَعِيمٍ", "naʿīm", "bliss"),
+                ExampleWord("يُنْفِقُونَ", "yunfiqūn", "they spend")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Haaʼ", "ه", "هـ", "ـهـ", "ـه", "h",
+            listOf(
+                ExampleWord("هُدًى", "hudā", "guidance"),
+                ExampleWord("هُوَ", "huwa", "He"),
+                ExampleWord("جَنَّهُ", "jannah", "his garden")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Waw", "و", "و", "ـو", "ـو", "w",
+            listOf(
+                ExampleWord("وَاللَّهُ", "wa-allāhu", "and Allah"),
+                ExampleWord("وُجُوهٌ", "wujūh", "faces"),
+                ExampleWord("يُوَفِّي", "yuwaffī", "He will give in full")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Yaaʼ", "ي", "يـ", "ـيـ", "ـي", "y",
+            listOf(
+                ExampleWord("يَوْمَ", "yawma", "day"),
+                ExampleWord("يُؤْمِنُونَ", "yuʾminūn", "they believe"),
+                ExampleWord("هَدَىٰ", "hadā", "He guided")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Hamzah", "ء", "ء", "ء", "ء", "ʾ",
+            listOf(
+                ExampleWord("سُئِلَ", "suʾila", "was asked"),
+                ExampleWord("يَسْأَلُونَ", "yasʾalūn", "they ask"),
+                ExampleWord("مَلَائِكَةٌ", "malāʾikah", "angels")
+            )
+        ),
+
+        ArabicAlphabet(
+            "Laam Alif", "لا", "لا", "ـلا", "ـلا", "lā",
+            listOf(
+                ExampleWord("لَا إِلَٰهَ", "lā ilāha", "there is no god"),
+                ExampleWord("لَا رَيْبَ", "lā rayba", "no doubt"),
+                ExampleWord("لَا تَعْلَمُونَ", "lā taʿlamūn", "you do not know")
+            )
+        )
     )
 
 }

@@ -2,6 +2,7 @@ package com.tasnimulhasan.arabicletters.ui.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,26 +11,37 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
+import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
+import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.entity.ArabicAlphabet
+import com.tasnimulhasan.entity.ExampleWord
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +73,7 @@ private fun LetterDetailsContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
     ) {
 
         Text(
@@ -87,10 +99,12 @@ private fun LetterDetailsContent(
             onPlayAudio.invoke(letter.isolatedForm)
         }
 
+        Spacer(Modifier.height(8.dp))
+
         FormsTableAnimated(letter)
 
         ExamplesTable(
-            examples = listOf("بَيت", "كِتاب", "نَبِيّ")
+            examples = letter.exampleWords
         )
     }
 }
@@ -107,7 +121,7 @@ private fun FormsTableAnimated(
             .padding(top = 16.dp)
     ) {
 
-        TableHeader("Form", "Letter")
+        TableHeader("Form", "","Letter")
 
         DividerThin()
 
@@ -130,8 +144,24 @@ private fun FormsTableAnimated(
 private fun PronunciationButton(
     onClick: () -> Unit
 ) {
-    TextButton(onClick = onClick) {
-        Text("🔊 Pronounce", fontWeight = FontWeight.Medium)
+    TextButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(DeepSeaGreen.copy(alpha = 0.1f), shape = RoundedCornerShape(100.dp)),
+        onClick = onClick
+    ) {
+        Text(
+            text = "Pronounce 🔊",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = RobotoFontFamily,
+                color = DeepSeaGreen,
+                platformStyle = PlatformTextStyle(
+                    includeFontPadding = false
+                )
+            )
+        )
     }
 }
 
@@ -155,11 +185,13 @@ private fun AnimatedLetterCell(
 
     Text(
         text = text,
-        fontFamily = ArabicKsaFontFamily,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Bold,
         modifier = Modifier.scale(scale),
-        color = color
+        style = TextStyle(
+            fontFamily = ArabicKsaFontFamily,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
     )
 }
 
@@ -175,13 +207,18 @@ private fun TableRowAnimated(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = label,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         )
 
         AnimatedLetterCell(
@@ -195,15 +232,18 @@ private fun TableRowAnimated(
 
 @Composable
 private fun ExamplesTable(
-    examples: List<String>
+    examples: List<ExampleWord>
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
     ) {
+        Spacer(Modifier.height(8.dp))
 
-        TableHeader("Examples", "")
+        TableHeader("Translation", "Transliteration", "Arabic")
+
+        Spacer(Modifier.height(4.dp))
 
         DividerThin()
 
@@ -212,13 +252,54 @@ private fun ExamplesTable(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.End
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = example,
-                    fontFamily = ArabicKsaFontFamily,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    text = example.english,
+                    style = TextStyle(
+                        fontFamily = RobotoFontFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Start,
+                    )
+                )
+
+                VerticalDivider(
+                    modifier = Modifier.height(32.dp),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+
+                Text(
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    text = example.transliteration,
+                    style = TextStyle(
+                        fontFamily = RobotoFontFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                    )
+                )
+
+                VerticalDivider(
+                    modifier = Modifier.height(32.dp),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+
+                Text(
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    text = example.arabic,
+                    style = TextStyle(
+                        fontFamily = ArabicKsaFontFamily,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.End,
+                    )
                 )
             }
 
@@ -228,24 +309,49 @@ private fun ExamplesTable(
 }
 
 @Composable
-private fun TableHeader(left: String, right: String) {
+private fun TableHeader(left: String, middle: String, right: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth().weight(1f),
             text = left,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
-            color = MaterialTheme.colorScheme.primary
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = DeepSeaGreen,
+                textAlign = TextAlign.Start,
+            )
         )
+
+        if (middle.isNotEmpty()) {
+            Text(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                text = middle,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    color = DeepSeaGreen,
+                    textAlign = TextAlign.Center,
+                )
+            )
+        }
 
         if (right.isNotEmpty()) {
             Text(
+                modifier = Modifier.fillMaxWidth().weight(1f),
                 text = right,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.primary
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    color = DeepSeaGreen,
+                    textAlign = TextAlign.End,
+                )
             )
         }
     }
@@ -257,4 +363,16 @@ private fun DividerThin() {
         thickness = 0.5.dp,
         color = MaterialTheme.colorScheme.outlineVariant
     )
+}
+
+@Preview
+@Composable
+fun PreviewArabicLetterDetails() {
+    QuranTheme {
+        ArabicLetterDetailsBottomSheet(
+            letter = AppConstants.arabicLetters.first(),
+            onPlayAudio = {},
+            onDismiss = {}
+        )
+    }
 }
