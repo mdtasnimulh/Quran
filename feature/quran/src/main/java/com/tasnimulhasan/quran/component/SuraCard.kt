@@ -1,7 +1,5 @@
 package com.tasnimulhasan.quran.component
 
-import android.widget.ImageView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,9 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,13 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
-import com.tasnimulhasan.designsystem.theme.BrandGreen
-import com.tasnimulhasan.designsystem.theme.Purple40
-import com.tasnimulhasan.designsystem.theme.PurpleGrey40
-import com.tasnimulhasan.entity.LastReadSuraInfoEntity
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.sura.SuraNameEntity
-import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun SuraCard(
@@ -83,7 +74,7 @@ fun SuraCard(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
-                color = BackgroundWhite
+                color = EggshellWhite
             )
         )
 
@@ -122,7 +113,7 @@ fun SuraCard(
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = SaladGreen.copy(alpha = 0.75f)
                 )
             )
         }

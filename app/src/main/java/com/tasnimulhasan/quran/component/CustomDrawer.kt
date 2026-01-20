@@ -2,6 +2,7 @@ package com.tasnimulhasan.quran.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.PeachOrange
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
@@ -51,7 +53,7 @@ fun CustomDrawer(
                 modifier = Modifier.fillMaxWidth().wrapContentHeight().weight(1f),
                 text = stringResource(id = Res.string.app_name),
                 style = TextStyle(
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = if (isSystemInDarkTheme()) EggshellWhite else MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     fontFamily = RobotoFontFamily,
                     fontSize = 26.sp,

@@ -19,6 +19,12 @@ val BrandGreen = Color(0xff57c063)
 val BackgroundWhite = Color(0xFFF5F5F5)
 val BackgroundBlack = Color(0xFF151515)
 
+// App Theme Color Set
+val PumpkinOrange = Color(0xFFFF6400)
+val EggshellWhite = Color(0xFFBFB7AE)
+val SaladGreen = Color(0xFF8CC850)
+val BottleGreen = Color(0xFF003223)
+
 val SandWhite = Color(0xFFE6DFD5)
 val PearlWhite = Color(0xFFFFFDF5)
 val PeachOrange = Color(0xFFFFE1D7)
@@ -59,12 +65,6 @@ val IndigoDye = Color(0xFF00425A)
 val MorningDew = Color(0xFFF6FEF9)
 val FreshSprout = Color(0xFF83C441)
 val Harvest = Color(0xFF003023)
-
-// App Theme Color Set
-val PumpkinOrange = Color(0xFFFF6400)
-val EggshellWhite = Color(0xFFF5EBE1)
-val SaladGreen = Color(0xFF8CC850)
-val BottleGreen = Color(0xFF003223)
 
 val Avocado = Color(0xFF558700)
 val CornSilk = Color(0xFFFFFAE1)

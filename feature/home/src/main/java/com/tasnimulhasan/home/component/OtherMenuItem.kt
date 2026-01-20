@@ -28,18 +28,21 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun OtherMenuItem(
+    modifier: Modifier,
     title: String,
     cardImage: Int,
     onMenuClick: () -> Unit,
 ) {
     ElevatedCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .shadow(
@@ -93,7 +96,7 @@ fun OtherMenuItem(
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
                     platformStyle = PlatformTextStyle(
                         includeFontPadding = false
                     )
@@ -109,6 +112,7 @@ fun OtherMenuItem(
 fun PreviewLetterItem() {
     QuranTheme {
         OtherMenuItem(
+            modifier = Modifier,
             title = "Calendar",
             cardImage = Res.drawable.img_calendar,
             onMenuClick = {}

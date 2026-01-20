@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -26,6 +28,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -62,6 +66,7 @@ import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.GamingRed
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
@@ -344,38 +349,22 @@ internal fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Calendar",
+                            cardImage = Res.drawable.img_calendar,
                         ) {
-                            OtherMenuItem(
-                                title = "Calendar",
-                                cardImage = Res.drawable.img_calendar,
-                                onMenuClick = {
-                                    navigateToCalendarScreen.invoke()
-                                }
-                            )
+                            navigateToCalendarScreen.invoke()
                         }
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Qibla",
+                            cardImage = Res.drawable.img_qibla,
                         ) {
-                            OtherMenuItem(
-                                title = "Qibla",
-                                cardImage = Res.drawable.img_qibla,
-                                onMenuClick = {
-                                    navigateToCompassScreen.invoke()
-                                }
-                            )
+                            navigateToCompassScreen.invoke()
                         }
                     }
 
@@ -387,37 +376,23 @@ internal fun HomeScreen(
                             .wrapContentHeight(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            OtherMenuItem(
-                                title = "Arabic",
-                                cardImage = Res.drawable.img_arabic_language,
-                                onMenuClick = {
-                                    navigateToArabicLettersScreen.invoke()
-                                }
-                            )
-                        }
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Arabic",
+                            cardImage = Res.drawable.img_arabic_language,
+                            onMenuClick = {
+                                navigateToArabicLettersScreen.invoke()
+                            }
+                        )
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            OtherMenuItem(
-                                title = "Qur’an\nReflections",
-                                cardImage = Res.drawable.img_quran,
-                                onMenuClick = {
-                                    navigateToSuggestionScreen.invoke()
-                                }
-                            )
-                        }
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Qur’an\nReflections",
+                            cardImage = Res.drawable.img_quran,
+                            onMenuClick = {
+                                navigateToSuggestionScreen.invoke()
+                            }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -428,37 +403,23 @@ internal fun HomeScreen(
                             .wrapContentHeight(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            OtherMenuItem(
-                                title = "Dua's",
-                                cardImage = Res.drawable.img_dua,
-                                onMenuClick = {
-                                    navigateToDuaScreen.invoke()
-                                }
-                            )
-                        }
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Dua's",
+                            cardImage = Res.drawable.img_dua,
+                            onMenuClick = {
+                                navigateToDuaScreen.invoke()
+                            }
+                        )
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            OtherMenuItem(
-                                title = "Recitation's",
-                                cardImage = Res.drawable.img_recitation,
-                                onMenuClick = {
-                                    navigateToQuranRecitationScreen.invoke()
-                                }
-                            )
-                        }
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Recitation's",
+                            cardImage = Res.drawable.img_recitation,
+                            onMenuClick = {
+                                navigateToQuranRecitationScreen.invoke()
+                            }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(32.dp))
@@ -478,7 +439,7 @@ internal fun HomeScreen(
                             fontSize = 56.sp,
                             fontFamily = ArabicUthmanFontFamily,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = if (isSystemInDarkTheme()) EggshellWhite else MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
