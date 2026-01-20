@@ -62,7 +62,7 @@ fun QuranQuoteCard(
                 }
                 .background(
                     color = Color(0xFF2E7D32),
-                    shape = RoundedCornerShape(topStart = 25.dp, bottomStart = 25.dp)
+                    shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp)
                 )
         )
 
