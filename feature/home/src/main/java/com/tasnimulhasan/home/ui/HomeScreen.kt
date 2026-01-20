@@ -94,6 +94,7 @@ internal fun HomeScreen(
     navigateToSuggestionScreen: () -> Unit,
     navigateToDuaScreen: () -> Unit,
     navigateToQuranRecitationScreen: () -> Unit,
+    navigateToAlAsmaUlHusnaScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -344,6 +345,23 @@ internal fun HomeScreen(
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "99 Names of Allah (Al Asma Ul Husna)",
+                            cardImage = Res.drawable.img_name_allah,
+                        ) {
+                            navigateToCalendarScreen.invoke()
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     Row(
                         modifier = Modifier

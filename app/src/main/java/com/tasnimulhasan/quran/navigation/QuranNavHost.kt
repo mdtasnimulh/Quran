@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.example.calendar.navigation.calendarScreen
 import com.tasnimulhasan.about.navigation.aboutScreen
+import com.tasnimulhasan.alasmaulhusna.navigation.alAsmaUlHusnaScreen
 import com.tasnimulhasan.arabicletters.navigation.arabicLettersScreen
 import com.tasnimulhasan.compass.navigation.compassScreen
 import com.tasnimulhasan.dua.navigation.duaScreen
@@ -30,6 +31,7 @@ fun QuranNavHost(
     navigateToSuggestionScreen: () -> Unit,
     navigateToDuaScreen: () -> Unit,
     navigateToQuranRecitationScreen: () -> Unit,
+    navigateToAlAsmaUlHusnaScreen: () -> Unit,
     navigateToHadithChapters: (bookSlug: String) -> Unit,
     navigateToHadithDetails: (bookSlug: String, chapterNumber: Int) -> Unit,
     navigateToSuraDetails: (suraNameMeaning: String, suraNameEnglish: String, suraNumber: Int, suraType: String, isLastRead: Boolean, lastReadAyaNumber: Int) -> Unit,
@@ -41,6 +43,7 @@ fun QuranNavHost(
         startDestination = HomeRoute,
         modifier = modifier,
     ) {
+        alAsmaUlHusnaScreen(navigateBack = navigateBack)
         homeScreen(
             navigateToCalendarScreen = navigateToCalendarScreen,
             navigateToCompassScreen = navigateToCompassScreen,
@@ -48,6 +51,7 @@ fun QuranNavHost(
             navigateToSuggestionScreen = navigateToSuggestionScreen,
             navigateToDuaScreen = navigateToDuaScreen,
             navigateToQuranRecitationScreen = navigateToQuranRecitationScreen,
+            navigateToAlAsmaUlHusnaScreen = navigateToAlAsmaUlHusnaScreen,
         )
         quranScreen(navigateToSuraDetails = navigateToSuraDetails)
         suraDetailsScreen(navigateBack = navigateBack)

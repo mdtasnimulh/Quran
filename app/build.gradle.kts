@@ -66,6 +66,9 @@ android {
 }
 
 dependencies {
+    /*** "Al Asma Ul Husna (ALl the Beautiful Names and Attribute belong to Allah Subahnahu Ta'Ala" ***/
+    implementation(projects.fetatureAlAsmaUlHusna)
+
     /*** Core Modules ***/
     with(projects.core) {
         implementation(common)

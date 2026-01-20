@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.calendar.navigation.navigateToCalendarScreen
 import com.tasnimulhasan.about.navigation.navigateToAboutScreen
+import com.tasnimulhasan.alasmaulhusna.navigation.navigateToAlAsmaUlHusnaScreen
 import com.tasnimulhasan.arabicletters.navigation.navigateToArabicLettersScreen
 import com.tasnimulhasan.compass.navigation.navigateToCompassScreen
 import com.tasnimulhasan.dua.navigation.navigateToDuaScreen
@@ -105,6 +106,8 @@ class QuranAppState(
     fun navigateToDuaScreen() = navController.navigateToDuaScreen()
 
     fun navigateToQuranRecitationScreen() = navController.navigateToQuranRecitationScreen()
+
+    fun navigateToAlAsmaUlHusnaScreen() = navController.navigateToAlAsmaUlHusnaScreen()
 
     fun navigateToHadithChaptersScreen(bookSlug: String) = navController.navigateToHadithChapters(bookSlug)
 

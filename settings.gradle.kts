@@ -32,6 +32,9 @@ rootProject.name = "Quran"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 
+/*** "Al Asma Ul Husna (ALl the Beautiful Names and Attribute belong to Allah Subahnahu Ta'Ala" ***/
+include(":fetature-al-asma-ul-husna")
+
 /*** Core Modules ***/
 include(":core:common")
 include(":core:data")

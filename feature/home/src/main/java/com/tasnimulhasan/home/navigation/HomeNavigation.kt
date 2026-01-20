@@ -22,6 +22,7 @@ fun NavGraphBuilder.homeScreen(
     navigateToSuggestionScreen: () -> Unit,
     navigateToDuaScreen: () -> Unit,
     navigateToQuranRecitationScreen: () -> Unit,
+    navigateToAlAsmaUlHusnaScreen: () -> Unit,
 ) {
     composable<HomeRoute>(
         enterTransition = { fadeIn() },
@@ -36,6 +37,7 @@ fun NavGraphBuilder.homeScreen(
             navigateToSuggestionScreen = navigateToSuggestionScreen,
             navigateToDuaScreen = navigateToDuaScreen,
             navigateToQuranRecitationScreen = navigateToQuranRecitationScreen,
+            navigateToAlAsmaUlHusnaScreen = navigateToAlAsmaUlHusnaScreen,
         )
     }
 }
