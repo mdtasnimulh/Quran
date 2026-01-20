@@ -58,6 +58,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
+import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
@@ -460,6 +461,12 @@ internal fun HomeScreen(
                         }
                     }
 
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    DashedHorizontalDivider(
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
@@ -468,10 +475,10 @@ internal fun HomeScreen(
                         modifier = Modifier.fillMaxWidth(),
                         text = "الفاتحة",
                         style = TextStyle(
-                            fontSize = 48.sp,
+                            fontSize = 56.sp,
                             fontFamily = ArabicUthmanFontFamily,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center,
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
@@ -486,7 +493,7 @@ internal fun HomeScreen(
                             fontSize = 22.sp,
                             fontFamily = RobotoFontFamily,
                             fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = SaladGreen,
                             textAlign = TextAlign.Center
                         )
                     )
