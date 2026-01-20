@@ -1,6 +1,7 @@
 package com.tasnimulhasan.alasmaulhusna.ui.screen
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,8 @@ import com.tasnimulhasan.alasmaulhusna.ui.component.QuranQuoteCard
 import com.tasnimulhasan.alasmaulhusna.ui.viewmodel.AlAsmaUlHusnaViewModel
 import com.tasnimulhasan.common.constant.AlAsmaUlHusna
 import com.tasnimulhasan.common.constant.QuoteConstants
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -65,22 +68,25 @@ internal fun AlAsmaUlHusnaScreen(
                     },
             ) {
                 item(span = { GridItemSpan(4) }) {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
                     QuranQuoteCard(title = QuoteConstants.quotes[0])
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
                     QuranQuoteCard(title = QuoteConstants.quotes[1])
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
                     QuranQuoteCard(title = QuoteConstants.quotes[2])
-                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item(span = { GridItemSpan(4) }) {
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
@@ -90,20 +96,24 @@ internal fun AlAsmaUlHusnaScreen(
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
                         textAlign = TextAlign.Start
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
                     QuranQuoteCard(title = QuoteConstants.quotes[3])
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
                     QuranQuoteCard(title = QuoteConstants.quotes[4])
                     Spacer(modifier = Modifier.height(24.dp))
+                }
+
+                item(span = { GridItemSpan(4) }) {
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
 
                 item(span = { GridItemSpan(4) }) {
@@ -113,8 +123,9 @@ internal fun AlAsmaUlHusnaScreen(
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontFamily = RobotoFontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Start
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.Start,
+                            color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen
                         )
                     )
 

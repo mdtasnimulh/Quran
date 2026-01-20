@@ -1,6 +1,7 @@
 package com.tasnimulhasan.alasmaulhusna.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
@@ -48,7 +52,7 @@ fun QuranQuoteCard(
             },
             text = "“",
             fontSize = 28.sp,
-            color = Color.Black,
+            color = SaladGreen,
             fontWeight = FontWeight.Bold
         )
 
@@ -81,8 +85,8 @@ fun QuranQuoteCard(
             text = title,
             fontSize = 12.sp,
             fontStyle = FontStyle.Italic,
-            fontFamily = RobotoFontFamily,
-            color = MaterialTheme.colorScheme.primary,
+            fontFamily = ArabicUthmanFontFamily,
+            color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
             lineHeight = 20.sp
         )
     }

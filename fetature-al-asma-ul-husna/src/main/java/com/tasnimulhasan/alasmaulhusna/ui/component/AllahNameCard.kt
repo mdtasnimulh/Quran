@@ -1,6 +1,7 @@
 package com.tasnimulhasan.alasmaulhusna.ui.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.common.constant.AlAsmaUlHusna
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
@@ -39,21 +41,21 @@ fun AllahNameCard(
             .height(IntrinsicSize.Min)
             .border(
                 width = 1.dp,
-                color = Color(0xFFE0E0E0)
+                color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen
             )
     ) {
         Box(
             modifier = Modifier
                 .width(32.dp)
                 .fillMaxHeight()
-                .border(1.dp, Color(0xFFE0E0E0)),
+                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = alAsmaUlHusna.serialNo.toString(),
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = SaladGreen,
+                    color = SaladGreen.copy(0.7f),
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Bold
                 )
@@ -64,18 +66,18 @@ fun AllahNameCard(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .border(1.dp, Color(0xFFE0E0E0)),
+                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 2.dp),
+                    .padding(horizontal = 2.dp, vertical = 4.dp),
                 text = alAsmaUlHusna.nameArabic,
                 style = TextStyle(
-                    fontSize = 21.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = BottleGreen,
+                    color = if (isSystemInDarkTheme()) SaladGreen else SaladGreen,
                     textAlign = TextAlign.Center,
                     fontFamily = ArabicKsaFontFamily
                 )
@@ -86,7 +88,7 @@ fun AllahNameCard(
             modifier = Modifier
                 .weight(1.2f)
                 .fillMaxHeight()
-                .border(1.dp, Color(0xFFE0E0E0)),
+                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -96,7 +98,7 @@ fun AllahNameCard(
                 text = alAsmaUlHusna.nameEnglish,
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = BottleGreen,
+                    color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
@@ -109,15 +111,15 @@ fun AllahNameCard(
                 .weight(1.8f)
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .border(1.dp, Color(0xFFE0E0E0)),
+                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
-                modifier = Modifier.padding(horizontal = 4.dp),
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                 text = alAsmaUlHusna.nameMeaning,
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = BottleGreen,
+                    color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal
                 )
