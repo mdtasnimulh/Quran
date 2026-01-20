@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.tasnimulhasan.alasmaulhusna.ui.component.QuranQuoteCard
 import com.tasnimulhasan.alasmaulhusna.ui.viewmodel.AlAsmaUlHusnaViewModel
+import com.tasnimulhasan.common.constant.QuoteConstants
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -42,7 +44,7 @@ internal fun AlAsmaUlHusnaScreen(
     ) {
         val (lazyColumn) = createRefs()
 
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(4),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -69,7 +71,43 @@ internal fun AlAsmaUlHusnaScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
+                item(span = { GridItemSpan(4) }) {
+                    QuranQuoteCard(title = QuoteConstants.quotes[0])
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
 
+                item(span = { GridItemSpan(4) }) {
+                    QuranQuoteCard(title = QuoteConstants.quotes[1])
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                item(span = { GridItemSpan(4) }) {
+                    QuranQuoteCard(title = QuoteConstants.quotes[2])
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item(span = { GridItemSpan(4) }) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Prophet Muhammad ﷺ said:",
+                        fontFamily = RobotoFontFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Start
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                item(span = { GridItemSpan(4) }) {
+                    QuranQuoteCard(title = QuoteConstants.quotes[3])
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                item(span = { GridItemSpan(4) }) {
+                    QuranQuoteCard(title = QuoteConstants.quotes[4])
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
 
                 item(span = { GridItemSpan(4) }) {
                     Spacer(modifier = Modifier.height(24.dp))

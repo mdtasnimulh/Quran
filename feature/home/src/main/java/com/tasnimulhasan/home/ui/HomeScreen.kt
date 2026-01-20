@@ -357,7 +357,7 @@ internal fun HomeScreen(
                             title = "99 Names of Allah (Al Asma Ul Husna)",
                             cardImage = Res.drawable.img_name_allah,
                         ) {
-                            navigateToCalendarScreen.invoke()
+                            navigateToAlAsmaUlHusnaScreen.invoke()
                         }
                     }
 
