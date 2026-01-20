@@ -71,6 +71,7 @@ import androidx.xr.compose.material3.ExperimentalMaterial3XrApi
 import androidx.xr.compose.material3.HorizontalFloatingToolbar
 import com.example.calendar.navigation.CalendarRoute
 import com.tasnimulhasan.about.navigation.AboutRoute
+import com.tasnimulhasan.alasmaulhusna.navigation.AlAsmaUlHusnaRoute
 import com.tasnimulhasan.arabicletters.navigation.ArabicLettersRoute
 import com.tasnimulhasan.common.utils.coloredShadow
 import com.tasnimulhasan.compass.navigation.CompassRoute
@@ -149,6 +150,7 @@ internal fun QuranApp(
         ArabicLettersRoute::class.qualifiedName -> Res.string.title_arabic_letters
         SuggestionRoute::class.qualifiedName -> Res.string.title_suggestion
         DuaRoute::class.qualifiedName -> Res.string.title_dua
+        AlAsmaUlHusnaRoute::class.qualifiedName -> Res.string.al_asma_ul_husna
         else -> Res.string.app_name
     }
 

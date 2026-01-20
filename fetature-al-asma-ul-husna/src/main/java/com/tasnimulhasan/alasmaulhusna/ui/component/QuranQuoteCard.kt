@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -68,7 +69,7 @@ fun QuranQuoteCard(
 
         Text(
             modifier = Modifier
-                .padding(vertical = 4.dp)
+                .padding(vertical = 2.dp)
                 .constrainAs(quote) {
                     top.linkTo(parent.top)
                     start.linkTo(divider.end, margin = 4.dp)
@@ -78,10 +79,10 @@ fun QuranQuoteCard(
                     height = Dimension.wrapContent
                 },
             text = title,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             fontStyle = FontStyle.Italic,
             fontFamily = RobotoFontFamily,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.primary,
             lineHeight = 20.sp
         )
     }

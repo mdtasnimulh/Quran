@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Qur\'an</string>
+    <string name="al_asma_ul_husna">Al Asma Ul Husna</string>
 
     <string name="navigation_icon_content_description">Top App Bar Menu Button</string>
     <string name="navigation_back_content_description">Top App Bar Back Button</string>
