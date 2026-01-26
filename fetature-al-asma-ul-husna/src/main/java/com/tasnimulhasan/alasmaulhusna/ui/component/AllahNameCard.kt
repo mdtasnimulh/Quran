@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +56,7 @@ fun AllahNameCard(
                     fontSize = 14.sp,
                     color = SaladGreen.copy(0.7f),
                     fontFamily = RobotoFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.SemiBold
                 )
             )
         }
@@ -75,8 +74,8 @@ fun AllahNameCard(
                     .padding(horizontal = 2.dp, vertical = 4.dp),
                 text = alAsmaUlHusna.nameArabic,
                 style = TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = if (isSystemInDarkTheme()) SaladGreen else SaladGreen,
                     textAlign = TextAlign.Center,
                     fontFamily = ArabicKsaFontFamily
@@ -86,7 +85,7 @@ fun AllahNameCard(
 
         Box(
             modifier = Modifier
-                .weight(1.2f)
+                .weight(1.4f)
                 .fillMaxHeight()
                 .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
             contentAlignment = Alignment.Center
@@ -108,7 +107,7 @@ fun AllahNameCard(
 
         Box(
             modifier = Modifier
-                .weight(1.8f)
+                .weight(1.6f)
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
@@ -118,7 +117,7 @@ fun AllahNameCard(
                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                 text = alAsmaUlHusna.nameMeaning,
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 13.sp,
                     color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal

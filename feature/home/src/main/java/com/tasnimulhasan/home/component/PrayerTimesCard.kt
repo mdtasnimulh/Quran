@@ -147,7 +147,7 @@ fun PrayerTimesCard(
                     }
                     .clip(RoundedCornerShape(25.dp))
                     .background(
-                        color = BackgroundWhite.copy(alpha = 0.5f),
+                        color = BackgroundWhite.copy(alpha = 0.15f),
                         shape = RoundedCornerShape(25.dp)
                     )
                     .padding(horizontal = 6.dp, vertical = 4.dp),
@@ -157,7 +157,7 @@ fun PrayerTimesCard(
                 Icon(
                     imageVector = Icons.Default.AccessTime,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = EggshellWhite,
                     modifier = Modifier.size(16.dp)
                 )
 
