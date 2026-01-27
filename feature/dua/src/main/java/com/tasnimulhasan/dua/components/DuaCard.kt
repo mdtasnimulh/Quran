@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.common.constant.Dua
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
+import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.PumpkinOrange
@@ -87,7 +88,7 @@ fun DuaCard(
                             fontFamily = ArabicKsaFontFamily,
                             fontSize = 32.sp,
                             textAlign = TextAlign.Right,
-                            color = EggshellWhite,
+                            color = BackgroundWhite,
                         )
                     )
 

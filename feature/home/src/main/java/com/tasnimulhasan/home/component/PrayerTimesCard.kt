@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.common.dateparser.DateTimeFormat
+import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
@@ -216,7 +218,10 @@ fun PrayerTimesCard(
                         Spacer(Modifier.height(8.dp))
 
                         Text(
-                            text = time.prayerTime,
+                            text = time.prayerTime.convertReadableDateTime(
+                                DateTimeFormat.sqlHM,
+                                DateTimeFormat.outputHMA
+                            ),
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
