@@ -28,24 +28,37 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("app-credential/quran.jks")
-            storePassword = "quran107"
-            keyAlias = "quran"
-            keyPassword = "quran107"
+            storeFile = file("app_credential/ghuraba.jks")
+            storePassword = "Ghuraba@#$123"
+            keyAlias = "ghuraba"
+            keyPassword = "Ghuraba@#$123"
         }
     }
 
     buildTypes {
         debug {
-            applicationIdSuffix = QuranBuildType.DEBUG.applicationIdSuffix
+            signingConfig = signingConfigs.getByName("debug")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
+
         release {
             isMinifyEnabled = true
-            applicationIdSuffix = QuranBuildType.RELEASE.applicationIdSuffix
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.named("debug").get()
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
+        }
+
+        create("qa") {
+            initWith(getByName("release"))
+            matchingFallbacks.add("release")
         }
     }
+
     buildFeatures {
         compose = true
         buildConfig = true

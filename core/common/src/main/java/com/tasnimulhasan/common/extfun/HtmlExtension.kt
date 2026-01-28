@@ -3,6 +3,7 @@ package com.tasnimulhasan.common.extfun
 import android.graphics.Typeface
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -14,7 +15,6 @@ import com.tasnimulhasan.designsystem.theme.HeavyLetterColor
 import com.tasnimulhasan.designsystem.theme.LongVowelColor
 import com.tasnimulhasan.designsystem.theme.ShaddahColor
 import com.tasnimulhasan.entity.enum.TajweedRule
-import com.tasnimulhasan.entity.enum.tajweedColor
 
 fun htmlToAnnotatedString(html: String): AnnotatedString {
     val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -111,3 +111,11 @@ fun applyHeavyLetterColor(text: String): AnnotatedString {
         }
     }
 }
+
+fun tajweedColor(rule: TajweedRule): Color =
+    when (rule) {
+        TajweedRule.MADD -> LongVowelColor
+        TajweedRule.SHADDAH -> ShaddahColor
+        TajweedRule.HEAVY_LETTER -> HeavyLetterColor
+        TajweedRule.NORMAL -> Color.Unspecified
+    }
