@@ -172,6 +172,14 @@ internal fun SettingsScreen(
                 }
 
                 item {
+                    DashedHorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
                     val translationStr =
                         viewModel.translationOptions.find { it.first == translationName }?.second
                     Text(
@@ -186,14 +194,6 @@ internal fun SettingsScreen(
                             )
                         )
                     )
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-
-                item {
-                    DashedHorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
                 }
 
                 item {

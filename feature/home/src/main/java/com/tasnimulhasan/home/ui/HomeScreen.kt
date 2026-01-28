@@ -483,74 +483,76 @@ internal fun HomeScreen(
                 itemsIndexed(uiState.surahList) { index, item ->
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable {
-                                    exampleStrArabic = item.ayaText
-                                    exampleStr = quranTransliteration[index].ayaText
-                                    exampleStrTranslation =
-                                        suraEnglish[index].ayaText.replace("-", "")
-                                    showGuide = true
-                                },
-                            imageVector = Icons.Default.Info,
-                            contentDescription = "How to read transliteration",
-                            tint = SaladGreen.copy(alpha = 0.75f)
-                        )
-
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        Text(
+                    if (quranTransliteration.isNotEmpty() && suraEnglish.isNotEmpty()) {
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight()
-                                .weight(1f),
-                            text = buildAnnotatedString(
-                                verse = item.ayaText,
-                                ayaNumber = item.index,
-                                color = SaladGreen
-                            ),
+                                .wrapContentHeight(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable {
+                                        exampleStrArabic = item.ayaText
+                                        exampleStr = quranTransliteration[index].ayaText
+                                        exampleStrTranslation =
+                                            suraEnglish[index].ayaText.replace("-", "")
+                                        showGuide = true
+                                    },
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "How to read transliteration",
+                                tint = SaladGreen.copy(alpha = 0.75f)
+                            )
+
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .weight(1f),
+                                text = buildAnnotatedString(
+                                    verse = item.ayaText,
+                                    ayaNumber = item.index,
+                                    color = SaladGreen
+                                ),
+                                style = TextStyle(
+                                    textAlign = TextAlign.Right,
+                                    fontSize = 26.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                ),
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        Text(
+                            modifier = Modifier,
+                            text = htmlToTajweedAnnotatedString(quranTransliteration[index].ayaText),
                             style = TextStyle(
-                                textAlign = TextAlign.Right,
-                                fontSize = 26.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
+                                fontWeight = FontWeight.Medium,
+                                textAlign = TextAlign.Justify,
+                                fontFamily = RobotoFontFamily,
+                            ),
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            modifier = Modifier,
+                            text = suraEnglish[index].ayaText.replace("-", ""),
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Justify,
+                                fontFamily = RobotoFontFamily,
                             ),
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        modifier = Modifier,
-                        text = htmlToTajweedAnnotatedString(quranTransliteration[index].ayaText),
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
-                            fontWeight = FontWeight.Medium,
-                            textAlign = TextAlign.Justify,
-                            fontFamily = RobotoFontFamily,
-                        ),
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        modifier = Modifier,
-                        text = suraEnglish[index].ayaText.replace("-", ""),
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Justify,
-                            fontFamily = RobotoFontFamily,
-                        ),
-                    )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
