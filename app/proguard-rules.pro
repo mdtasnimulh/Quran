@@ -114,6 +114,9 @@
 -keep class org.openxmlformats.** { *; }
 -keep class javax.xml.stream.** { *; }
 
+-keep class com.tasnimulhasan.** { *; }
+-keepnames class com.tasnimulhasan.**
+
 -dontwarn com.android.extensions.xr.XrExtensionResult
 -dontwarn com.android.extensions.xr.XrExtensions
 -dontwarn com.android.extensions.xr.function.Consumer

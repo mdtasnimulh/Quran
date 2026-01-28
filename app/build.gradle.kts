@@ -43,7 +43,7 @@ android {
             isMinifyEnabled = true
             applicationIdSuffix = QuranBuildType.RELEASE.applicationIdSuffix
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.named("debug").get()
+            signingConfig = signingConfigs.named("release").get()
         }
     }
 
