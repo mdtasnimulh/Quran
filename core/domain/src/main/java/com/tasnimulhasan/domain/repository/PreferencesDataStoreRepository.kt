@@ -1,6 +1,9 @@
 package com.tasnimulhasan.domain.repository
 
+import com.tasnimulhasan.entity.AppConfiguration
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
+import com.tasnimulhasan.entity.enum.ThemeColor
+import com.tasnimulhasan.entity.enum.ThemeStyleType
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
 import kotlinx.coroutines.flow.Flow
@@ -19,4 +22,14 @@ interface PreferencesDataStoreRepository {
     fun getIsLocationAvailable(): Flow<Boolean>
     suspend fun savePreferredTranslation(translationName: String)
     fun getPreferredTranslation(): Flow<String>
+
+    suspend fun changeIsFirstLaunch(isFirstLaunch: Boolean)
+
+    val appConfigurationStream: Flow<AppConfiguration>
+
+    suspend fun toggleDynamicColors()
+
+    suspend fun changeThemeStyle(themeStyle: ThemeStyleType)
+
+    suspend fun changeThemeColor(themeColor: ThemeColor)
 }

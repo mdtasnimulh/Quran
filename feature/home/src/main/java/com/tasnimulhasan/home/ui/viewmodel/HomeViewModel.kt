@@ -14,6 +14,7 @@ import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.FetchDailyPra
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.GetLastSyncTimeUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveDailyPrayerTimesToDataStoreUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.prayerTimes.SaveLastSyncTimeUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.theme.ChangeIsFirstLaunchUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.translation.GetPreferredTranslationUseCase
 import com.tasnimulhasan.domain.localusecase.datastore.translation.SavePreferredTranslationUseCase
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
@@ -49,6 +50,7 @@ class HomeViewModel @Inject constructor(
     private val fetchQuranEnglishSahihUseCase: FetchQuranEnglishSahihUseCase,
     private val getPreferredTranslationUseCase: GetPreferredTranslationUseCase,
     private val savePreferredTranslationUseCase: SavePreferredTranslationUseCase,
+    private val changeIsFirstLaunchUseCase: ChangeIsFirstLaunchUseCase,
 ) : BaseViewModel() {
 
     val translationOptions = listOf(

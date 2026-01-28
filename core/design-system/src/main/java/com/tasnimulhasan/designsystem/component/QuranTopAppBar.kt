@@ -42,7 +42,7 @@ fun QuranTopAppBar(
         title = {
             Text(
                 text = stringResource(id = titleRes),
-                color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = RobotoFontFamily,
                 fontWeight = FontWeight.SemiBold
             )
@@ -52,7 +52,7 @@ fun QuranTopAppBar(
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                    tint = MaterialTheme.colorScheme.onBackground,
                 )
             }
         },

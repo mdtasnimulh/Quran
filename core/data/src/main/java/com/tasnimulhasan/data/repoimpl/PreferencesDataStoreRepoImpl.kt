@@ -5,13 +5,18 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.tasnimulhasan.domain.repository.PreferencesDataStoreRepository
+import com.tasnimulhasan.entity.AppConfiguration
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
+import com.tasnimulhasan.entity.enum.ThemeColor
+import com.tasnimulhasan.entity.enum.ThemeStyleType
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -28,6 +33,25 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
             exception.localizedMessage?.let { Log.e(tag, it) }
         }
     }
+
+    override val appConfigurationStream: Flow<AppConfiguration> = dataStorePreferences.data
+        .catch { exception ->
+            exception.localizedMessage?.let { Log.e(tag, it) }
+            emit(value = emptyPreferences())
+        }
+        .map { preferences ->
+            val useDynamicColors = preferences[PreferencesKeys.useDynamicColors] ?: true
+            val themeStyle = preferences[PreferencesKeys.themeStyle].toThemeStyleType()
+            val themeColor = preferences[PreferencesKeys.themeColor].toThemeColor()
+            val isFirstLaunch = preferences[PreferencesKeys.isFirstLaunch] ?: true
+
+            AppConfiguration(
+                useDynamicColors = useDynamicColors,
+                themeStyle = themeStyle,
+                themeColor = themeColor,
+                isFirstLaunch = isFirstLaunch,
+            )
+        }
 
     override suspend fun isLastReadSuraAvailable(available: Boolean) {
         tryIt {
@@ -121,6 +145,53 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         }
     }
 
+    override suspend fun toggleDynamicColors() {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                val current = preferences[PreferencesKeys.useDynamicColors] ?: true
+                preferences[PreferencesKeys.useDynamicColors] = !current
+            }
+        }
+    }
+
+    override suspend fun changeThemeStyle(themeStyle: ThemeStyleType) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.themeStyle] = themeStyle.name
+            }
+        }
+    }
+
+    override suspend fun changeThemeColor(themeColor: ThemeColor) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.themeColor] = themeColor.name
+            }
+        }
+    }
+
+    override suspend fun changeIsFirstLaunch(isFirstLaunch: Boolean) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.isFirstLaunch] = isFirstLaunch
+            }
+        }
+    }
+
+    private fun String?.toThemeStyleType(): ThemeStyleType = when (this) {
+        ThemeStyleType.LightMode.name -> ThemeStyleType.LightMode
+        ThemeStyleType.DarkMode.name -> ThemeStyleType.DarkMode
+        else -> ThemeStyleType.FollowAndroidSystem
+    }
+
+    private fun String?.toThemeColor(): ThemeColor = when (this) {
+        ThemeColor.BlueMedium.name -> ThemeColor.BlueMedium
+        ThemeColor.CreamRed.name -> ThemeColor.CreamRed
+        ThemeColor.MythicGreen.name -> ThemeColor.MythicGreen
+        ThemeColor.Violet.name -> ThemeColor.Violet
+        else -> ThemeColor.Default
+    }
+
     private object PreferencesKeys {
         val lastReadSura = stringPreferencesKey(name = "last_read_sura")
         val isLastReadSuraAvailable = booleanPreferencesKey(name = "is_last_read_sura_available")
@@ -129,5 +200,9 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         val isLocationAvailable = booleanPreferencesKey(name = "is_location_available")
         val userLocation = stringPreferencesKey(name = "user_location")
         val preferredTranslation = stringPreferencesKey(name = "preferred_translation")
+        val isFirstLaunch = booleanPreferencesKey(name = "is_first_launch")
+        val useDynamicColors = booleanPreferencesKey(name = "use_dynamic_colors")
+        val themeStyle = stringPreferencesKey(name = "theme_style")
+        val themeColor = stringPreferencesKey(name = "theme_color")
     }
 }

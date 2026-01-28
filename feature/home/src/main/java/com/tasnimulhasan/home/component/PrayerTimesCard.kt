@@ -188,7 +188,7 @@ fun PrayerTimesCard(
                         height = Dimension.wrapContent
                     }
                     .background(
-                        if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
+                        MaterialTheme.colorScheme.background,
                         RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
                     ),
                 horizontalArrangement = Arrangement.SpaceAround,

@@ -53,7 +53,7 @@ fun CustomDrawer(
                 modifier = Modifier.fillMaxWidth().wrapContentHeight().weight(1f),
                 text = stringResource(id = Res.string.app_name),
                 style = TextStyle(
-                    color = if (isSystemInDarkTheme()) EggshellWhite else MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
                     fontFamily = RobotoFontFamily,
                     fontSize = 26.sp,

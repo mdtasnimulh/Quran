@@ -443,7 +443,7 @@ internal fun HomeScreen(
                     Spacer(modifier = Modifier.height(32.dp))
 
                     DashedHorizontalDivider(
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -457,7 +457,7 @@ internal fun HomeScreen(
                             fontSize = 56.sp,
                             fontFamily = ArabicUthmanFontFamily,
                             fontWeight = FontWeight.Bold,
-                            color = if (isSystemInDarkTheme()) EggshellWhite else MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Center,
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false

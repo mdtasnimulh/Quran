@@ -46,17 +46,17 @@ fun OtherMenuItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .shadow(
-                elevation = 4.dp,
+                elevation = 2.dp,
                 shape = RoundedCornerShape(20.dp),
-                ambientColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
-                spotColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite
+                ambientColor = MaterialTheme.colorScheme.onBackground,
+                spotColor = MaterialTheme.colorScheme.onBackground
             )
             .clickable(
                 onClick = { onMenuClick.invoke() }
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
+            containerColor = MaterialTheme.colorScheme.background,
         ),
     ) {
         ConstraintLayout(
@@ -96,7 +96,7 @@ fun OtherMenuItem(
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
-                    color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                    color = MaterialTheme.colorScheme.onBackground,
                     platformStyle = PlatformTextStyle(
                         includeFontPadding = false
                     )
