@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.settings.ui.viewmodel.SettingsViewModel
 import com.tasnimulhasan.settings.ui.viewmodel.UiAction
@@ -151,7 +153,8 @@ internal fun SettingsScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                item {
+                // will implement later, color work left
+                /*item {
                     Column {
                         SettingsCategory(title = "Theme Color")
 
@@ -169,7 +172,7 @@ internal fun SettingsScreen(
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
-                }
+                }*/
 
                 item {
                     DashedHorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
@@ -225,19 +228,24 @@ internal fun SettingsScreen(
                                 viewModel.action(UiAction.SavePreferredTranslationName(option.first))
                             }
                         },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = EggshellWhite,
+                            labelColor = MaterialTheme.colorScheme.onBackground
+                        ),
                         label = {
                             Text(
                                 text = option.second,
                                 style = TextStyle(
                                     fontFamily = RobotoFontFamily,
                                     fontSize = 14.sp,
-                                    platformStyle = PlatformTextStyle(includeFontPadding = false)
+                                    platformStyle = PlatformTextStyle(includeFontPadding = false),
                                 )
                             )
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp)
+                            .padding(bottom = 4.dp),
                     )
                 }
 
