@@ -79,6 +79,7 @@ import com.tasnimulhasan.home.component.LocationPermissionDenied
 import com.tasnimulhasan.home.component.OpenSettingsDialog
 import com.tasnimulhasan.home.component.OtherMenuItem
 import com.tasnimulhasan.home.component.PrayerTimesCard
+import com.tasnimulhasan.home.component.SuhoorIftarTimesCard
 import com.tasnimulhasan.home.component.TranslationSelectionDialog
 import com.tasnimulhasan.home.ui.viewmodel.HomeUiAction
 import com.tasnimulhasan.home.ui.viewmodel.HomeViewModel
@@ -337,6 +338,14 @@ internal fun HomeScreen(
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SuhoorIftarTimesCard(
+                        suhoorTime = uiState.prayerTimes?.imsak ?: "",
+                        iftarTime = uiState.prayerTimes?.prayerTimings?.maghrib ?: "",
+                        tahajjudTime = "${uiState.prayerTimes?.lastThirdOfNight}-${uiState.prayerTimes?.imsak} AM"
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 

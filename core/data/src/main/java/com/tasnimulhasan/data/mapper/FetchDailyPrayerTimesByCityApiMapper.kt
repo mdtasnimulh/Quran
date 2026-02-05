@@ -18,6 +18,7 @@ class FetchDailyPrayerTimesByCityApiMapper @Inject constructor() : Mapper<DailyP
             lastThirdOfNight = type.data?.timings?.Lastthird ?: "",
             sunrise = type.data?.timings?.Sunrise ?: "",
             sunset = type.data?.timings?.Sunset ?: "",
+            imsak = type.data?.timings?.Imsak ?: "",
             arabicMonth = "${type.data?.date?.hijri?.day} ${type.data?.date?.hijri?.month?.en}, ${type.data?.date?.hijri?.year}",
             prayerTimings = PrayerTimings(
                 fajr = type.data?.timings?.Fajr ?: "",

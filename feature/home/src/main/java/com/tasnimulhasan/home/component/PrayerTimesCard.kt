@@ -2,6 +2,7 @@ package com.tasnimulhasan.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +38,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
@@ -64,6 +66,7 @@ fun PrayerTimesCard(
                 color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(15.dp)
             )
+            .border(shape = RoundedCornerShape(15.dp), width = (0.25).dp, color = BottleGreen.copy(alpha = 0.5f))
     ) {
         ConstraintLayout(
             modifier = Modifier
