@@ -3,7 +3,6 @@ package com.tasnimulhasan.home.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,11 +35,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
-import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
-import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
@@ -256,7 +253,7 @@ fun PrayerTimesCard(
     }
 }
 
-@Preview()
+@Preview
 @Composable
 fun PreviewPrayerTimesCard() {
     /*PrayerTimesCard(
