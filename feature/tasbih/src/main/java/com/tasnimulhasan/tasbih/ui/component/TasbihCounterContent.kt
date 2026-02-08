@@ -29,6 +29,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -62,9 +64,10 @@ fun TasbihCounterContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                Icons.Default.ArrowBack,
+                Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = null,
-                tint = BottleGreen
+                tint = BottleGreen,
+                modifier = Modifier.clickable(onClick = { onDismiss() })
             )
             Spacer(Modifier.width(8.dp))
             Text("Tasbih", fontWeight = FontWeight.Medium)
@@ -168,46 +171,30 @@ private fun DhikrCounterCard(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun SwipeableTasbih(
+fun SwipeableTasbih(
     onSwipeComplete: () -> Unit
 ) {
     val swipeState = rememberSwipeableState(0)
-    val width = 260.dp
-    val sizePx = with(LocalDensity.current) { width.toPx() }
+    val width = 280.dp
+    val widthPx = with(LocalDensity.current) { width.toPx() }
 
-    val anchors = mapOf(
-        0f to 0,
-        sizePx to 1
-    )
+    // Fixed: Right to Left swipe (negative offset means swiping left)
+    val anchors = mapOf(0f to 0, -widthPx to 1)
+
+    // Calculate progress (0 to 1 as user swipes right to left)
+    val progress = (-swipeState.offset.value / widthPx).coerceIn(0f, 1f)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        /* Curved Beads with fixed behavior */
+        CurvedTasbihBeads(progress = progress)
 
-        /* Beads */
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            repeat(9) {
-                Box(
-                    modifier = Modifier
-                        .size(14.dp)
-                        .background(
-                            Brush.radialGradient(
-                                listOf(
-                                    Color(0xFFD58A3D),
-                                    Color(0xFF9C5B25)
-                                )
-                            ),
-                            CircleShape
-                        )
-                )
-            }
-        }
+        Spacer(Modifier.height(16.dp))
 
-        Spacer(Modifier.height(20.dp))
-
-        /* Swipe Track */
+        /* Swipe Track - Fixed positioning */
         Box(
             modifier = Modifier
                 .width(width)
-                .height(50.dp)
+                .height(56.dp)
                 .background(Color(0xFFF1F1F1), RoundedCornerShape(30.dp))
                 .swipeable(
                     state = swipeState,
@@ -216,23 +203,46 @@ private fun SwipeableTasbih(
                     orientation = Orientation.Horizontal
                 )
         ) {
+            val circleSize = 48.dp
+            val circleSizePx = with(LocalDensity.current) { circleSize.toPx() }
+            val maxOffset = widthPx - circleSizePx
+
+            // Swipe indicator circle - starts from RIGHT, moves to LEFT
+            // Clamp offset to prevent overflow
+            val clampedOffset = swipeState.offset.value.coerceIn(-maxOffset, 0f)
+
             Box(
                 modifier = Modifier
-                    .offset { IntOffset(swipeState.offset.value.toInt(), 0) }
-                    .size(44.dp)
-                    .background(Color(0xFF6C5CE7), CircleShape)
+                    .align(Alignment.CenterEnd)
+                    .offset { IntOffset(clampedOffset.toInt(), 0) }
+                    .size(circleSize)
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                BottleGreen,
+                                BottleGreen.copy(alpha = 0.8f)
+                            )
+                        ),
+                        shape = CircleShape
+                    )
             )
         }
 
         Spacer(Modifier.height(8.dp))
-        Text("Swipe Button", fontSize = 11.sp, color = Color.Gray)
+        Row(
+            modifier = Modifier.width(width),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Swipe", fontSize = 11.sp, color = Color.Gray)
+            Text("←", fontSize = 14.sp, color = BottleGreen)
+        }
     }
 
     LaunchedEffect(swipeState.currentValue) {
         if (swipeState.currentValue == 1) {
             onSwipeComplete()
-            swipeState.snapTo(0)
+            // Smooth snap back animation
+            swipeState.animateTo(0)
         }
     }
 }
-
