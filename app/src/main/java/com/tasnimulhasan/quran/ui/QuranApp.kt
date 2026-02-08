@@ -341,6 +341,9 @@ private fun GetContent(appState: QuranAppState) {
             navigateToAlAsmaUlHusnaScreen = {
                 appState.navigateToAlAsmaUlHusnaScreen()
             },
+            navigateToTasbihScreen = {
+                appState.navigateToTasbihScreen()
+            },
             navigateToHadithChapters = { bookSlug ->
                 appState.navigateToHadithChaptersScreen( bookSlug = bookSlug)
             },

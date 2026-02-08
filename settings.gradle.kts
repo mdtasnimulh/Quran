@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":feature:tasbih")
+
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {

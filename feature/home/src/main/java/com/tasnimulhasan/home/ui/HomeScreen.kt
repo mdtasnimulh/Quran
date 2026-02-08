@@ -88,6 +88,7 @@ internal fun HomeScreen(
     navigateToDuaScreen: () -> Unit,
     navigateToQuranRecitationScreen: () -> Unit,
     navigateToAlAsmaUlHusnaScreen: () -> Unit,
+    navigateToTasbihScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -359,6 +360,23 @@ internal fun HomeScreen(
                             cardImage = Res.drawable.img_name_allah,
                         ) {
                             navigateToAlAsmaUlHusnaScreen.invoke()
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OtherMenuItem(
+                            modifier = Modifier.weight(1f),
+                            title = "Tasbih (Dhikr)",
+                            cardImage = Res.drawable.tasbih,
+                        ) {
+                            navigateToTasbihScreen.invoke()
                         }
                     }
 

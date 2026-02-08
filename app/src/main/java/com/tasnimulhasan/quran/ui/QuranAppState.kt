@@ -27,6 +27,7 @@ import com.tasnimulhasan.quranrecitation.navigation.navigateToQuranRecitationScr
 import com.tasnimulhasan.settings.navigation.navigateToSettings
 import com.tasnimulhasan.suggestion.navigation.navigateToSuggestionScreen
 import com.tasnimulhasan.suradetails.navigation.navigateToSuraDetails
+import com.tasnimulhasan.tasbih.navigation.navigateToTasbihScreen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -108,6 +109,8 @@ class QuranAppState(
     fun navigateToQuranRecitationScreen() = navController.navigateToQuranRecitationScreen()
 
     fun navigateToAlAsmaUlHusnaScreen() = navController.navigateToAlAsmaUlHusnaScreen()
+
+    fun navigateToTasbihScreen() = navController.navigateToTasbihScreen()
 
     fun navigateToHadithChaptersScreen(bookSlug: String) = navController.navigateToHadithChapters(bookSlug)
 
