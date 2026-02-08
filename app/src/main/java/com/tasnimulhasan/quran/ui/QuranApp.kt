@@ -97,6 +97,7 @@ import com.tasnimulhasan.quran.navigation.QuranNavHost
 import com.tasnimulhasan.quran.navigation.QuranRoute
 import com.tasnimulhasan.suggestion.navigation.SuggestionRoute
 import com.tasnimulhasan.suradetails.navigation.SuraDetailsRoute
+import com.tasnimulhasan.tasbih.navigation.TasbihRoute
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 import com.tasnimulhasan.designsystem.R as Res
@@ -151,6 +152,7 @@ internal fun QuranApp(
         SuggestionRoute::class.qualifiedName -> Res.string.title_suggestion
         DuaRoute::class.qualifiedName -> Res.string.title_dua
         AlAsmaUlHusnaRoute::class.qualifiedName -> Res.string.al_asma_ul_husna
+        TasbihRoute::class.qualifiedName -> Res.string.title_dhikr
         else -> Res.string.app_name
     }
 
