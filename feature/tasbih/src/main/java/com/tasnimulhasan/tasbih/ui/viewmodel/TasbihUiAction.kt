@@ -18,4 +18,5 @@ sealed interface TasbihUiAction {
     /* Data */
     data object CreateTasbih : TasbihUiAction
     data class Increment(val id: String) : TasbihUiAction
+    data class RemoveTasbih(val tasbih: TasbihItem) : TasbihUiAction
 }

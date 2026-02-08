@@ -8,6 +8,7 @@ import com.tasnimulhasan.data.repoimpl.QuranRecitationRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraFromLocalDbDbRepoImpl
 import com.tasnimulhasan.data.repoimpl.QuranSuraRepoImpl
 import com.tasnimulhasan.data.repoimpl.SuraNameRepoImpl
+import com.tasnimulhasan.data.repoimpl.TasbihRepoImpl
 import com.tasnimulhasan.data.repoimpl.remote.HadithRepoImpl
 import com.tasnimulhasan.data.repoimpl.remote.PrayerTimesRepoImpl
 import com.tasnimulhasan.domain.repository.AudioPlayerRepository
@@ -18,6 +19,7 @@ import com.tasnimulhasan.domain.repository.local.QuranRecitationRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraFromLocalDbRepository
 import com.tasnimulhasan.domain.repository.local.QuranSuraRepository
 import com.tasnimulhasan.domain.repository.local.SuraNameRepository
+import com.tasnimulhasan.domain.repository.local.TasbihRepository
 import com.tasnimulhasan.domain.repository.remote.HadithRepository
 import com.tasnimulhasan.domain.repository.remote.PrayerTimesRepository
 import dagger.Binds
@@ -58,5 +60,8 @@ interface RepositoryModule {
 
     @Binds
     fun bindQuranRecitationRepository(quranRecitationRepoImpl: QuranRecitationRepoImpl): QuranRecitationRepository
+
+    @Binds
+    fun bindTasbihRepository(tasbihRepoImpl: TasbihRepoImpl): TasbihRepository
 
 }

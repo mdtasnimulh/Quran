@@ -1,6 +1,11 @@
 package com.tasnimulhasan.entity.tasbih
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "tasbih_table")
 data class TasbihItem(
+    @PrimaryKey(autoGenerate = false)
     val id: String,
     val dhikrArabic: String,
     val dhikrEnglish: String,

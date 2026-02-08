@@ -3,16 +3,33 @@ package com.tasnimulhasan.tasbih.ui.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import com.tasnimulhasan.domain.base.BaseViewModel
+import com.tasnimulhasan.domain.localusecase.tasbih.FetchAllTasbihUseCase
+import com.tasnimulhasan.domain.localusecase.tasbih.InsertTasbihUseCase
+import com.tasnimulhasan.domain.localusecase.tasbih.RemoveTasbihUseCase
+import com.tasnimulhasan.domain.localusecase.tasbih.UpdateTasbihUseCase
 import com.tasnimulhasan.entity.tasbih.TasbihItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TasbihViewModel @Inject constructor() : BaseViewModel() {
+class TasbihViewModel @Inject constructor(
+    private val fetchAllTasbihUseCase: FetchAllTasbihUseCase,
+    private val insertTasbihUseCase: InsertTasbihUseCase,
+    private val updateTasbihUseCase: UpdateTasbihUseCase,
+    private val removeTasbihUseCase: RemoveTasbihUseCase,
+) : BaseViewModel() {
 
     var state by mutableStateOf(TasbihUiState())
         private set
+
+    init {
+        fetchAllTasbih()
+    }
 
     val action: (TasbihUiAction) -> Unit = { action ->
         when (action) {
@@ -42,41 +59,85 @@ class TasbihViewModel @Inject constructor() : BaseViewModel() {
 
             /* Create */
             TasbihUiAction.CreateTasbih -> {
-                val newTasbih = TasbihItem(
-                    id = System.currentTimeMillis().toString(),
-                    dhikrArabic = "الحمد لله",
-                    dhikrEnglish = state.selectedDhikr,
-                    dhikrMeaning = "All praise is due to Allah",
-                    targetCount = state.goal.toIntOrNull() ?: 0,
-                    currentCount = 0,
-                    createdAt = System.currentTimeMillis(),
-                    lastUpdated = System.currentTimeMillis()
-                )
-
-                state = state.copy(
-                    tasbihList = state.tasbihList + newTasbih,
-                    showSelectDhikrDialog = false
-                )
+                createTasbih()
             }
 
             /* Counter */
             is TasbihUiAction.Increment -> {
-                state = state.copy(
-                    tasbihList = state.tasbihList.map {
-                        if (it.id == action.id)
-                            it.copy(
-                                currentCount = it.currentCount + 1,
-                                lastUpdated = System.currentTimeMillis()
-                            )
-                        else it
-                    },
-                    selectedTasbih = state.selectedTasbih?.let {
-                        if (it.id == action.id)
-                            it.copy(currentCount = it.currentCount + 1)
-                        else it
-                    }
-                )
+                incrementTasbih(action.id)
             }
+
+            /* Delete */
+            is TasbihUiAction.RemoveTasbih -> {
+                removeTasbih(action.tasbih)
+            }
+        }
+    }
+
+    /**
+     * Fetch all Tasbih items from database
+     */
+    private fun fetchAllTasbih() {
+        fetchAllTasbihUseCase()
+            .onEach { tasbihList ->
+                state = state.copy(tasbihList = tasbihList)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    /**
+     * Create and insert a new Tasbih item
+     */
+    private fun createTasbih() {
+        viewModelScope.launch {
+            val newTasbih = TasbihItem(
+                id = System.currentTimeMillis().toString(),
+                dhikrArabic = "الحمد لله", // You might want to map this properly based on selectedDhikr
+                dhikrEnglish = state.selectedDhikr,
+                dhikrMeaning = "All praise is due to Allah", // Map this properly too
+                targetCount = state.goal.toIntOrNull() ?: 99,
+                currentCount = 0,
+                createdAt = System.currentTimeMillis(),
+                lastUpdated = System.currentTimeMillis()
+            )
+
+            insertTasbihUseCase(InsertTasbihUseCase.Params(newTasbih))
+
+            state = state.copy(
+                showSelectDhikrDialog = false,
+                selectedDhikr = "Alhamdulillah", // Reset to default
+                goal = "99" // Reset to default
+            )
+        }
+    }
+
+    /**
+     * Increment the count of a specific Tasbih
+     */
+    private fun incrementTasbih(id: String) {
+        viewModelScope.launch {
+            val tasbih = state.tasbihList.find { it.id == id } ?: return@launch
+
+            val updatedTasbih = tasbih.copy(
+                currentCount = tasbih.currentCount + 1,
+                lastUpdated = System.currentTimeMillis()
+            )
+
+            updateTasbihUseCase(UpdateTasbihUseCase.Params(updatedTasbih))
+
+            // Update selectedTasbih if it's the one being incremented
+            if (state.selectedTasbih?.id == id) {
+                state = state.copy(selectedTasbih = updatedTasbih)
+            }
+        }
+    }
+
+    /**
+     * Remove a Tasbih item from database
+     */
+    private fun removeTasbih(tasbih: TasbihItem) {
+        viewModelScope.launch {
+            removeTasbihUseCase(tasbih)
         }
     }
 }

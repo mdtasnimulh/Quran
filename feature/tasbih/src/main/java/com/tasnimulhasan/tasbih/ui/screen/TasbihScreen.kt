@@ -100,7 +100,11 @@ internal fun TasbihScreen(
                             )
                         },
                         onShareClick = {},
-                        onRemoveClick = {}
+                        onRemovonRemoveClick = {
+                            viewModel.action(
+                                TasbihUiAction.RemoveTasbih(tasbih)
+                            )
+                        }
                     )
                 }
 
