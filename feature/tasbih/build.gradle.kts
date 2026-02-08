@@ -10,4 +10,5 @@ android {
 dependencies {
     implementation(libs.coil.kt.compose)
     implementation(libs.bundles.media3.dependencies)
+    implementation("androidx.compose.material:material:1.10.2")
 }

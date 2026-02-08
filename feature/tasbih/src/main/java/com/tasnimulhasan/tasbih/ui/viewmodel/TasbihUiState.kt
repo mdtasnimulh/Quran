@@ -1,0 +1,18 @@
+package com.tasnimulhasan.tasbih.ui.viewmodel
+
+import com.tasnimulhasan.entity.tasbih.TasbihItem
+
+data class TasbihUiState(
+    val tasbihList: List<TasbihItem> = emptyList(),
+
+    // dialogs
+    val showSelectDhikrDialog: Boolean = false,
+    val showCounterDialog: Boolean = false,
+
+    // selection
+    val selectedTasbih: TasbihItem? = null,
+
+    // form inputs
+    val selectedDhikr: String = "Alhamdulillah",
+    val goal: String = "99"
+)

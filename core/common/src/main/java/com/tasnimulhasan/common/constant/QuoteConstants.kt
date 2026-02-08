@@ -9,6 +9,13 @@ object QuoteConstants {
         "“Verily, there are ninety-nine Names of Allah; whoever preserves them (aḥṣāhā) will enter Paradise. Allah is Witr (One/Odd) and loves what is odd.” (Ṣaḥīḥ Muslim 2677a)",
     )
 
+    val DHIKR_LIST = listOf(
+        "Alhamdulillah",
+        "Subahan Allah",
+        "Allahu Akbar",
+        "La Ilaha Illallah"
+    )
+
     const val DHIKRQUOTE = "Abu Hurairah (May Allah be pleased with him) narrated that the Prophet said:\n" +
             "\n" +
             "“Allah says, “I treat My servant as he hopes that I would treat him. I am with him whenever he remembers Me:\n" +
