@@ -31,17 +31,17 @@ abstract class QuranSuraDatabase : RoomDatabase() {
          * Adds time tracking fields to tasbih_table
          */
         val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL(
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
                     "ALTER TABLE tasbih_table ADD COLUMN sessionStartTime INTEGER NOT NULL DEFAULT 0"
                 )
-                database.execSQL(
+                db.execSQL(
                     "ALTER TABLE tasbih_table ADD COLUMN totalTimeSpentSeconds INTEGER NOT NULL DEFAULT 0"
                 )
-                database.execSQL(
+                db.execSQL(
                     "ALTER TABLE tasbih_table ADD COLUMN isCompleted INTEGER NOT NULL DEFAULT 0"
                 )
-                database.execSQL(
+                db.execSQL(
                     "ALTER TABLE tasbih_table ADD COLUMN completedAt INTEGER"
                 )
             }
