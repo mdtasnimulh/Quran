@@ -16,7 +16,7 @@ sealed interface TasbihUiAction {
     data class ChangeGoal(val goal: String) : TasbihUiAction
 
     /* Data */
-    data object CreateTasbih : TasbihUiAction
+    data class CreateTasbih(val tasbihItem: TasbihItem) : TasbihUiAction
     data class Increment(val id: String) : TasbihUiAction
     data class RemoveTasbih(val tasbih: TasbihItem) : TasbihUiAction
 }

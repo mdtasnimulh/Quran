@@ -36,18 +36,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.tasnimulhasan.common.constant.QuoteConstants
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.entity.tasbih.DhikrName
 
 @Composable
 fun SelectDhikrDialog(
-    dhikrList: List<String>,
+    dhikrList: List<DhikrName>,
     selectedDhikr: String,
     goal: String,
-    onDhikrSelected: (String) -> Unit,
+    onDhikrSelected: (DhikrName) -> Unit,
     onGoalChange: (String) -> Unit,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
+    onConfirm: (String, String, String) -> Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Box(
@@ -97,7 +99,11 @@ fun SelectDhikrDialog(
                 Box(
                     modifier = Modifier
                         .background(Color.White, RoundedCornerShape(50.dp))
-                        .clickable { onConfirm() }
+                        .clickable { onConfirm(
+                            dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrArabic ?: "",
+                            dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrEnglish ?: "",
+                            dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrMeaning ?: "",
+                        ) }
                         .padding(horizontal = 36.dp, vertical = 10.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -125,9 +131,9 @@ private fun DialogLabel(text: String) {
 
 @Composable
 private fun DhikrDropdown(
-    items: List<String>,
+    items: List<DhikrName>,
     selected: String,
-    onItemSelected: (String) -> Unit
+    onItemSelected: (DhikrName) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -157,7 +163,7 @@ private fun DhikrDropdown(
         ) {
             items.forEach {
                 DropdownMenuItem(
-                    text = { Text(it) },
+                    text = { Text(it.dhikrEnglish) },
                     onClick = {
                         onItemSelected(it)
                         expanded = false
@@ -206,13 +212,13 @@ private fun GoalInput(
 fun PreviewSelectDhikrDialog() {
     QuranTheme {
         SelectDhikrDialog(
-            dhikrList = listOf("Alhamdulillah", "Subhanallah", "Allahu Akbar"),
+            dhikrList = QuoteConstants.dhikrList,
             selectedDhikr = "Alhamdulillah",
             goal = "99",
             onDhikrSelected = {},
             onGoalChange = {},
             onDismiss = {},
-            onConfirm = {}
+            onConfirm = {_, _, _ ->}
         )
     }
 }

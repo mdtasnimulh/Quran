@@ -58,8 +58,8 @@ class TasbihViewModel @Inject constructor(
                 state = state.copy(goal = action.goal)
 
             /* Create */
-            TasbihUiAction.CreateTasbih -> {
-                createTasbih()
+            is TasbihUiAction.CreateTasbih -> {
+                createTasbih(tasbihItem = action.tasbihItem)
             }
 
             /* Counter */
@@ -88,20 +88,9 @@ class TasbihViewModel @Inject constructor(
     /**
      * Create and insert a new Tasbih item
      */
-    private fun createTasbih() {
+    private fun createTasbih(tasbihItem: TasbihItem) {
         viewModelScope.launch {
-            val newTasbih = TasbihItem(
-                id = System.currentTimeMillis().toString(),
-                dhikrArabic = "الحمد لله", // You might want to map this properly based on selectedDhikr
-                dhikrEnglish = state.selectedDhikr,
-                dhikrMeaning = "All praise is due to Allah", // Map this properly too
-                targetCount = state.goal.toIntOrNull() ?: 99,
-                currentCount = 0,
-                createdAt = System.currentTimeMillis(),
-                lastUpdated = System.currentTimeMillis()
-            )
-
-            insertTasbihUseCase(InsertTasbihUseCase.Params(newTasbih))
+            insertTasbihUseCase(InsertTasbihUseCase.Params(tasbihItem))
 
             state = state.copy(
                 showSelectDhikrDialog = false,

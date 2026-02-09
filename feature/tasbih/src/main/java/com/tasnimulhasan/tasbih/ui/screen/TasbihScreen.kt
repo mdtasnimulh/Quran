@@ -40,6 +40,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.tasnimulhasan.common.constant.QuoteConstants
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.entity.tasbih.TasbihItem
 import com.tasnimulhasan.tasbih.ui.component.DhikrQuoteCard
 import com.tasnimulhasan.tasbih.ui.component.SelectDhikrDialog
 import com.tasnimulhasan.tasbih.ui.component.TasbihCounterDialog
@@ -119,7 +120,7 @@ internal fun TasbihScreen(
                 }
 
                 item(span = { GridItemSpan(1) }) {
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(72.dp))
                 }
             }
         }
@@ -145,12 +146,12 @@ internal fun TasbihScreen(
        ======================= */
     if (state.showSelectDhikrDialog) {
         SelectDhikrDialog(
-            dhikrList = QuoteConstants.DHIKR_LIST,
+            dhikrList = QuoteConstants.dhikrList,
             selectedDhikr = state.selectedDhikr,
             goal = state.goal,
             onDhikrSelected = {
                 viewModel.action(
-                    TasbihUiAction.SelectDhikr(it)
+                    TasbihUiAction.SelectDhikr(it.dhikrEnglish)
                 )
             },
             onGoalChange = {
@@ -163,9 +164,21 @@ internal fun TasbihScreen(
                     TasbihUiAction.CloseCreateDialog
                 )
             },
-            onConfirm = {
+            onConfirm = { arabic, english, meaning ->
+                val newTasbih = TasbihItem(
+                    id = System.currentTimeMillis().toString(),
+                    dhikrArabic = arabic,
+                    dhikrEnglish = english,
+                    dhikrMeaning = meaning,
+                    targetCount = state.goal.toIntOrNull() ?: 99,
+                    currentCount = 0,
+                    createdAt = System.currentTimeMillis(),
+                    lastUpdated = System.currentTimeMillis()
+                )
                 viewModel.action(
-                    TasbihUiAction.CreateTasbih
+                    TasbihUiAction.CreateTasbih(
+                        tasbihItem = newTasbih
+                    )
                 )
             }
         )
