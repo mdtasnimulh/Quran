@@ -242,9 +242,7 @@ fun SwipeableTasbih(
                 .width(width)
                 .height(56.dp)
                 .background(
-                    if (isSystemInDarkTheme()) EggshellWhite.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = 0.5f
-                    ), RoundedCornerShape(30.dp)
+                    EggshellWhite.copy(alpha = if (isSystemInDarkTheme()) 0.5f else 0.75f), RoundedCornerShape(30.dp)
                 )
                 .swipeable(
                     state = swipeState,
@@ -278,8 +276,6 @@ fun SwipeableTasbih(
                     )
             )
         }
-
-        Spacer(Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.width(width),
