@@ -22,15 +22,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
@@ -88,7 +82,7 @@ internal fun TasbihScreen(
                     Spacer(modifier = Modifier.height(6.dp))
                 }
 
-                itemsIndexed(items = state.tasbihList) { index, tasbih ->
+                itemsIndexed(items = state.tasbihList) { _, tasbih ->
                     TasbihProgressCard(
                         title = tasbih.dhikrEnglish,
                         currentCount = tasbih.currentCount,
@@ -100,7 +94,11 @@ internal fun TasbihScreen(
                                 TasbihUiAction.OpenCounter(tasbih)
                             )
                         },
-                        onShareClick = {},
+                        onEditClick = {
+                            viewModel.action(
+                                TasbihUiAction.OpenEditDialog(tasbih)
+                            )
+                        },
                         onRemoveClick = {
                             viewModel.action(
                                 TasbihUiAction.RemoveTasbih(tasbih)
@@ -141,9 +139,7 @@ internal fun TasbihScreen(
         }
     }
 
-    /* =======================
-       CREATE TASBIH DIALOG
-       ======================= */
+    /* CREATE/EDIT TASBIH DIALOG */
     if (state.showSelectDhikrDialog) {
         SelectDhikrDialog(
             dhikrList = QuoteConstants.dhikrList,
@@ -165,21 +161,34 @@ internal fun TasbihScreen(
                 )
             },
             onConfirm = { arabic, english, meaning ->
-                val newTasbih = TasbihItem(
-                    id = System.currentTimeMillis().toString(),
-                    dhikrArabic = arabic,
-                    dhikrEnglish = english,
-                    dhikrMeaning = meaning,
-                    targetCount = state.goal.toIntOrNull() ?: 99,
-                    currentCount = 0,
-                    createdAt = System.currentTimeMillis(),
-                    lastUpdated = System.currentTimeMillis()
-                )
-                viewModel.action(
-                    TasbihUiAction.CreateTasbih(
-                        tasbihItem = newTasbih
+                if (state.isEditMode && state.editingTasbih != null) {
+                    // Update existing tasbih
+                    val updatedTasbih = state.editingTasbih.copy(
+                        dhikrArabic = arabic,
+                        dhikrEnglish = english,
+                        dhikrMeaning = meaning,
+                        targetCount = state.goal.toIntOrNull() ?: 99,
+                        lastUpdated = System.currentTimeMillis()
                     )
-                )
+                    viewModel.action(
+                        TasbihUiAction.UpdateTasbih(updatedTasbih)
+                    )
+                } else {
+                    // Create new tasbih
+                    val newTasbih = TasbihItem(
+                        id = System.currentTimeMillis().toString(),
+                        dhikrArabic = arabic,
+                        dhikrEnglish = english,
+                        dhikrMeaning = meaning,
+                        targetCount = state.goal.toIntOrNull() ?: 99,
+                        currentCount = 0,
+                        createdAt = System.currentTimeMillis(),
+                        lastUpdated = System.currentTimeMillis()
+                    )
+                    viewModel.action(
+                        TasbihUiAction.CreateTasbih(tasbihItem = newTasbih)
+                    )
+                }
             }
         )
     }

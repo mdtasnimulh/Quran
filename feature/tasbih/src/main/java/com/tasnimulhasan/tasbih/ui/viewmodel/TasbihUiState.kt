@@ -14,5 +14,9 @@ data class TasbihUiState(
 
     // form inputs
     val selectedDhikr: String = "Alhamdulillah",
-    val goal: String = "99"
+    val goal: String = "99",
+
+    // edit mode
+    val isEditMode: Boolean = false,
+    val editingTasbih: TasbihItem? = null
 )

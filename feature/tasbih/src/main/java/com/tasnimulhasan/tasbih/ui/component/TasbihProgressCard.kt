@@ -17,8 +17,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.QuranTheme
-import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun TasbihProgressCard(
@@ -43,11 +42,12 @@ fun TasbihProgressCard(
     lastUpdated: String,
     createdAt: String,
     onPlayClick: () -> Unit,
-    onShareClick: () -> Unit,
+    onEditClick: () -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val progress = currentCount.toFloat() / totalCount.toFloat()
+    val isCompleted = currentCount >= totalCount
 
     Column(
         modifier = modifier
@@ -92,7 +92,7 @@ fun TasbihProgressCard(
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(progress)
+                    .fillMaxWidth(progress.coerceIn(0f, 1f))
                     .fillMaxHeight()
                     .background(
                         brush = Brush.horizontalGradient(
@@ -109,6 +109,19 @@ fun TasbihProgressCard(
                     fontWeight = FontWeight.Bold
                 )
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        /* Completion Badge */
+        if (isCompleted) {
+            Text(
+                text = "✓ Completed",
+                fontSize = 11.sp,
+                color = Color(0xFF4CAF50),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -138,9 +151,22 @@ fun TasbihProgressCard(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ActionItem("Share", Icons.Default.Share, onShareClick)
-            PlayButton(onPlayClick)
-            ActionItem("Remove", Icons.Default.Close, onRemoveClick)
+            ActionItem(
+                text = "Edit",
+                icon = Icons.Default.Edit,
+                onClick = onEditClick,
+                enabled = !isCompleted
+            )
+            PlayButton(
+                onClick = onPlayClick,
+                enabled = !isCompleted
+            )
+            ActionItem(
+                text = "Remove",
+                icon = Icons.Default.Close,
+                onClick = onRemoveClick,
+                enabled = true
+            )
         }
     }
 }
@@ -149,30 +175,38 @@ fun TasbihProgressCard(
 private fun ActionItem(
     text: String,
     icon: ImageVector,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
+    val color = if (enabled) BottleGreen else Color.Gray.copy(alpha = 0.5f)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { onClick() }
+        modifier = Modifier.clickable(enabled = enabled) { onClick() }
     ) {
         Icon(
             icon,
             contentDescription = null,
-            tint = BottleGreen,
+            tint = color,
             modifier = Modifier.size(16.dp),
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Text(text, fontSize = 12.sp, color = BottleGreen)
+        Text(text, fontSize = 12.sp, color = color)
     }
 }
 
 @Composable
-private fun PlayButton(onClick: () -> Unit) {
+private fun PlayButton(
+    onClick: () -> Unit,
+    enabled: Boolean = true
+) {
+    val backgroundColor = if (enabled) Color(0xFF4CAF50) else Color.Gray.copy(alpha = 0.5f)
+
     Box(
         modifier = Modifier
             .size(44.dp)
-            .background(Color(0xFF4CAF50), CircleShape)
-            .clickable { onClick() },
+            .background(backgroundColor, CircleShape)
+            .clickable(enabled = enabled) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -194,7 +228,7 @@ fun PreviewTasbihProgressCard() {
             lastUpdated = "4 hours ago",
             createdAt = "4 days ago",
             onPlayClick = {},
-            onShareClick = {},
+            onEditClick = {},
             onRemoveClick = {}
         )
     }

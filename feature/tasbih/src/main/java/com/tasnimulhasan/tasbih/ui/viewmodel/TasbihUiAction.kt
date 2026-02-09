@@ -11,12 +11,15 @@ sealed interface TasbihUiAction {
     data class OpenCounter(val tasbih: TasbihItem) : TasbihUiAction
     data object CloseCounter : TasbihUiAction
 
+    data class OpenEditDialog(val tasbih: TasbihItem) : TasbihUiAction
+
     /* Form */
     data class SelectDhikr(val dhikr: String) : TasbihUiAction
     data class ChangeGoal(val goal: String) : TasbihUiAction
 
     /* Data */
     data class CreateTasbih(val tasbihItem: TasbihItem) : TasbihUiAction
+    data class UpdateTasbih(val tasbihItem: TasbihItem) : TasbihUiAction
     data class Increment(val id: String) : TasbihUiAction
     data class RemoveTasbih(val tasbih: TasbihItem) : TasbihUiAction
 }

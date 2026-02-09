@@ -36,10 +36,30 @@ class TasbihViewModel @Inject constructor(
 
             /* Dialogs */
             TasbihUiAction.OpenCreateDialog ->
-                state = state.copy(showSelectDhikrDialog = true)
+                state = state.copy(
+                    showSelectDhikrDialog = true,
+                    isEditMode = false,
+                    editingTasbih = null,
+                    selectedDhikr = "Alhamdulillah",
+                    goal = "99"
+                )
 
             TasbihUiAction.CloseCreateDialog ->
-                state = state.copy(showSelectDhikrDialog = false)
+                state = state.copy(
+                    showSelectDhikrDialog = false,
+                    isEditMode = false,
+                    editingTasbih = null
+                )
+
+            is TasbihUiAction.OpenEditDialog -> {
+                state = state.copy(
+                    showSelectDhikrDialog = true,
+                    isEditMode = true,
+                    editingTasbih = action.tasbih,
+                    selectedDhikr = action.tasbih.dhikrEnglish,
+                    goal = action.tasbih.targetCount.toString()
+                )
+            }
 
             is TasbihUiAction.OpenCounter ->
                 state = state.copy(
@@ -60,6 +80,11 @@ class TasbihViewModel @Inject constructor(
             /* Create */
             is TasbihUiAction.CreateTasbih -> {
                 createTasbih(tasbihItem = action.tasbihItem)
+            }
+
+            /* Update */
+            is TasbihUiAction.UpdateTasbih -> {
+                updateTasbih(tasbihItem = action.tasbihItem)
             }
 
             /* Counter */
@@ -94,8 +119,27 @@ class TasbihViewModel @Inject constructor(
 
             state = state.copy(
                 showSelectDhikrDialog = false,
-                selectedDhikr = "Alhamdulillah", // Reset to default
-                goal = "99" // Reset to default
+                selectedDhikr = "Alhamdulillah",
+                goal = "99",
+                isEditMode = false,
+                editingTasbih = null
+            )
+        }
+    }
+
+    /**
+     * Update an existing Tasbih item
+     */
+    private fun updateTasbih(tasbihItem: TasbihItem) {
+        viewModelScope.launch {
+            updateTasbihUseCase(UpdateTasbihUseCase.Params(tasbihItem))
+
+            state = state.copy(
+                showSelectDhikrDialog = false,
+                selectedDhikr = "Alhamdulillah",
+                goal = "99",
+                isEditMode = false,
+                editingTasbih = null
             )
         }
     }
@@ -117,6 +161,11 @@ class TasbihViewModel @Inject constructor(
             // Update selectedTasbih if it's the one being incremented
             if (state.selectedTasbih?.id == id) {
                 state = state.copy(selectedTasbih = updatedTasbih)
+
+                // Auto-close if goal is reached
+                if (updatedTasbih.currentCount >= updatedTasbih.targetCount) {
+                    state = state.copy(showCounterDialog = false)
+                }
             }
         }
     }
