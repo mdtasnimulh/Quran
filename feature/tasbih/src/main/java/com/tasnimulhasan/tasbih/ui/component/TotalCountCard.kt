@@ -1,6 +1,7 @@
 package com.tasnimulhasan.tasbih.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.tasbih.DhikrCountEntity
 
 @Composable
@@ -27,11 +33,17 @@ fun TotalCountCard(
     dhikrCount: DhikrCountEntity,
     modifier: Modifier = Modifier
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFFE6F1EA),
+                color = if (isDark) {
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                } else {
+                    Color(0xFFE6F1EA)
+                },
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(16.dp)
@@ -41,7 +53,8 @@ fun TotalCountCard(
             text = "Total Dhikr Count",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = BottleGreen,
+            fontFamily = RobotoFontFamily,
+            color = if (isDark) SaladGreen else BottleGreen,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -52,7 +65,8 @@ fun TotalCountCard(
             text = dhikrCount.totalCount.toString(),
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
-            color = BottleGreen,
+            fontFamily = RobotoFontFamily,
+            color = if (isDark) MintWhite else BottleGreen,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -76,11 +90,17 @@ private fun DhikrCountRow(
     name: String,
     count: Int
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = Color.White.copy(alpha = 0.5f),
+                color = if (isDark) {
+                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)
+                } else {
+                    Color.White.copy(alpha = 0.5f)
+                },
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(horizontal = 12.dp, vertical = 8.dp),
@@ -90,18 +110,25 @@ private fun DhikrCountRow(
         Text(
             text = name,
             fontSize = 13.sp,
-            color = Color.Black.copy(alpha = 0.7f)
+            fontFamily = RobotoFontFamily,
+            color = if (isDark) {
+                EggshellWhite.copy(alpha = 0.8f)
+            } else {
+                Color.Black.copy(alpha = 0.7f)
+            }
         )
         Text(
             text = count.toString(),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            color = BottleGreen
+            fontFamily = RobotoFontFamily,
+            color = if (isDark) SaladGreen else BottleGreen
         )
     }
 }
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewTotalCountCard() {
     QuranTheme {

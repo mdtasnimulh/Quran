@@ -2,6 +2,7 @@ package com.tasnimulhasan.tasbih.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.tasbih.utils.TimeFormatter
 
 @Composable
@@ -48,12 +54,17 @@ fun TasbihProgressCard(
     modifier: Modifier = Modifier,
 ) {
     val progress = currentCount.toFloat() / totalCount.toFloat()
+    val isDark = isSystemInDarkTheme()
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFFE6F1EA),
+                color = if (isDark) {
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                } else {
+                    Color(0xFFE6F1EA)
+                },
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(16.dp)
@@ -64,7 +75,8 @@ fun TasbihProgressCard(
             text = title,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
-            color = BottleGreen,
+            fontFamily = RobotoFontFamily,
+            color = if (isDark) SaladGreen else BottleGreen,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -74,7 +86,12 @@ fun TasbihProgressCard(
         Text(
             text = "$currentCount/$totalCount",
             fontSize = 13.sp,
-            color = BottleGreen.copy(alpha = 0.8f),
+            fontFamily = RobotoFontFamily,
+            color = if (isDark) {
+                MintWhite.copy(alpha = 0.8f)
+            } else {
+                BottleGreen.copy(alpha = 0.8f)
+            },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -86,7 +103,11 @@ fun TasbihProgressCard(
                 .fillMaxWidth()
                 .height(22.dp)
                 .background(
-                    color = Color.White,
+                    color = if (isDark) {
+                        MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)
+                    } else {
+                        Color.White
+                    },
                     shape = RoundedCornerShape(50.dp)
                 )
         ) {
@@ -96,7 +117,11 @@ fun TasbihProgressCard(
                     .fillMaxHeight()
                     .background(
                         brush = Brush.horizontalGradient(
-                            listOf(Color(0xFF4CAF50), Color(0xFF2E7D32))
+                            if (isDark) {
+                                listOf(SaladGreen, SaladGreen.copy(alpha = 0.7f))
+                            } else {
+                                listOf(Color(0xFF4CAF50), Color(0xFF2E7D32))
+                            }
                         ),
                         shape = RoundedCornerShape(50.dp)
                     ),
@@ -105,8 +130,9 @@ fun TasbihProgressCard(
                 Text(
                     text = "${(progress * 100).toInt()}%",
                     fontSize = 10.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    color = if (isDark) Color.Black else Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = RobotoFontFamily
                 )
             }
         }
@@ -129,7 +155,12 @@ fun TasbihProgressCard(
                 Text(
                     text = TimeFormatter.formatCompactDuration(totalTimeSpentSeconds),
                     fontSize = 10.sp,
-                    color = Color.Gray,
+                    fontFamily = RobotoFontFamily,
+                    color = if (isDark) {
+                        EggshellWhite.copy(alpha = 0.7f)
+                    } else {
+                        Color.Gray
+                    },
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -139,14 +170,20 @@ fun TasbihProgressCard(
                 Text(
                     text = "✓ Completed",
                     fontSize = 10.sp,
-                    color = Color(0xFF4CAF50),
+                    fontFamily = RobotoFontFamily,
+                    color = if (isDark) SaladGreen else Color(0xFF4CAF50),
                     fontWeight = FontWeight.Bold
                 )
             } else {
                 Text(
                     text = "In Progress",
                     fontSize = 10.sp,
-                    color = Color.Gray.copy(alpha = 0.7f)
+                    fontFamily = RobotoFontFamily,
+                    color = if (isDark) {
+                        EggshellWhite.copy(alpha = 0.5f)
+                    } else {
+                        Color.Gray.copy(alpha = 0.7f)
+                    }
                 )
             }
         }
@@ -186,7 +223,16 @@ private fun ActionItem(
     onClick: () -> Unit,
     enabled: Boolean = true
 ) {
-    val color = if (enabled) BottleGreen else Color.Gray.copy(alpha = 0.5f)
+    val isDark = isSystemInDarkTheme()
+    val color = if (enabled) {
+        if (isDark) SaladGreen else BottleGreen
+    } else {
+        if (isDark) {
+            EggshellWhite.copy(alpha = 0.3f)
+        } else {
+            Color.Gray.copy(alpha = 0.5f)
+        }
+    }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -199,7 +245,12 @@ private fun ActionItem(
             modifier = Modifier.size(16.dp),
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Text(text, fontSize = 12.sp, color = color)
+        Text(
+            text,
+            fontSize = 12.sp,
+            fontFamily = RobotoFontFamily,
+            color = color
+        )
     }
 }
 
@@ -208,7 +259,16 @@ private fun PlayButton(
     onClick: () -> Unit,
     enabled: Boolean = true
 ) {
-    val backgroundColor = if (enabled) Color(0xFF4CAF50) else Color.Gray.copy(alpha = 0.5f)
+    val isDark = isSystemInDarkTheme()
+    val backgroundColor = if (enabled) {
+        if (isDark) SaladGreen else Color(0xFF4CAF50)
+    } else {
+        if (isDark) {
+            EggshellWhite.copy(alpha = 0.3f)
+        } else {
+            Color.Gray.copy(alpha = 0.5f)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -220,16 +280,20 @@ private fun PlayButton(
         Icon(
             Icons.Default.PlayArrow,
             contentDescription = "Play",
-            tint = Color.White
+            tint = if (isDark && enabled) Color.Black else Color.White
         )
     }
 }
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewTasbihProgressCard() {
     QuranTheme {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             TasbihProgressCard(
                 title = "Alhamdulillah",
                 currentCount = 40,

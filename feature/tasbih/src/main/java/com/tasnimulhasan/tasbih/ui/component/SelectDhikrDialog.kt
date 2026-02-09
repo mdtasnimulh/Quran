@@ -2,6 +2,7 @@ package com.tasnimulhasan.tasbih.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -38,7 +40,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.tasnimulhasan.common.constant.QuoteConstants
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.tasbih.DhikrName
 
 @Composable
@@ -51,12 +57,18 @@ fun SelectDhikrDialog(
     onDismiss: () -> Unit,
     onConfirm: (String, String, String) -> Unit,
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color(0xFFE6F1EA),
+                    color = if (isDark) {
+                        MaterialTheme.colorScheme.surface
+                    } else {
+                        Color(0xFFE6F1EA)
+                    },
                     shape = RoundedCornerShape(24.dp)
                 )
                 .padding(20.dp)
@@ -68,7 +80,7 @@ fun SelectDhikrDialog(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Close",
-                    tint = Color.Gray,
+                    tint = if (isDark) EggshellWhite else Color.Gray,
                     modifier = Modifier
                         .align(Alignment.End)
                         .clickable { onDismiss() }
@@ -98,19 +110,28 @@ fun SelectDhikrDialog(
                 /* OK Button */
                 Box(
                     modifier = Modifier
-                        .background(Color.White, RoundedCornerShape(50.dp))
-                        .clickable { onConfirm(
-                            dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrArabic ?: "",
-                            dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrEnglish ?: "",
-                            dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrMeaning ?: "",
-                        ) }
+                        .background(
+                            if (isDark) SaladGreen else Color.White,
+                            RoundedCornerShape(50.dp)
+                        )
+                        .clickable {
+                            onConfirm(
+                                dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrArabic
+                                    ?: "",
+                                dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrEnglish
+                                    ?: "",
+                                dhikrList.find { it.dhikrEnglish == selectedDhikr }?.dhikrMeaning
+                                    ?: "",
+                            )
+                        }
                         .padding(horizontal = 36.dp, vertical = 10.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "OK",
                         fontWeight = FontWeight.Bold,
-                        color = BottleGreen
+                        fontFamily = RobotoFontFamily,
+                        color = if (isDark) Color.Black else BottleGreen
                     )
                 }
             }
@@ -120,11 +141,14 @@ fun SelectDhikrDialog(
 
 @Composable
 private fun DialogLabel(text: String) {
+    val isDark = isSystemInDarkTheme()
+
     Text(
         text = text,
         fontSize = 11.sp,
         fontWeight = FontWeight.SemiBold,
-        color = Color.Gray,
+        fontFamily = RobotoFontFamily,
+        color = if (isDark) EggshellWhite.copy(alpha = 0.7f) else Color.Gray,
         modifier = Modifier.padding(start = 6.dp, bottom = 6.dp)
     )
 }
@@ -136,12 +160,20 @@ private fun DhikrDropdown(
     onItemSelected: (DhikrName) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val isDark = isSystemInDarkTheme()
 
     Box {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White, RoundedCornerShape(50.dp))
+                .background(
+                    if (isDark) {
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                    } else {
+                        Color.White
+                    },
+                    RoundedCornerShape(50.dp)
+                )
                 .clickable { expanded = true }
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -149,11 +181,14 @@ private fun DhikrDropdown(
             Text(
                 text = selected,
                 modifier = Modifier.weight(1f),
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                fontFamily = RobotoFontFamily,
+                color = if (isDark) MintWhite else Color.Black
             )
             Icon(
                 Icons.Default.KeyboardArrowDown,
-                contentDescription = null
+                contentDescription = null,
+                tint = if (isDark) MintWhite else Color.Black
             )
         }
 
@@ -163,7 +198,12 @@ private fun DhikrDropdown(
         ) {
             items.forEach {
                 DropdownMenuItem(
-                    text = { Text(it.dhikrEnglish) },
+                    text = {
+                        Text(
+                            it.dhikrEnglish,
+                            fontFamily = RobotoFontFamily
+                        )
+                    },
                     onClick = {
                         onItemSelected(it)
                         expanded = false
@@ -179,10 +219,19 @@ private fun GoalInput(
     value: String,
     onValueChange: (String) -> Unit
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(50.dp))
+            .background(
+                if (isDark) {
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                } else {
+                    Color.White
+                },
+                RoundedCornerShape(50.dp)
+            )
             .padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         TextField(
@@ -196,11 +245,15 @@ private fun GoalInput(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             textStyle = TextStyle(
                 fontSize = 14.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontFamily = RobotoFontFamily,
+                color = if (isDark) MintWhite else Color.Black
             ),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -208,6 +261,7 @@ private fun GoalInput(
 }
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewSelectDhikrDialog() {
     QuranTheme {
@@ -218,7 +272,7 @@ fun PreviewSelectDhikrDialog() {
             onDhikrSelected = {},
             onGoalChange = {},
             onDismiss = {},
-            onConfirm = {_, _, _ ->}
+            onConfirm = { _, _, _ -> }
         )
     }
 }
