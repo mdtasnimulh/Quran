@@ -3,6 +3,7 @@ package com.tasnimulhasan.tasbih.ui.screen
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.tasnimulhasan.common.constant.QuoteConstants
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.tasbih.TasbihItem
 import com.tasnimulhasan.tasbih.ui.component.DhikrQuoteCard
 import com.tasnimulhasan.tasbih.ui.component.SelectDhikrDialog
@@ -137,7 +140,8 @@ internal fun TasbihScreen(
                         end.linkTo(parent.end)
                     }
                     .padding(16.dp),
-                containerColor = BottleGreen,
+                containerColor = if (isSystemInDarkTheme()) SaladGreen else BottleGreen,
+                contentColor = MintWhite,
                 onClick = {
                     viewModel.action(TasbihUiAction.OpenCreateDialog)
                 }

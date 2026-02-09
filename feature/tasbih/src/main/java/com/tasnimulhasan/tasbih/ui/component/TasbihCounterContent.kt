@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,9 @@ import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
+import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import java.util.Locale
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -71,17 +75,19 @@ fun TasbihCounterContent(
             Icon(
                 Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = null,
-                tint = BottleGreen,
+                tint = if (isSystemInDarkTheme()) MintWhite else BottleGreen,
                 modifier = Modifier.clickable(onClick = { onDismiss() })
             )
             Spacer(Modifier.width(8.dp))
-            Text("Tasbih", fontWeight = FontWeight.Medium)
+
+            Text("Tasbih", fontWeight = FontWeight.Medium, fontFamily = RobotoFontFamily, color = MintWhite)
 
             Spacer(Modifier.weight(1f))
 
             Icon(
                 Icons.Default.Close,
                 contentDescription = "Close",
+                tint = if (isSystemInDarkTheme()) BottleGreen else MintWhite,
                 modifier = Modifier.clickable { onDismiss() }
             )
         }
@@ -102,7 +108,9 @@ fun TasbihCounterContent(
             text = formatTime(timerSeconds),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             color = Color.Gray,
-            fontSize = 12.sp
+            fontSize = 12.sp,
+            fontFamily = RobotoFontFamily,
+            fontWeight = FontWeight.Medium
         )
 
         Spacer(Modifier.height(12.dp))
@@ -112,15 +120,20 @@ fun TasbihCounterContent(
             text = "Tasbih Counter",
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 12.sp,
-            color = Color.Gray
+            color = Color.Gray,
+            fontFamily = RobotoFontFamily,
+            fontWeight = FontWeight.Medium
         )
+
+        Spacer(Modifier.height(8.dp))
 
         Text(
             text = count.toString(),
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 40.sp,
+            fontSize = 90.sp,
             fontWeight = FontWeight.Bold,
-            color = BottleGreen
+            color = if (isSystemInDarkTheme()) MintWhite else MaterialTheme.colorScheme.onBackground,
+            fontFamily = RobotoFontFamily
         )
 
         Spacer(Modifier.weight(1f))
@@ -160,24 +173,33 @@ private fun DhikrCounterCard(
             .padding(16.dp)
     ) {
         Column {
-            Text("Say:", color = EggshellWhite.copy(0.7f), fontSize = 12.sp)
+            Text("Say:", color = MintWhite.copy(0.75f), fontSize = 12.sp)
 
             Spacer(Modifier.height(6.dp))
 
             Box(
                 modifier = Modifier
-                    .background(Color.White, RoundedCornerShape(12.dp))
+                    .background(
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                        RoundedCornerShape(12.dp)
+                    )
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             ) {
-                Text(arabic, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground, fontFamily = ArabicUthmanFontFamily, fontWeight = FontWeight.SemiBold)
+                Text(
+                    arabic,
+                    fontSize = 18.sp,
+                    color = if (isSystemInDarkTheme()) SaladGreen else MintWhite,
+                    fontFamily = ArabicUthmanFontFamily,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
 
             Spacer(Modifier.height(6.dp))
 
-            Text(english, color = EggshellWhite, fontWeight = FontWeight.Bold)
+            Text(english, color = MintWhite, fontWeight = FontWeight.Bold)
             Text(
                 text = meaning,
-                color = EggshellWhite.copy(0.8f),
+                color = MintWhite.copy(0.8f),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -186,7 +208,9 @@ private fun DhikrCounterCard(
         Image(
             painter = painterResource(Res.drawable.tasbih),
             contentDescription = null,
-            modifier = Modifier.size(80.dp).align(alignment = Alignment.CenterEnd),
+            modifier = Modifier
+                .size(80.dp)
+                .align(alignment = Alignment.CenterEnd),
         )
     }
 }
@@ -210,14 +234,18 @@ fun SwipeableTasbih(
         /* Curved Beads with fixed behavior */
         CurvedTasbihBeads(progress = progress)
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(24.dp))
 
         /* Swipe Track - Fixed positioning */
         Box(
             modifier = Modifier
                 .width(width)
                 .height(56.dp)
-                .background(Color(0xFFF1F1F1), RoundedCornerShape(30.dp))
+                .background(
+                    if (isSystemInDarkTheme()) EggshellWhite.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = 0.5f
+                    ), RoundedCornerShape(30.dp)
+                )
                 .swipeable(
                     state = swipeState,
                     anchors = anchors,
@@ -235,14 +263,15 @@ fun SwipeableTasbih(
 
             Box(
                 modifier = Modifier
+                    .padding(horizontal = 6.dp)
                     .align(Alignment.CenterEnd)
                     .offset { IntOffset(clampedOffset.toInt(), 0) }
                     .size(circleSize)
                     .background(
                         brush = Brush.radialGradient(
                             colors = listOf(
-                                BottleGreen,
-                                BottleGreen.copy(alpha = 0.8f)
+                                if (isSystemInDarkTheme()) SaladGreen else BottleGreen,
+                                BottleGreen.copy(alpha = 0.5f)
                             )
                         ),
                         shape = CircleShape
@@ -251,12 +280,25 @@ fun SwipeableTasbih(
         }
 
         Spacer(Modifier.height(8.dp))
+
         Row(
             modifier = Modifier.width(width),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Swipe", fontSize = 11.sp, color = Color.Gray)
-            Text("←", fontSize = 14.sp, color = BottleGreen)
+            Text(
+                "Swipe",
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                "←",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 
