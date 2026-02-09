@@ -5,10 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.tasnimulhasan.domain.base.BaseViewModel
+import com.tasnimulhasan.domain.localusecase.datastore.GetDhikrCountUseCase
+import com.tasnimulhasan.domain.localusecase.datastore.IncrementDhikrCountUseCase
 import com.tasnimulhasan.domain.localusecase.tasbih.FetchAllTasbihUseCase
 import com.tasnimulhasan.domain.localusecase.tasbih.InsertTasbihUseCase
 import com.tasnimulhasan.domain.localusecase.tasbih.RemoveTasbihUseCase
 import com.tasnimulhasan.domain.localusecase.tasbih.UpdateTasbihUseCase
+import com.tasnimulhasan.entity.tasbih.DhikrCountEntity
 import com.tasnimulhasan.entity.tasbih.TasbihItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -22,6 +25,8 @@ class TasbihViewModel @Inject constructor(
     private val insertTasbihUseCase: InsertTasbihUseCase,
     private val updateTasbihUseCase: UpdateTasbihUseCase,
     private val removeTasbihUseCase: RemoveTasbihUseCase,
+    private val getDhikrCountUseCase: GetDhikrCountUseCase,
+    private val incrementDhikrCountUseCase: IncrementDhikrCountUseCase,
 ) : BaseViewModel() {
 
     var state by mutableStateOf(TasbihUiState())
@@ -29,6 +34,7 @@ class TasbihViewModel @Inject constructor(
 
     init {
         fetchAllTasbih()
+        fetchDhikrCount()
     }
 
     val action: (TasbihUiAction) -> Unit = { action ->
@@ -111,6 +117,17 @@ class TasbihViewModel @Inject constructor(
     }
 
     /**
+     * Fetch dhikr count from DataStore
+     */
+    private fun fetchDhikrCount() {
+        getDhikrCountUseCase()
+            .onEach { dhikrCount ->
+                state = state.copy(dhikrCount = dhikrCount)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    /**
      * Create and insert a new Tasbih item
      */
     private fun createTasbih(tasbihItem: TasbihItem) {
@@ -157,6 +174,9 @@ class TasbihViewModel @Inject constructor(
             )
 
             updateTasbihUseCase(UpdateTasbihUseCase.Params(updatedTasbih))
+
+            // Increment global dhikr count
+            incrementDhikrCountUseCase(tasbih.dhikrEnglish)
 
             // Update selectedTasbih if it's the one being incremented
             if (state.selectedTasbih?.id == id) {

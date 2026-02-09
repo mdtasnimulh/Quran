@@ -1,5 +1,6 @@
 package com.tasnimulhasan.tasbih.ui.viewmodel
 
+import com.tasnimulhasan.entity.tasbih.DhikrCountEntity
 import com.tasnimulhasan.entity.tasbih.TasbihItem
 
 data class TasbihUiState(
@@ -18,5 +19,8 @@ data class TasbihUiState(
 
     // edit mode
     val isEditMode: Boolean = false,
-    val editingTasbih: TasbihItem? = null
+    val editingTasbih: TasbihItem? = null,
+
+    // dhikr count
+    val dhikrCount: DhikrCountEntity = DhikrCountEntity.empty()
 )

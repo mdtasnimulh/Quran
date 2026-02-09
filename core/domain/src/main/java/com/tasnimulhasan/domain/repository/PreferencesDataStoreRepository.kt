@@ -6,6 +6,7 @@ import com.tasnimulhasan.entity.enum.ThemeColor
 import com.tasnimulhasan.entity.enum.ThemeStyleType
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
+import com.tasnimulhasan.entity.tasbih.DhikrCountEntity
 import kotlinx.coroutines.flow.Flow
 
 interface PreferencesDataStoreRepository {
@@ -32,4 +33,8 @@ interface PreferencesDataStoreRepository {
     suspend fun changeThemeStyle(themeStyle: ThemeStyleType)
 
     suspend fun changeThemeColor(themeColor: ThemeColor)
+
+    suspend fun saveDhikrCount(dhikrCount: DhikrCountEntity)
+    fun getDhikrCount(): Flow<DhikrCountEntity>
+    suspend fun incrementDhikrCount(dhikrEnglish: String)
 }

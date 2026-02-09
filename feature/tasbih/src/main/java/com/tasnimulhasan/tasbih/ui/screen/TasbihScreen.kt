@@ -39,6 +39,7 @@ import com.tasnimulhasan.tasbih.ui.component.DhikrQuoteCard
 import com.tasnimulhasan.tasbih.ui.component.SelectDhikrDialog
 import com.tasnimulhasan.tasbih.ui.component.TasbihCounterDialog
 import com.tasnimulhasan.tasbih.ui.component.TasbihProgressCard
+import com.tasnimulhasan.tasbih.ui.component.TotalCountCard
 import com.tasnimulhasan.tasbih.ui.viewmodel.TasbihUiAction
 import com.tasnimulhasan.tasbih.ui.viewmodel.TasbihViewModel
 
@@ -79,6 +80,11 @@ internal fun TasbihScreen(
 
                 item(span = { GridItemSpan(1) }) {
                     DhikrQuoteCard(title = QuoteConstants.DHIKRQUOTE)
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+
+                item(span = { GridItemSpan(1) }) {
+                    TotalCountCard(dhikrCount = state.dhikrCount)
                     Spacer(modifier = Modifier.height(6.dp))
                 }
 
@@ -123,19 +129,21 @@ internal fun TasbihScreen(
             }
         }
 
-        FloatingActionButton(
-            modifier = Modifier
-                .constrainAs(fab) {
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
+        if (state.tasbihList.isNotEmpty()) {
+            FloatingActionButton(
+                modifier = Modifier
+                    .constrainAs(fab) {
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+                    .padding(16.dp),
+                containerColor = BottleGreen,
+                onClick = {
+                    viewModel.action(TasbihUiAction.OpenCreateDialog)
                 }
-                .padding(16.dp),
-            containerColor = BottleGreen,
-            onClick = {
-                viewModel.action(TasbihUiAction.OpenCreateDialog)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Tasbih")
             }
-        ) {
-            Icon(Icons.Default.Add, contentDescription = "Add Tasbih")
         }
     }
 

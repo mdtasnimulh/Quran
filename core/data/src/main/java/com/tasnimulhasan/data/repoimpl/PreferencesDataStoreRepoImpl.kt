@@ -15,6 +15,7 @@ import com.tasnimulhasan.entity.enum.ThemeColor
 import com.tasnimulhasan.entity.enum.ThemeStyleType
 import com.tasnimulhasan.entity.location.UserLocationEntity
 import com.tasnimulhasan.entity.prayertimes.DailyPrayerTimesApiEntity
+import com.tasnimulhasan.entity.tasbih.DhikrCountEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -178,6 +179,68 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         }
     }
 
+    // Dhikr counting implementations
+    override suspend fun saveDhikrCount(dhikrCount: DhikrCountEntity) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                preferences[PreferencesKeys.dhikrCount] = gson.toJson(dhikrCount)
+            }
+        }
+    }
+
+    override fun getDhikrCount(): Flow<DhikrCountEntity> {
+        return dataStorePreferences.data
+            .catch { exception ->
+                exception.localizedMessage?.let { Log.e(tag, it) }
+                emit(value = emptyPreferences())
+            }
+            .map { preferences ->
+                val json = preferences[PreferencesKeys.dhikrCount]
+                if (json != null) {
+                    gson.fromJson(json, DhikrCountEntity::class.java)
+                } else {
+                    DhikrCountEntity.empty()
+                }
+            }
+    }
+
+    override suspend fun incrementDhikrCount(dhikrEnglish: String) {
+        tryIt {
+            dataStorePreferences.edit { preferences ->
+                val currentJson = preferences[PreferencesKeys.dhikrCount]
+                val currentCount = if (currentJson != null) {
+                    gson.fromJson(currentJson, DhikrCountEntity::class.java)
+                } else {
+                    DhikrCountEntity.empty()
+                }
+
+                val updatedCount = when (dhikrEnglish) {
+                    "Alhamdulillah" -> currentCount.copy(
+                        alhamdulillah = currentCount.alhamdulillah + 1,
+                        totalCount = currentCount.totalCount + 1
+                    )
+                    "Subhan Allah" -> currentCount.copy(
+                        subhanAllah = currentCount.subhanAllah + 1,
+                        totalCount = currentCount.totalCount + 1
+                    )
+                    "Allahu Akbar" -> currentCount.copy(
+                        allahuAkbar = currentCount.allahuAkbar + 1,
+                        totalCount = currentCount.totalCount + 1
+                    )
+                    "La Ilaha Illallah" -> currentCount.copy(
+                        laIlahaIllallah = currentCount.laIlahaIllallah + 1,
+                        totalCount = currentCount.totalCount + 1
+                    )
+                    else -> currentCount.copy(
+                        totalCount = currentCount.totalCount + 1
+                    )
+                }
+
+                preferences[PreferencesKeys.dhikrCount] = gson.toJson(updatedCount)
+            }
+        }
+    }
+
     private fun String?.toThemeStyleType(): ThemeStyleType = when (this) {
         ThemeStyleType.LightMode.name -> ThemeStyleType.LightMode
         ThemeStyleType.DarkMode.name -> ThemeStyleType.DarkMode
@@ -204,5 +267,6 @@ class PreferencesDataStoreRepoImpl @Inject constructor(
         val useDynamicColors = booleanPreferencesKey(name = "use_dynamic_colors")
         val themeStyle = stringPreferencesKey(name = "theme_style")
         val themeColor = stringPreferencesKey(name = "theme_color")
+        val dhikrCount = stringPreferencesKey(name = "dhikr_count")
     }
 }
