@@ -230,6 +230,10 @@ fun SwipeableTasbih(
     // Calculate progress (0 to 1 as user swipes right to left)
     val progress = (-swipeState.offset.value / widthPx).coerceIn(0f, 1f)
 
+    // ✅ Check if progress exceeds 60% threshold
+    val threshold = 0.6f
+    val hasReachedThreshold = progress >= threshold
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         /* Curved Beads with fixed behavior */
         CurvedTasbihBeads(progress = progress)
@@ -242,12 +246,13 @@ fun SwipeableTasbih(
                 .width(width)
                 .height(56.dp)
                 .background(
-                    EggshellWhite.copy(alpha = if (isSystemInDarkTheme()) 0.5f else 0.75f), RoundedCornerShape(30.dp)
+                    EggshellWhite.copy(alpha = if (isSystemInDarkTheme()) 0.5f else 0.75f),
+                    RoundedCornerShape(30.dp)
                 )
                 .swipeable(
                     state = swipeState,
                     anchors = anchors,
-                    thresholds = { _, _ -> FractionalThreshold(0.5f) },
+                    thresholds = { _, _ -> FractionalThreshold(threshold) }, // ✅ Changed from 0.5f to 0.6f
                     orientation = Orientation.Horizontal
                 )
         ) {
@@ -259,6 +264,13 @@ fun SwipeableTasbih(
             // Clamp offset to prevent overflow
             val clampedOffset = swipeState.offset.value.coerceIn(-maxOffset, 0f)
 
+            // ✅ Change color when threshold is reached
+            val circleColor = if (hasReachedThreshold) {
+                if (isSystemInDarkTheme()) SaladGreen else Color(0xFF2E7D32) // Darker green when ready
+            } else {
+                if (isSystemInDarkTheme()) SaladGreen else BottleGreen
+            }
+
             Box(
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
@@ -268,8 +280,8 @@ fun SwipeableTasbih(
                     .background(
                         brush = Brush.radialGradient(
                             colors = listOf(
-                                if (isSystemInDarkTheme()) SaladGreen else BottleGreen,
-                                BottleGreen.copy(alpha = 0.5f)
+                                circleColor,
+                                circleColor.copy(alpha = 0.5f)
                             )
                         ),
                         shape = CircleShape
@@ -281,23 +293,44 @@ fun SwipeableTasbih(
             modifier = Modifier.width(width),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            // ✅ Show visual feedback when threshold is reached
             Text(
-                "Swipe",
+                if (hasReachedThreshold) "Release!" else "Swipe",
                 fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (hasReachedThreshold) {
+                    if (isSystemInDarkTheme()) SaladGreen else Color(0xFF2E7D32)
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
                 fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Medium
+                fontWeight = if (hasReachedThreshold) FontWeight.Bold else FontWeight.Medium
             )
             Text(
                 "←",
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (hasReachedThreshold) {
+                    if (isSystemInDarkTheme()) SaladGreen else Color(0xFF2E7D32)
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
                 fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Medium
+                fontWeight = if (hasReachedThreshold) FontWeight.Bold else FontWeight.Medium
             )
         }
+
+        /*// ✅ Show percentage progress (optional - for debugging/feedback)
+        if (progress > 0.1f) {
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = "${(progress * 100).toInt()}%",
+                fontSize = 10.sp,
+                color = Color.Gray,
+                fontFamily = RobotoFontFamily
+            )
+        }*/
     }
 
+    // ✅ Trigger increment when threshold is crossed
     LaunchedEffect(swipeState.currentValue) {
         if (swipeState.currentValue == 1) {
             onSwipeComplete()
