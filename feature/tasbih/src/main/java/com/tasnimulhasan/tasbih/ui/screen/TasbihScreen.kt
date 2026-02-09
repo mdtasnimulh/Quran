@@ -216,6 +216,7 @@ internal fun TasbihScreen(
                 dhikrMeaning = tasbih.dhikrMeaning,
                 count = tasbih.currentCount,
                 timerSeconds = state.timerSeconds,
+                isSwipeMode = state.isSwipeMode,
                 onIncrement = {
                     viewModel.action(
                         TasbihUiAction.Increment(tasbih.id)
@@ -224,6 +225,11 @@ internal fun TasbihScreen(
                 onDismiss = {
                     viewModel.action(
                         TasbihUiAction.CloseCounter
+                    )
+                },
+                onToggleInputMode = {
+                    viewModel.action(
+                        TasbihUiAction.ToggleInputMode
                     )
                 }
             )

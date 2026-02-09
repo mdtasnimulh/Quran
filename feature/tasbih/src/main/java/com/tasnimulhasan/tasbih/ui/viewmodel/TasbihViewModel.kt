@@ -131,6 +131,10 @@ class TasbihViewModel @Inject constructor(
             TasbihUiAction.TickTimer -> {
                 state = state.copy(timerSeconds = state.timerSeconds + 1)
             }
+
+            TasbihUiAction.ToggleInputMode -> {
+                state = state.copy(isSwipeMode = !state.isSwipeMode)
+            }
         }
     }
 

@@ -28,4 +28,7 @@ sealed interface TasbihUiAction {
     data object StopTimer : TasbihUiAction
     data object TickTimer : TasbihUiAction
     data object ResetTimer : TasbihUiAction
+
+    /* Input Mode */
+    data object ToggleInputMode : TasbihUiAction
 }

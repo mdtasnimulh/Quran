@@ -26,5 +26,8 @@ data class TasbihUiState(
 
     // timer
     val timerSeconds: Int = 0,
-    val sessionStartTimestamp: Long = 0 // Track when session started
+    val sessionStartTimestamp: Long = 0,
+
+    // input mode
+    val isSwipeMode: Boolean = true // true = swipe, false = tap
 )

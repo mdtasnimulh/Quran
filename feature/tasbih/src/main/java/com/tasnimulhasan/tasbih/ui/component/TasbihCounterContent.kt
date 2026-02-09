@@ -1,9 +1,13 @@
 package com.tasnimulhasan.tasbih.ui.component
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,13 +32,18 @@ import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +56,7 @@ import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
+import kotlinx.coroutines.launch
 import java.util.Locale
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -57,8 +67,10 @@ fun TasbihCounterContent(
     dhikrMeaning: String,
     count: Int,
     timerSeconds: Int,
+    isSwipeMode: Boolean,
     onIncrement: () -> Unit,
     onDismiss: () -> Unit,
+    onToggleInputMode: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -80,7 +92,12 @@ fun TasbihCounterContent(
             )
             Spacer(Modifier.width(8.dp))
 
-            Text("Tasbih", fontWeight = FontWeight.Medium, fontFamily = RobotoFontFamily, color = MintWhite)
+            Text(
+                "Tasbih",
+                fontWeight = FontWeight.Medium,
+                fontFamily = RobotoFontFamily,
+                color = if (isSystemInDarkTheme()) MintWhite else BottleGreen
+            )
 
             Spacer(Modifier.weight(1f))
 
@@ -138,12 +155,202 @@ fun TasbihCounterContent(
 
         Spacer(Modifier.weight(1f))
 
-        /* Swipeable Tasbih */
-        SwipeableTasbih(
-            onSwipeComplete = onIncrement
+        /* Input Mode Toggle */
+        InputModeToggle(
+            isSwipeMode = isSwipeMode,
+            onToggle = onToggleInputMode
         )
 
+        Spacer(Modifier.height(16.dp))
+
+        /* Input Area */
+        if (isSwipeMode) {
+            SwipeableTasbih(onSwipeComplete = onIncrement)
+        } else {
+            TapTasbih(onTap = onIncrement)
+        }
+
         Spacer(Modifier.height(24.dp))
+    }
+}
+
+@Composable
+private fun InputModeToggle(
+    isSwipeMode: Boolean,
+    onToggle: () -> Unit
+) {
+    val isDark = isSystemInDarkTheme()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = if (isDark) {
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                } else {
+                    EggshellWhite.copy(alpha = 0.5f)
+                },
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "👆",
+                fontSize = 16.sp
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "Tap Mode",
+                fontSize = 13.sp,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.Medium,
+                color = if (!isSwipeMode) {
+                    if (isDark) SaladGreen else BottleGreen
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                }
+            )
+        }
+
+        Switch(
+            checked = isSwipeMode,
+            onCheckedChange = { onToggle() },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = if (isDark) SaladGreen else BottleGreen,
+                checkedTrackColor = if (isDark) SaladGreen.copy(alpha = 0.5f) else BottleGreen.copy(alpha = 0.5f),
+                uncheckedThumbColor = Color.Gray,
+                uncheckedTrackColor = Color.Gray.copy(alpha = 0.3f)
+            )
+        )
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Swipe Mode",
+                fontSize = 13.sp,
+                fontFamily = RobotoFontFamily,
+                fontWeight = FontWeight.Medium,
+                color = if (isSwipeMode) {
+                    if (isDark) SaladGreen else BottleGreen
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                }
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "👈",
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun TapTasbih(
+    onTap: () -> Unit
+) {
+    val isDark = isSystemInDarkTheme()
+    val scale = remember { Animatable(1f) }
+    val scope = rememberCoroutineScope()
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        /* Tap Area */
+        Box(
+            modifier = Modifier
+                .size(200.dp)
+                .background(
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            if (isDark) SaladGreen.copy(alpha = 0.8f) else BottleGreen.copy(alpha = 0.8f),
+                            if (isDark) SaladGreen.copy(alpha = 0.4f) else BottleGreen.copy(alpha = 0.4f),
+                            Color.Transparent
+                        )
+                    ),
+                    shape = CircleShape
+                )
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = {
+                            scope.launch {
+                                scale.animateTo(
+                                    0.85f,
+                                    animationSpec = spring(
+                                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                                        stiffness = Spring.StiffnessHigh
+                                    )
+                                )
+                                scale.animateTo(
+                                    1f,
+                                    animationSpec = spring(
+                                        dampingRatio = Spring.DampingRatioLowBouncy,
+                                        stiffness = Spring.StiffnessLow
+                                    )
+                                )
+                            }
+                            onTap()
+                        }
+                    )
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            // Outer ring
+            Box(
+                modifier = Modifier
+                    .size(180.dp * scale.value)
+                    .background(
+                        color = if (isDark) SaladGreen.copy(alpha = 0.3f) else BottleGreen.copy(alpha = 0.3f),
+                        shape = CircleShape
+                    )
+            )
+
+            // Middle ring
+            Box(
+                modifier = Modifier
+                    .size(140.dp * scale.value)
+                    .background(
+                        color = if (isDark) SaladGreen.copy(alpha = 0.5f) else BottleGreen.copy(alpha = 0.5f),
+                        shape = CircleShape
+                    )
+            )
+
+            // Inner circle (main button)
+            Box(
+                modifier = Modifier
+                    .size(100.dp * scale.value)
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                if (isDark) SaladGreen else BottleGreen,
+                                if (isDark) SaladGreen.copy(alpha = 0.8f) else BottleGreen.copy(alpha = 0.8f)
+                            )
+                        ),
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "TAP",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = RobotoFontFamily,
+                    color = if (isDark) Color.Black else MintWhite
+                )
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        Text(
+            text = "Tap the circle to count",
+            fontSize = 12.sp,
+            fontFamily = RobotoFontFamily,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+        )
     }
 }
 
@@ -224,23 +431,16 @@ fun SwipeableTasbih(
     val width = 280.dp
     val widthPx = with(LocalDensity.current) { width.toPx() }
 
-    // Fixed: Right to Left swipe (negative offset means swiping left)
     val anchors = mapOf(0f to 0, -widthPx to 1)
-
-    // Calculate progress (0 to 1 as user swipes right to left)
     val progress = (-swipeState.offset.value / widthPx).coerceIn(0f, 1f)
-
-    // ✅ Check if progress exceeds 60% threshold
     val threshold = 0.6f
     val hasReachedThreshold = progress >= threshold
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        /* Curved Beads with fixed behavior */
         CurvedTasbihBeads(progress = progress)
 
         Spacer(Modifier.height(24.dp))
 
-        /* Swipe Track - Fixed positioning */
         Box(
             modifier = Modifier
                 .width(width)
@@ -252,21 +452,17 @@ fun SwipeableTasbih(
                 .swipeable(
                     state = swipeState,
                     anchors = anchors,
-                    thresholds = { _, _ -> FractionalThreshold(threshold) }, // ✅ Changed from 0.5f to 0.6f
+                    thresholds = { _, _ -> FractionalThreshold(threshold) },
                     orientation = Orientation.Horizontal
                 )
         ) {
             val circleSize = 48.dp
             val circleSizePx = with(LocalDensity.current) { circleSize.toPx() }
             val maxOffset = widthPx - circleSizePx
-
-            // Swipe indicator circle - starts from RIGHT, moves to LEFT
-            // Clamp offset to prevent overflow
             val clampedOffset = swipeState.offset.value.coerceIn(-maxOffset, 0f)
 
-            // ✅ Change color when threshold is reached
             val circleColor = if (hasReachedThreshold) {
-                if (isSystemInDarkTheme()) SaladGreen else Color(0xFF2E7D32) // Darker green when ready
+                if (isSystemInDarkTheme()) SaladGreen else Color(0xFF2E7D32)
             } else {
                 if (isSystemInDarkTheme()) SaladGreen else BottleGreen
             }
@@ -293,7 +489,6 @@ fun SwipeableTasbih(
             modifier = Modifier.width(width),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // ✅ Show visual feedback when threshold is reached
             Text(
                 if (hasReachedThreshold) "Release!" else "Swipe",
                 fontSize = 11.sp,
@@ -317,24 +512,11 @@ fun SwipeableTasbih(
                 fontWeight = if (hasReachedThreshold) FontWeight.Bold else FontWeight.Medium
             )
         }
-
-        /*// ✅ Show percentage progress (optional - for debugging/feedback)
-        if (progress > 0.1f) {
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = "${(progress * 100).toInt()}%",
-                fontSize = 10.sp,
-                color = Color.Gray,
-                fontFamily = RobotoFontFamily
-            )
-        }*/
     }
 
-    // ✅ Trigger increment when threshold is crossed
     LaunchedEffect(swipeState.currentValue) {
         if (swipeState.currentValue == 1) {
             onSwipeComplete()
-            // Smooth snap back animation
             swipeState.animateTo(0)
         }
     }
