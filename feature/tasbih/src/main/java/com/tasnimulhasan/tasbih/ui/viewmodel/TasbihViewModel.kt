@@ -137,7 +137,7 @@ class TasbihViewModel @Inject constructor(
      */
     private fun removeTasbih(tasbih: TasbihItem) {
         viewModelScope.launch {
-            removeTasbihUseCase(tasbih)
+            removeTasbihUseCase(RemoveTasbihUseCase.Params(tasbih))
         }
     }
 }

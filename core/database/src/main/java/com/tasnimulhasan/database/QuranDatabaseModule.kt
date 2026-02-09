@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.tasnimulhasan.database.dao.QuranDao
 import com.tasnimulhasan.database.dao.SuraNameDao
+import com.tasnimulhasan.database.dao.TasbihDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +32,9 @@ object QuranDatabaseModule {
     @Singleton
     @Provides
     fun provideSuraNameDao(database: QuranSuraDatabase): SuraNameDao = database.suraNameDao()
+
+    @Singleton
+    @Provides
+    fun provideTasbihDao(database: QuranSuraDatabase): TasbihDao = database.tasbihDao()
 
 }
