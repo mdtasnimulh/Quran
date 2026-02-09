@@ -1,5 +1,6 @@
 package com.tasnimulhasan.tasbih.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,12 +35,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.EggshellWhite
 import java.util.Locale
+import com.tasnimulhasan.designsystem.R as Res
 
 @Composable
 fun TasbihCounterContent(
@@ -148,13 +154,13 @@ private fun DhikrCounterCard(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFF5A3FD3),
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(16.dp)
     ) {
         Column {
-            Text("Say:", color = Color.White.copy(0.7f), fontSize = 12.sp)
+            Text("Say:", color = EggshellWhite.copy(0.7f), fontSize = 12.sp)
 
             Spacer(Modifier.height(6.dp))
 
@@ -163,18 +169,25 @@ private fun DhikrCounterCard(
                     .background(Color.White, RoundedCornerShape(12.dp))
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             ) {
-                Text(arabic, fontSize = 18.sp)
+                Text(arabic, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground, fontFamily = ArabicUthmanFontFamily, fontWeight = FontWeight.SemiBold)
             }
 
             Spacer(Modifier.height(6.dp))
 
-            Text(english, color = Color.White, fontWeight = FontWeight.Bold)
+            Text(english, color = EggshellWhite, fontWeight = FontWeight.Bold)
             Text(
                 text = meaning,
-                color = Color.White.copy(0.8f),
-                fontSize = 11.sp
+                color = EggshellWhite.copy(0.8f),
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium
             )
         }
+
+        Image(
+            painter = painterResource(Res.drawable.tasbih),
+            contentDescription = null,
+            modifier = Modifier.size(80.dp).align(alignment = Alignment.CenterEnd),
+        )
     }
 }
 
