@@ -141,7 +141,7 @@ internal fun TasbihScreen(
                     }
                     .padding(16.dp),
                 containerColor = if (isSystemInDarkTheme()) SaladGreen else BottleGreen,
-                contentColor = MintWhite,
+                contentColor = if (isSystemInDarkTheme()) BottleGreen else MintWhite,
                 onClick = {
                     viewModel.action(TasbihUiAction.OpenCreateDialog)
                 }
