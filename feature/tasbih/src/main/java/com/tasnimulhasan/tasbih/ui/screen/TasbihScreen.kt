@@ -93,8 +93,8 @@ internal fun TasbihScreen(
                         title = tasbih.dhikrEnglish,
                         currentCount = tasbih.currentCount,
                         totalCount = tasbih.targetCount,
-                        lastUpdated = "Just now",
-                        createdAt = "Today",
+                        totalTimeSpentSeconds = tasbih.totalTimeSpentSeconds,
+                        isCompleted = tasbih.isCompleted,
                         onPlayClick = {
                             viewModel.action(
                                 TasbihUiAction.OpenCounter(tasbih)
@@ -211,6 +211,7 @@ internal fun TasbihScreen(
                 dhikrEnglish = tasbih.dhikrEnglish,
                 dhikrMeaning = tasbih.dhikrMeaning,
                 count = tasbih.currentCount,
+                timerSeconds = state.timerSeconds,
                 onIncrement = {
                     viewModel.action(
                         TasbihUiAction.Increment(tasbih.id)

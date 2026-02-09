@@ -33,21 +33,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.QuranTheme
+import com.tasnimulhasan.tasbih.utils.TimeFormatter
 
 @Composable
 fun TasbihProgressCard(
     title: String,
     currentCount: Int,
     totalCount: Int,
-    lastUpdated: String,
-    createdAt: String,
+    totalTimeSpentSeconds: Int,
+    isCompleted: Boolean,
     onPlayClick: () -> Unit,
     onEditClick: () -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val progress = currentCount.toFloat() / totalCount.toFloat()
-    val isCompleted = currentCount >= totalCount
 
     Column(
         modifier = modifier
@@ -113,34 +113,42 @@ fun TasbihProgressCard(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        /* Completion Badge */
-        if (isCompleted) {
-            Text(
-                text = "✓ Completed",
-                fontSize = 11.sp,
-                color = Color(0xFF4CAF50),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        /* Meta Info */
+        /* Time and Completion Info */
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Last updated: $lastUpdated",
-                fontSize = 10.sp,
-                color = Color.Gray
-            )
-            Text(
-                text = "Created: $createdAt",
-                fontSize = 10.sp,
-                color = Color.Gray
-            )
+            // Time spent
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "⏱️",
+                    fontSize = 10.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = TimeFormatter.formatCompactDuration(totalTimeSpentSeconds),
+                    fontSize = 10.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            // Completion badge
+            if (isCompleted) {
+                Text(
+                    text = "✓ Completed",
+                    fontSize = 10.sp,
+                    color = Color(0xFF4CAF50),
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
+                Text(
+                    text = "In Progress",
+                    fontSize = 10.sp,
+                    color = Color.Gray.copy(alpha = 0.7f)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -221,15 +229,28 @@ private fun PlayButton(
 @Composable
 fun PreviewTasbihProgressCard() {
     QuranTheme {
-        TasbihProgressCard(
-            title = "Alhamdulillah",
-            currentCount = 40,
-            totalCount = 70,
-            lastUpdated = "4 hours ago",
-            createdAt = "4 days ago",
-            onPlayClick = {},
-            onEditClick = {},
-            onRemoveClick = {}
-        )
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            TasbihProgressCard(
+                title = "Alhamdulillah",
+                currentCount = 40,
+                totalCount = 70,
+                totalTimeSpentSeconds = 325, // 5m 25s
+                isCompleted = false,
+                onPlayClick = {},
+                onEditClick = {},
+                onRemoveClick = {}
+            )
+
+            TasbihProgressCard(
+                title = "Subhan Allah",
+                currentCount = 99,
+                totalCount = 99,
+                totalTimeSpentSeconds = 3665, // 1h 1m 5s
+                isCompleted = true,
+                onPlayClick = {},
+                onEditClick = {},
+                onRemoveClick = {}
+            )
+        }
     }
 }

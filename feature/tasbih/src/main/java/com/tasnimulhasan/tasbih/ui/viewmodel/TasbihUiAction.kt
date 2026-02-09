@@ -22,4 +22,10 @@ sealed interface TasbihUiAction {
     data class UpdateTasbih(val tasbihItem: TasbihItem) : TasbihUiAction
     data class Increment(val id: String) : TasbihUiAction
     data class RemoveTasbih(val tasbih: TasbihItem) : TasbihUiAction
+
+    /* Timer */
+    data object StartTimer : TasbihUiAction
+    data object StopTimer : TasbihUiAction
+    data object TickTimer : TasbihUiAction
+    data object ResetTimer : TasbihUiAction
 }

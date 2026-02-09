@@ -22,5 +22,9 @@ data class TasbihUiState(
     val editingTasbih: TasbihItem? = null,
 
     // dhikr count
-    val dhikrCount: DhikrCountEntity = DhikrCountEntity.empty()
+    val dhikrCount: DhikrCountEntity = DhikrCountEntity.empty(),
+
+    // timer
+    val timerSeconds: Int = 0,
+    val sessionStartTimestamp: Long = 0 // Track when session started
 )

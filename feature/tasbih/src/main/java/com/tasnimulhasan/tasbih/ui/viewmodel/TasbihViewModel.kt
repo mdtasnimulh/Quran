@@ -14,6 +14,8 @@ import com.tasnimulhasan.domain.localusecase.tasbih.UpdateTasbihUseCase
 import com.tasnimulhasan.entity.tasbih.DhikrCountEntity
 import com.tasnimulhasan.entity.tasbih.TasbihItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -31,6 +33,8 @@ class TasbihViewModel @Inject constructor(
 
     var state by mutableStateOf(TasbihUiState())
         private set
+
+    private var timerJob: Job? = null
 
     init {
         fetchAllTasbih()
@@ -67,14 +71,28 @@ class TasbihViewModel @Inject constructor(
                 )
             }
 
-            is TasbihUiAction.OpenCounter ->
+            is TasbihUiAction.OpenCounter -> {
+                val currentTime = System.currentTimeMillis()
                 state = state.copy(
                     selectedTasbih = action.tasbih,
-                    showCounterDialog = true
+                    showCounterDialog = true,
+                    sessionStartTimestamp = currentTime
                 )
+                // Update session start time in the tasbih
+                updateSessionStartTime(action.tasbih.id, currentTime)
+                startTimer()
+            }
 
-            TasbihUiAction.CloseCounter ->
-                state = state.copy(showCounterDialog = false)
+            TasbihUiAction.CloseCounter -> {
+                // Save the session time before closing
+                saveSessionTime()
+                stopTimer()
+                state = state.copy(
+                    showCounterDialog = false,
+                    timerSeconds = 0,
+                    sessionStartTimestamp = 0
+                )
+            }
 
             /* Form */
             is TasbihUiAction.SelectDhikr ->
@@ -101,6 +119,17 @@ class TasbihViewModel @Inject constructor(
             /* Delete */
             is TasbihUiAction.RemoveTasbih -> {
                 removeTasbih(action.tasbih)
+            }
+
+            /* Timer */
+            TasbihUiAction.StartTimer -> startTimer()
+            TasbihUiAction.StopTimer -> stopTimer()
+            TasbihUiAction.ResetTimer -> {
+                stopTimer()
+                state = state.copy(timerSeconds = 0)
+            }
+            TasbihUiAction.TickTimer -> {
+                state = state.copy(timerSeconds = state.timerSeconds + 1)
             }
         }
     }
@@ -162,15 +191,55 @@ class TasbihViewModel @Inject constructor(
     }
 
     /**
+     * Update session start time
+     */
+    private fun updateSessionStartTime(id: String, startTime: Long) {
+        viewModelScope.launch {
+            val tasbih = state.tasbihList.find { it.id == id } ?: return@launch
+            val updated = tasbih.copy(sessionStartTime = startTime)
+            updateTasbihUseCase(UpdateTasbihUseCase.Params(updated))
+        }
+    }
+
+    /**
+     * Save session time when closing counter
+     */
+    private fun saveSessionTime() {
+        viewModelScope.launch {
+            val tasbih = state.selectedTasbih ?: return@launch
+
+            // Calculate session duration
+            val sessionDuration = state.timerSeconds
+
+            // Update total time spent
+            val updatedTasbih = tasbih.copy(
+                totalTimeSpentSeconds = tasbih.totalTimeSpentSeconds + sessionDuration,
+                sessionStartTime = 0 // Reset session start time
+            )
+
+            updateTasbihUseCase(UpdateTasbihUseCase.Params(updatedTasbih))
+        }
+    }
+
+    /**
      * Increment the count of a specific Tasbih
      */
     private fun incrementTasbih(id: String) {
         viewModelScope.launch {
             val tasbih = state.tasbihList.find { it.id == id } ?: return@launch
 
+            val newCount = tasbih.currentCount + 1
+            val isNowCompleted = newCount >= tasbih.targetCount
+
             val updatedTasbih = tasbih.copy(
-                currentCount = tasbih.currentCount + 1,
-                lastUpdated = System.currentTimeMillis()
+                currentCount = newCount,
+                lastUpdated = System.currentTimeMillis(),
+                isCompleted = isNowCompleted,
+                completedAt = if (isNowCompleted && !tasbih.isCompleted) {
+                    System.currentTimeMillis()
+                } else {
+                    tasbih.completedAt
+                }
             )
 
             updateTasbihUseCase(UpdateTasbihUseCase.Params(updatedTasbih))
@@ -183,8 +252,21 @@ class TasbihViewModel @Inject constructor(
                 state = state.copy(selectedTasbih = updatedTasbih)
 
                 // Auto-close if goal is reached
-                if (updatedTasbih.currentCount >= updatedTasbih.targetCount) {
-                    state = state.copy(showCounterDialog = false)
+                if (isNowCompleted) {
+                    // Save session time before closing
+                    val sessionDuration = state.timerSeconds
+                    val finalTasbih = updatedTasbih.copy(
+                        totalTimeSpentSeconds = updatedTasbih.totalTimeSpentSeconds + sessionDuration,
+                        sessionStartTime = 0
+                    )
+                    updateTasbihUseCase(UpdateTasbihUseCase.Params(finalTasbih))
+
+                    stopTimer()
+                    state = state.copy(
+                        showCounterDialog = false,
+                        timerSeconds = 0,
+                        sessionStartTimestamp = 0
+                    )
                 }
             }
         }
@@ -197,5 +279,31 @@ class TasbihViewModel @Inject constructor(
         viewModelScope.launch {
             removeTasbihUseCase(RemoveTasbihUseCase.Params(tasbih))
         }
+    }
+
+    /**
+     * Start the timer
+     */
+    private fun startTimer() {
+        stopTimer() // Stop any existing timer
+        timerJob = viewModelScope.launch {
+            while (true) {
+                delay(1000) // 1 second
+                state = state.copy(timerSeconds = state.timerSeconds + 1)
+            }
+        }
+    }
+
+    /**
+     * Stop the timer
+     */
+    private fun stopTimer() {
+        timerJob?.cancel()
+        timerJob = null
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopTimer()
     }
 }

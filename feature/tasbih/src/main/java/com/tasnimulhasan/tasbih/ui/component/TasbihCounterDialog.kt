@@ -15,11 +15,12 @@ fun TasbihCounterDialog(
     dhikrEnglish: String,
     dhikrMeaning: String,
     count: Int,
+    timerSeconds: Int,
     onIncrement: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     Dialog(
-        onDismissRequest = {}, // ❌ disable outside dismiss
+        onDismissRequest = {},
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Box(
@@ -32,6 +33,7 @@ fun TasbihCounterDialog(
                 dhikrEnglish = dhikrEnglish,
                 dhikrMeaning = dhikrMeaning,
                 count = count,
+                timerSeconds = timerSeconds,
                 onIncrement = onIncrement,
                 onDismiss = onDismiss
             )

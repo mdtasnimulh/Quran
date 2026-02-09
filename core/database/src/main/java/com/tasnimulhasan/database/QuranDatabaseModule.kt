@@ -22,7 +22,9 @@ object QuranDatabaseModule {
             application,
             QuranSuraDatabase::class.java,
             "quran_sura.db"
-        ).build()
+        )
+            .addMigrations(*QuranSuraDatabase.getAllMigrations()) // ✅ Add all migrations
+            .build()
     }
 
     @Singleton
@@ -36,5 +38,4 @@ object QuranDatabaseModule {
     @Singleton
     @Provides
     fun provideTasbihDao(database: QuranSuraDatabase): TasbihDao = database.tasbihDao()
-
 }

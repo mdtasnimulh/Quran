@@ -21,7 +21,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
@@ -29,8 +28,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -41,6 +38,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BottleGreen
+import java.util.Locale
 
 @Composable
 fun TasbihCounterContent(
@@ -48,6 +46,7 @@ fun TasbihCounterContent(
     dhikrEnglish: String,
     dhikrMeaning: String,
     count: Int,
+    timerSeconds: Int,
     onIncrement: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -94,7 +93,7 @@ fun TasbihCounterContent(
 
         /* Timer */
         Text(
-            text = "00:34:45",
+            text = formatTime(timerSeconds),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             color = Color.Gray,
             fontSize = 12.sp
@@ -127,6 +126,16 @@ fun TasbihCounterContent(
 
         Spacer(Modifier.height(24.dp))
     }
+}
+
+/**
+ * Format seconds to HH:MM:SS
+ */
+private fun formatTime(totalSeconds: Int): String {
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+    return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds)
 }
 
 @Composable
