@@ -87,7 +87,7 @@ fun TasbihCounterContent(
             Icon(
                 Icons.Default.Close,
                 contentDescription = "Close",
-                tint = if (isSystemInDarkTheme()) BottleGreen else MintWhite,
+                tint = if (isSystemInDarkTheme()) MintWhite else BottleGreen,
                 modifier = Modifier.clickable { onDismiss() }
             )
         }
