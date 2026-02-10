@@ -1,6 +1,7 @@
 package com.tasnimulhasan.suradetails.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.R as Res
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun CustomTopAppBar(
@@ -35,6 +38,7 @@ fun CustomTopAppBar(
     onMenuIconClick: () -> Unit,
 ) {
     val context = LocalContext.current
+    val isDark = isSystemInDarkTheme()
 
     Row(
         modifier = Modifier
@@ -46,8 +50,8 @@ fun CustomTopAppBar(
         IconButton(onClick = onBackClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = context.getString(Res.string.desc_top_app_bar_back_icon),
-                tint = MaterialTheme.colorScheme.onBackground
+                contentDescription = stringResource(Res.string.desc_top_app_bar_back_icon),
+                tint = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -60,7 +64,7 @@ fun CustomTopAppBar(
             text = appBarTitle,
             style = TextStyle(
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Start
             ),
@@ -73,8 +77,8 @@ fun CustomTopAppBar(
             IconButton(onClick = onMenuIconClick) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = context.getString(Res.string.desc_top_app_bar_back_icon),
-                    tint = MaterialTheme.colorScheme.onBackground
+                    contentDescription = stringResource(Res.string.desc_top_app_bar_back_icon),
+                    tint = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                 )
             }
         }

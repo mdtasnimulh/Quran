@@ -22,6 +22,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
@@ -31,12 +32,14 @@ fun QuranQuoteCard(
     title: String,
     modifier: Modifier = Modifier,
 ) {
+    val isDark = isSystemInDarkTheme()
+
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
-                color = SaladGreen.copy(0.1f),
+                color = if (isDark) SaladGreen.copy(0.15f) else SaladGreen.copy(0.1f),
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(8.dp)
@@ -52,7 +55,7 @@ fun QuranQuoteCard(
             },
             text = "“",
             fontSize = 28.sp,
-            color = SaladGreen,
+            color = if (isDark) SaladGreen else SaladGreen,
             fontWeight = FontWeight.Bold
         )
 
@@ -66,7 +69,7 @@ fun QuranQuoteCard(
                     height = Dimension.fillToConstraints
                 }
                 .background(
-                    color = Color(0xFF2E7D32),
+                    color = if (isDark) SaladGreen else Color(0xFF2E7D32),
                     shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp)
                 )
         )
@@ -86,7 +89,7 @@ fun QuranQuoteCard(
             fontSize = 12.sp,
             fontStyle = FontStyle.Italic,
             fontFamily = ArabicUthmanFontFamily,
-            color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+            color = if (isDark) MintWhite else BottleGreen,
             lineHeight = 20.sp
         )
     }
@@ -96,6 +99,6 @@ fun QuranQuoteCard(
 @Composable
 fun PreviewQuranQuoteCard() {
     QuranTheme {
-        QuranQuoteCard(title = "He is Allah: the Creator, the Inventor, the Shaper. He ‘alone’ has the Most Beautiful Names. Whatever is in the heavens and the earth ‘constantly’ glorifies Him. And He is the Almighty, All-Wise. (Quran 59:24)")
+        QuranQuoteCard(title = "He is Allah: the Creator, the Inventor, the Shaper. He 'alone' has the Most Beautiful Names. Whatever is in the heavens and the earth 'constantly' glorifies Him. And He is the Almighty, All-Wise. (Quran 59:24)")
     }
 }

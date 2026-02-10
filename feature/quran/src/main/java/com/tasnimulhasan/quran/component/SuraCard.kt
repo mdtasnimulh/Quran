@@ -2,6 +2,7 @@ package com.tasnimulhasan.quran.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.sura.SuraNameEntity
 
@@ -34,6 +37,7 @@ fun SuraCard(
     onSuraClick: (String, String, Int, String) -> Unit,
     isLastRead: Boolean,
 ) {
+    val isDark = isSystemInDarkTheme()
 
     ConstraintLayout(
         modifier = Modifier
@@ -56,7 +60,10 @@ fun SuraCard(
                     width = Dimension.value(45.dp)
                     height = Dimension.value(45.dp)
                 }
-                .background(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(100)),
+                .background(
+                    color = if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen,
+                    shape = RoundedCornerShape(100)
+                ),
         )
 
         Text(
@@ -74,7 +81,7 @@ fun SuraCard(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
-                color = EggshellWhite
+                color = if (isDark) MintWhite else EggshellWhite
             )
         )
 
@@ -99,7 +106,7 @@ fun SuraCard(
                 style = TextStyle(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -132,7 +139,7 @@ fun SuraCard(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 textAlign = TextAlign.End,
-                color = MaterialTheme.colorScheme.primary
+                color = if (isDark) SaladGreen else BottleGreen
             )
         )
     }

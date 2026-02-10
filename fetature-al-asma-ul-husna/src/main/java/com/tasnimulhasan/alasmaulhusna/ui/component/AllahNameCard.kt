@@ -24,6 +24,7 @@ import com.tasnimulhasan.common.constant.AlAsmaUlHusna
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
@@ -34,27 +35,29 @@ fun AllahNameCard(
     alAsmaUlHusna: AlAsmaUlHusnaEntity,
     modifier: Modifier = Modifier
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .border(
                 width = 1.dp,
-                color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen
+                color = if (isDark) MintWhite.copy(alpha = 0.3f) else BottleGreen
             )
     ) {
         Box(
             modifier = Modifier
                 .width(32.dp)
                 .fillMaxHeight()
-                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
+                .border(1.dp, if (isDark) MintWhite.copy(alpha = 0.3f) else BottleGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = alAsmaUlHusna.serialNo.toString(),
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = SaladGreen.copy(0.7f),
+                    color = if (isDark) SaladGreen.copy(alpha = 0.85f) else SaladGreen.copy(0.7f),
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -65,7 +68,7 @@ fun AllahNameCard(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
+                .border(1.dp, if (isDark) MintWhite.copy(alpha = 0.3f) else BottleGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -76,7 +79,7 @@ fun AllahNameCard(
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (isSystemInDarkTheme()) SaladGreen else SaladGreen,
+                    color = if (isDark) SaladGreen else SaladGreen,
                     textAlign = TextAlign.Center,
                     fontFamily = ArabicKsaFontFamily
                 )
@@ -87,7 +90,7 @@ fun AllahNameCard(
             modifier = Modifier
                 .weight(1.4f)
                 .fillMaxHeight()
-                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
+                .border(1.dp, if (isDark) MintWhite.copy(alpha = 0.3f) else BottleGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -97,7 +100,7 @@ fun AllahNameCard(
                 text = alAsmaUlHusna.nameEnglish,
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                    color = if (isDark) MintWhite else BottleGreen,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
@@ -110,7 +113,7 @@ fun AllahNameCard(
                 .weight(1.6f)
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .border(1.dp, if (isSystemInDarkTheme()) EggshellWhite else BottleGreen),
+                .border(1.dp, if (isDark) MintWhite.copy(alpha = 0.3f) else BottleGreen),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
@@ -118,7 +121,7 @@ fun AllahNameCard(
                 text = alAsmaUlHusna.nameMeaning,
                 style = TextStyle(
                     fontSize = 13.sp,
-                    color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                    color = if (isDark) MintWhite.copy(alpha = 0.9f) else BottleGreen,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal
                 )

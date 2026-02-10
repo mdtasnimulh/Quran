@@ -1,6 +1,7 @@
 package com.tasnimulhasan.suradetails.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,8 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.domain.localusecase.local.FetchQuranEnglishSahihUseCase
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.suradetails.component.CustomTopAppBar
@@ -63,6 +66,7 @@ internal fun SuraDetailsScreen(
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val isDark = isSystemInDarkTheme()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val suraArabicList by viewModel.suraArabicList.collectAsStateWithLifecycle()
@@ -190,7 +194,13 @@ internal fun SuraDetailsScreen(
     when (uiState) {
         is UiState.Loading -> {
             val loading = (uiState as UiState.Loading).isLoading
-            if (loading) CircularProgressIndicator()
+            if (loading) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(
+                        color = if (isDark) SaladGreen else BottleGreen
+                    )
+                }
+            }
         }
 
         is UiState.Error -> {
@@ -205,7 +215,7 @@ internal fun SuraDetailsScreen(
                     text = "An Error Occurred\n$errorMessage",
                     style = TextStyle(
                         fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center
                     )
                 )

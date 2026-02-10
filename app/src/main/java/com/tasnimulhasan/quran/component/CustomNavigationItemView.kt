@@ -2,6 +2,7 @@ package com.tasnimulhasan.quran.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +24,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.quran.navigation.CustomNavigationItem
@@ -33,6 +36,8 @@ fun CustomNavigationItemView(
     navigationItem: CustomNavigationItem,
     onClick: () -> Unit
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Column {
         Row(
             modifier = Modifier
@@ -40,7 +45,11 @@ fun CustomNavigationItemView(
                 .clip(RoundedCornerShape(size = 99.dp))
                 .clickable { onClick() }
                 .background(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = if (isDark) {
+                        SaladGreen.copy(alpha = 0.2f)
+                    } else {
+                        BottleGreen
+                    },
                     shape = RoundedCornerShape(99.dp)
                 )
                 .padding(horizontal = 12.dp, vertical = 10.dp),
@@ -49,7 +58,7 @@ fun CustomNavigationItemView(
             Icon(
                 painter = painterResource(id = navigationItem.icon),
                 contentDescription = "Navigation Item Icon",
-                tint = SaladGreen
+                tint = if (isDark) SaladGreen else MintWhite
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -57,7 +66,7 @@ fun CustomNavigationItemView(
             Text(
                 text = navigationItem.title,
                 style = TextStyle(
-                    color = SaladGreen,
+                    color = if (isDark) SaladGreen else MintWhite,
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     fontFamily = RobotoFontFamily,

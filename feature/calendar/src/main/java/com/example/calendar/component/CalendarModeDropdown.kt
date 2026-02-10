@@ -1,6 +1,7 @@
 package com.example.calendar.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +30,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 
 @Composable
 fun CalendarModeDropdown(
@@ -37,6 +41,7 @@ fun CalendarModeDropdown(
     onToggle: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val isDark = isSystemInDarkTheme()
 
     Box {
         Row(
@@ -58,14 +63,15 @@ fun CalendarModeDropdown(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = RobotoFontFamily,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                 )
             )
 
             Icon(
                 imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                 contentDescription = "DropDown Icon",
-                tint = MaterialTheme.colorScheme.primary
+                tint = if (isDark) SaladGreen else BottleGreen
             )
         }
 
@@ -77,7 +83,8 @@ fun CalendarModeDropdown(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             fontFamily = RobotoFontFamily,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                         )
                     )
                 },
@@ -93,7 +100,8 @@ fun CalendarModeDropdown(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             fontFamily = RobotoFontFamily,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                         )
                     )
                 },

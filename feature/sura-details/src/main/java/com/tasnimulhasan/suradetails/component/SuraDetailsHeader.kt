@@ -2,6 +2,7 @@ package com.tasnimulhasan.suradetails.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -32,6 +35,8 @@ fun SuraDetailsHeader(
     suraType: String,
     translationName: String
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,7 +47,7 @@ fun SuraDetailsHeader(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen,
                     shape = MaterialTheme.shapes.medium
                 )
                 .padding(16.dp)
@@ -59,7 +64,9 @@ fun SuraDetailsHeader(
                         height = Dimension.wrapContent
                     }
             ) {
-                DashedHorizontalDivider(color = EggshellWhite.copy(alpha = 0.75f))
+                DashedHorizontalDivider(
+                    color = if (isDark) MintWhite.copy(alpha = 0.75f) else EggshellWhite.copy(alpha = 0.75f)
+                )
             }
 
             Image(
@@ -86,7 +93,7 @@ fun SuraDetailsHeader(
                 text = suraName,
                 style = TextStyle(
                     fontSize = 18.sp,
-                    color = SaladGreen,
+                    color = if (isDark) MintWhite else SaladGreen,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -103,7 +110,7 @@ fun SuraDetailsHeader(
                 text = suraNameMeaning,
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = SaladGreen,
+                    color = if (isDark) MintWhite.copy(alpha = 0.9f) else SaladGreen,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -120,7 +127,7 @@ fun SuraDetailsHeader(
                 text = "Type: ",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -138,7 +145,7 @@ fun SuraDetailsHeader(
                 text = suraType,
                 style = TextStyle(
                     fontSize = 14.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -155,7 +162,7 @@ fun SuraDetailsHeader(
                 text = "Total Verse: $ayahCount",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -172,7 +179,7 @@ fun SuraDetailsHeader(
                 text = "Translation: $translationName",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),

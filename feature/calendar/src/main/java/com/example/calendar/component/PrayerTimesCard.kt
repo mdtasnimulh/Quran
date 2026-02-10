@@ -2,6 +2,7 @@ package com.example.calendar.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +34,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
 import kotlinx.coroutines.delay
 import java.time.LocalTime
@@ -51,6 +55,8 @@ fun PrayerTimesCard(
     ishaTime: String,
     currentEnDate: String,
 ) {
+    val isDark = isSystemInDarkTheme()
+
     val prayerTimeList = listOf(
         PrayerTImeEntity("Fajr", fajrTime),
         PrayerTImeEntity("Dhuhr", dhuhrTime),
@@ -64,7 +70,7 @@ fun PrayerTimesCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
-                color = MaterialTheme.colorScheme.primary,
+                color = if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen,
                 shape = RoundedCornerShape(15.dp)
             )
     ) {
@@ -102,7 +108,7 @@ fun PrayerTimesCard(
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = RobotoFontFamily,
-                    color = BackgroundWhite,
+                    color = if (isDark) MintWhite else BackgroundWhite,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -119,7 +125,7 @@ fun PrayerTimesCard(
                         height = Dimension.wrapContent
                     }
                     .background(
-                        BackgroundWhite,
+                        if (isDark) BackgroundBlack else BackgroundWhite,
                         RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
                     ),
                 horizontalArrangement = Arrangement.SpaceAround,
@@ -140,7 +146,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = BackgroundBlack,
+                                color = if (isDark) MintWhite else BackgroundBlack,
                                 fontWeight = FontWeight.Medium,
                                 textAlign = TextAlign.Center
                             ),
@@ -153,7 +159,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = BackgroundBlack,
+                                color = if (isDark) SaladGreen else BackgroundBlack,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
                             ),

@@ -43,9 +43,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.common.components.TransliterationGuideSheet
 import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
-import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
-import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.QuranEnglishSahihEntity
 import com.tasnimulhasan.entity.QuranLocalDbEntity
@@ -65,12 +65,14 @@ fun SuraDetailsItem(
     var exampleStrArabic by remember { mutableStateOf("") }
     var exampleStr by remember { mutableStateOf("") }
     var exampleStrTranslation by remember { mutableStateOf("") }
+    val isDark = isSystemInDarkTheme()
 
     val rowBackgroundColor by animateColorAsState(
-        targetValue = if (isPlaying)
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.75f)
-        else
-            MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+        targetValue = if (isPlaying) {
+            if (isDark) SaladGreen.copy(alpha = 0.5f) else BottleGreen.copy(alpha = 0.75f)
+        } else {
+            if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen.copy(alpha = 1f)
+        },
         label = "AyahRowBg"
     )
 
@@ -105,7 +107,7 @@ fun SuraDetailsItem(
                 text = verse.ayaNumber.toString(),
                 style = TextStyle(
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -121,7 +123,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(2.dp),
                     imageVector = Icons.AutoMirrored.Filled.OfflineShare,
                     contentDescription = "Share Icon",
-                    tint = SaladGreen
+                    tint = if (isDark) MintWhite else SaladGreen
                 )
             }
 
@@ -137,7 +139,7 @@ fun SuraDetailsItem(
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.primary
+                        color = if (isDark) MintWhite else SaladGreen
                     )
                 } else {
                     IconButton(
@@ -150,7 +152,7 @@ fun SuraDetailsItem(
                             else
                                 Icons.Default.PlayArrow,
                             contentDescription = "Play Pause",
-                            tint = SaladGreen
+                            tint = if (isDark) MintWhite else SaladGreen
                         )
                     }
                 }
@@ -167,7 +169,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(1.dp),
                     imageVector = Icons.Default.BookmarkBorder,
                     contentDescription = "BookMark Icon",
-                    tint = SaladGreen
+                    tint = if (isDark) MintWhite else SaladGreen
                 )
             }
 
@@ -186,7 +188,7 @@ fun SuraDetailsItem(
                     modifier = Modifier.fillMaxSize().padding(1.dp),
                     imageVector = Icons.Default.Info,
                     contentDescription = "Information Icon",
-                    tint = SaladGreen.copy(alpha = 0.5f)
+                    tint = if (isDark) MintWhite.copy(alpha = 0.5f) else SaladGreen.copy(alpha = 0.5f)
                 )
             }
         }
@@ -200,10 +202,14 @@ fun SuraDetailsItem(
                     width = Dimension.fillToConstraints
                     height = Dimension.wrapContent
                 },
-            text = buildAnnotatedString(verse = verse.ayaText, ayaNumber = verse.index, color = SaladGreen),
+            text = buildAnnotatedString(
+                verse = verse.ayaText,
+                ayaNumber = verse.index,
+                color = if (isDark) SaladGreen else SaladGreen
+            ),
             style = TextStyle(
                 fontSize = 26.sp,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.End
             ),
@@ -221,7 +227,7 @@ fun SuraDetailsItem(
             text = htmlToTajweedAnnotatedString(verseEnglishTransliteration.ayaText),
             style = TextStyle(
                 fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
+                color = if (isDark) MintWhite.copy(0.6f) else MaterialTheme.colorScheme.onBackground.copy(0.5f),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Start
             ),
@@ -240,7 +246,7 @@ fun SuraDetailsItem(
             text = verseEnglish.ayaText,
             style = TextStyle(
                 fontSize = 14.sp,
-                color = if (isSystemInDarkTheme()) EggshellWhite.copy(0.75f) else MaterialTheme.colorScheme.primary,
+                color = if (isDark) MintWhite.copy(0.9f) else BottleGreen,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Start
             ),
@@ -264,7 +270,7 @@ fun SuraDetailsItem(
 fun PreviewVSuraDetailsItem() {
     SuraDetailsItem (
         verse = QuranLocalDbEntity(
-            index = 1, suraNumber = 1, ayaNumber = 1, ayaText = "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ", suraName = "الفاتحة", suraNameEnglish = "Al-Fatiha"
+            index = 1, suraNumber = 1, ayaNumber = 1, ayaText = "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ", suraName = "الفاتحة", suraNameEnglish = "Al-Fatiha"
         ),
         verseEnglishTransliteration = QuranEnglishSahihEntity(
             index = 1, suraNumber = 1, ayaNumber = 1, ayaText = "Bismi All<u>a</U>hi a<b>l</B>rra<u>h</U>m<u>a</U>ni a<b>l</B>rra<u>h</U>eem<b>i</b>"

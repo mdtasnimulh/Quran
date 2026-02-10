@@ -3,6 +3,7 @@ package com.example.calendar.ui
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,15 +34,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.calendar.component.CustomTopAppBar
 import com.example.calendar.component.PrayerTimesCard
 import com.example.calendar.ui.viewmodel.CalendarUiAction
 import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -57,6 +61,7 @@ internal fun CalendarScreen(
     val latitude by viewModel.latitude.collectAsStateWithLifecycle()
     val longitude by viewModel.longitude.collectAsStateWithLifecycle()
     val dateString by viewModel.dateString.collectAsStateWithLifecycle()
+    val isDark = isSystemInDarkTheme()
 
     LaunchedEffect(Unit) {
         viewModel.action(CalendarUiAction.FetchCalendar)
@@ -82,7 +87,9 @@ internal fun CalendarScreen(
 
         uiState.isLoading -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    color = if (isDark) SaladGreen else BottleGreen
+                )
             }
         }
 
@@ -106,7 +113,7 @@ internal fun CalendarScreen(
                         .wrapContentHeight(),
                     text = if (!uiState.isHijriPrimary) uiState.gregorianMonthYear else uiState.hijriMonthYear,
                     style = TextStyle(
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.Medium,
                         fontSize = 26.sp,
@@ -123,7 +130,7 @@ internal fun CalendarScreen(
                         .wrapContentHeight(),
                     text = if (uiState.isHijriPrimary) uiState.gregorianMonthYear else uiState.hijriMonthYear,
                     style = TextStyle(
-                        color = Color.Gray,
+                        color = if (isDark) MintWhite.copy(alpha = 0.6f) else Color.Gray,
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
@@ -143,7 +150,7 @@ internal fun CalendarScreen(
                             text = it,
                             modifier = Modifier.weight(1f),
                             style = TextStyle(
-                                color = MaterialTheme.colorScheme.onBackground,
+                                color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                                 fontFamily = RobotoFontFamily,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 14.sp,
@@ -164,7 +171,11 @@ internal fun CalendarScreen(
                                     .aspectRatio(1f)
                                     .padding(2.dp)
                                     .background(
-                                        if (date.isToday) Color.LightGray else Color.Transparent,
+                                        if (date.isToday) {
+                                            if (isDark) SaladGreen.copy(alpha = 0.2f) else Color.LightGray
+                                        } else {
+                                            Color.Transparent
+                                        },
                                         shape = RoundedCornerShape(8.dp)
                                     )
                                     .padding(4.dp)
@@ -190,6 +201,7 @@ internal fun CalendarScreen(
                                         text = if (date.hijriDay == -1) "" else date.hijriDay.toString(),
                                         modifier = Modifier.align(Alignment.Center),
                                         style = TextStyle(
+                                            color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                                             fontFamily = RobotoFontFamily,
                                             fontWeight = FontWeight.SemiBold,
                                             fontSize = 14.sp,
@@ -200,7 +212,7 @@ internal fun CalendarScreen(
                                         text = if (date.gregorianDay == -1) "" else date.gregorianDay.toString(),
                                         modifier = Modifier.align(Alignment.TopEnd),
                                         style = TextStyle(
-                                            color = DeepSeaGreen,
+                                            color = if (isDark) SaladGreen.copy(alpha = 0.7f) else DeepSeaGreen,
                                             fontFamily = RobotoFontFamily,
                                             fontWeight = FontWeight.Medium,
                                             fontSize = 10.sp,
@@ -212,6 +224,7 @@ internal fun CalendarScreen(
                                         text = if (date.gregorianDay == -1) "" else date.gregorianDay.toString(),
                                         modifier = Modifier.align(Alignment.Center),
                                         style = TextStyle(
+                                            color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                                             fontFamily = RobotoFontFamily,
                                             fontWeight = FontWeight.SemiBold,
                                             fontSize = 14.sp,
@@ -222,7 +235,7 @@ internal fun CalendarScreen(
                                         text = if (date.hijriDay == -1) "" else date.hijriDay.toString(),
                                         modifier = Modifier.align(Alignment.TopEnd),
                                         style = TextStyle(
-                                            color = DeepSeaGreen,
+                                            color = if (isDark) SaladGreen.copy(alpha = 0.7f) else DeepSeaGreen,
                                             fontFamily = RobotoFontFamily,
                                             fontWeight = FontWeight.Medium,
                                             fontSize = 10.sp,
@@ -251,7 +264,7 @@ internal fun CalendarScreen(
                             .padding(vertical = 6.dp, horizontal = 8.dp),
                         text = "Prev",
                         style = TextStyle(
-                            color = MaterialTheme.colorScheme.primary,
+                            color = if (isDark) SaladGreen else BottleGreen,
                             fontFamily = RobotoFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 16.sp,
@@ -271,7 +284,7 @@ internal fun CalendarScreen(
                             .padding(vertical = 6.dp, horizontal = 8.dp),
                         text = "Next",
                         style = TextStyle(
-                            color = MaterialTheme.colorScheme.primary,
+                            color = if (isDark) SaladGreen else BottleGreen,
                             fontFamily = RobotoFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 16.sp,

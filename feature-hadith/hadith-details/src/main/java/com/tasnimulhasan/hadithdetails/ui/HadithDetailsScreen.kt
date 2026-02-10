@@ -1,6 +1,7 @@
 package com.tasnimulhasan.hadithdetails.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.domain.apiusecase.hadith.FetchHadithsUseCase
 import com.tasnimulhasan.hadithdetails.components.HadithDetailsHeader
 import com.tasnimulhasan.hadithdetails.components.HadithItem
@@ -41,6 +45,7 @@ internal fun HadithDetailsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
+    val isDark = isSystemInDarkTheme()
 
     LaunchedEffect(Unit) {
         viewModel.action(
@@ -82,7 +87,9 @@ internal fun HadithDetailsScreen(
 
         uiState.isLoading -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    color = if (isDark) SaladGreen else BottleGreen
+                )
             }
         }
 
@@ -120,7 +127,9 @@ internal fun HadithDetailsScreen(
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(
+                                color = if (isDark) SaladGreen else BottleGreen
+                            )
                         }
                     }
                 }

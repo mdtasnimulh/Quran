@@ -1,5 +1,6 @@
 package com.tasnimulhasan.suggestion.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.QuranSuggestion
 
 @Composable
@@ -21,6 +25,8 @@ fun SuggestionDialog(
     suggestion: QuranSuggestion,
     onDismiss: () -> Unit
 ) {
+    val isDark = isSystemInDarkTheme()
+
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {},
@@ -30,7 +36,8 @@ fun SuggestionDialog(
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = RobotoFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDark) SaladGreen else BottleGreen
                 )
             )
         },
@@ -42,7 +49,8 @@ fun SuggestionDialog(
                         fontSize = 13.sp,
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        color = if (isDark) MintWhite.copy(alpha = 0.9f) else BottleGreen.copy(alpha = 0.8f)
                     )
                 )
 
@@ -55,7 +63,8 @@ fun SuggestionDialog(
                         fontSize = 14.sp,
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Justify
+                        textAlign = TextAlign.Justify,
+                        color = if (isDark) MintWhite else com.tasnimulhasan.designsystem.theme.BackgroundBlack
                     )
                 )
             }

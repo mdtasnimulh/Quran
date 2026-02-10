@@ -1,6 +1,7 @@
 package com.example.calendar.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.designsystem.R as Res
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun CustomTopAppBar(
@@ -24,6 +29,7 @@ fun CustomTopAppBar(
     onBackClick: () -> Unit,
 ) {
     val context = LocalContext.current
+    val isDark = isSystemInDarkTheme()
 
     ConstraintLayout(
         modifier = Modifier
@@ -44,8 +50,8 @@ fun CustomTopAppBar(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = context.getString(Res.string.desc_top_app_bar_back_icon),
-                tint = MaterialTheme.colorScheme.onBackground
+                contentDescription = stringResource(Res.string.desc_top_app_bar_back_icon),
+                tint = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
             )
         }
 

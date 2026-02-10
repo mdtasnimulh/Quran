@@ -36,7 +36,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.common.constant.AppConstants.getDirectionName
 import com.tasnimulhasan.compass.ui.viewmodel.CompassViewModel
 import com.tasnimulhasan.compass.ui.viewmodel.CompassUiAction
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import kotlin.math.roundToInt
 import com.tasnimulhasan.designsystem.R as Res
 
@@ -51,6 +54,7 @@ internal fun CompassScreen(
     val azimuth by viewModel.azimuth.collectAsStateWithLifecycle()
     val qiblaDirection by viewModel.qiblaDirection.collectAsStateWithLifecycle()
     val userLocation by viewModel.locations.collectAsStateWithLifecycle()
+    val isDark = isSystemInDarkTheme()
 
     val angleToQibla = (qiblaDirection - azimuth + 360) % 360
 
@@ -86,7 +90,7 @@ internal fun CompassScreen(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = if (isSystemInDarkTheme()) Res.drawable.ic_compass_dark else Res.drawable.ic_compass_light),
+                painter = painterResource(id = if (isDark) Res.drawable.ic_compass_dark else Res.drawable.ic_compass_light),
                 contentDescription = "Compass Base",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,7 +99,7 @@ internal fun CompassScreen(
             )
 
             Image(
-                painter = painterResource(id = if (isSystemInDarkTheme()) Res.drawable.ic_qibla_compass_dark else Res.drawable.ic_qibla_compass_light),
+                painter = painterResource(id = if (isDark) Res.drawable.ic_qibla_compass_dark else Res.drawable.ic_qibla_compass_light),
                 contentDescription = "Qibla Arrow",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,7 +116,7 @@ internal fun CompassScreen(
                 fontSize = 20.sp,
                 fontFamily = RobotoFontFamily,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+                color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
             ),
             modifier = Modifier.wrapContentSize()
         )
@@ -129,7 +133,7 @@ internal fun CompassScreen(
                 fontSize = 16.sp,
                 fontFamily = RobotoFontFamily,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = if (isDark) SaladGreen else BottleGreen
             ),
             modifier = Modifier.wrapContentSize()
         )
@@ -152,7 +156,7 @@ internal fun CompassScreen(
                     fontSize = 14.sp,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
                 ),
             )
 
@@ -165,7 +169,7 @@ internal fun CompassScreen(
                     fontSize = 14.sp,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
                 ),
             )
         }
@@ -178,7 +182,7 @@ internal fun CompassScreen(
                 fontSize = 16.sp,
                 fontFamily = RobotoFontFamily,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
             ),
             modifier = Modifier.wrapContentSize()
         )
@@ -201,7 +205,7 @@ internal fun CompassScreen(
                     fontSize = 14.sp,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
                 ),
             )
 
@@ -214,7 +218,7 @@ internal fun CompassScreen(
                     fontSize = 14.sp,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
                 ),
             )
         }

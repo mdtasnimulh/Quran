@@ -2,6 +2,7 @@ package com.tasnimulhasan.settings.ui
 
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,12 +25,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -40,9 +43,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.settings.ui.viewmodel.SettingsViewModel
 import com.tasnimulhasan.settings.ui.viewmodel.UiAction
 
@@ -56,6 +62,7 @@ internal fun SettingsScreen(
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
     val context = LocalContext.current
+    val isDark = isSystemInDarkTheme()
 
     val translationName by viewModel.translationName.collectAsStateWithLifecycle()
     val showSaveToast by viewModel.showSaveToast.collectAsStateWithLifecycle()
@@ -92,7 +99,9 @@ internal fun SettingsScreen(
 
         uiState.isLoading -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    color = if (isDark) SaladGreen else BottleGreen
+                )
             }
         }
 
@@ -117,7 +126,7 @@ internal fun SettingsScreen(
                                 imageVector = Icons.Default.ColorLens,
                                 contentDescription = null,
                                 modifier = Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.onSurface
+                                tint = if (isDark) SaladGreen else BottleGreen
                             )
 
                             Text(
@@ -127,13 +136,19 @@ internal fun SettingsScreen(
                                     fontSize = 16.sp,
                                     fontFamily = RobotoFontFamily,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                                 ),
                             )
 
                             Switch(
                                 checked = screenState.useDynamicColors,
-                                onCheckedChange = { viewModel.toggleDynamicColors() }
+                                onCheckedChange = { viewModel.toggleDynamicColors() },
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = if (isDark) SaladGreen else BottleGreen,
+                                    checkedTrackColor = if (isDark) SaladGreen.copy(alpha = 0.5f) else BottleGreen.copy(alpha = 0.5f),
+                                    uncheckedThumbColor = Color.Gray,
+                                    uncheckedTrackColor = Color.Gray.copy(alpha = 0.3f)
+                                )
                             )
                         }
 
@@ -175,7 +190,9 @@ internal fun SettingsScreen(
                 }*/
 
                 item {
-                    DashedHorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
+                    DashedHorizontalDivider(
+                        color = if (isDark) MintWhite.copy(alpha = 0.3f) else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
                 }
 
                 item {
@@ -188,7 +205,7 @@ internal fun SettingsScreen(
                     Text(
                         text = "Translation: $translationStr",
                         style = TextStyle(
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                             fontFamily = RobotoFontFamily,
@@ -207,7 +224,7 @@ internal fun SettingsScreen(
                     Text(
                         text = "Available Translation",
                         style = TextStyle(
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             fontFamily = RobotoFontFamily,
@@ -229,9 +246,9 @@ internal fun SettingsScreen(
                             }
                         },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primary,
-                            selectedLabelColor = EggshellWhite,
-                            labelColor = MaterialTheme.colorScheme.onBackground
+                            selectedContainerColor = if (isDark) SaladGreen else BottleGreen,
+                            selectedLabelColor = if (isDark) MintWhite else EggshellWhite,
+                            labelColor = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
                         ),
                         label = {
                             Text(
@@ -256,11 +273,13 @@ internal fun SettingsScreen(
 
 @Composable
 fun SettingsCategory(title: String) {
+    val isDark = isSystemInDarkTheme()
+
     Text(
         text = title,
         fontSize = 16.sp,
         fontFamily = RobotoFontFamily,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.onBackground
+        color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
     )
 }

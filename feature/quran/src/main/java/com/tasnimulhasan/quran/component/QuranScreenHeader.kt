@@ -2,6 +2,7 @@ package com.tasnimulhasan.quran.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,8 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.LastReadSuraInfoEntity
 import com.tasnimulhasan.designsystem.R as Res
@@ -31,6 +33,8 @@ import com.tasnimulhasan.designsystem.R as Res
 fun QuranScreenHeader(
     lastReadSura: LastReadSuraInfoEntity
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,7 +46,7 @@ fun QuranScreenHeader(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen,
                     shape = MaterialTheme.shapes.medium
                 )
                 .padding(16.dp)
@@ -59,7 +63,9 @@ fun QuranScreenHeader(
                         height = Dimension.wrapContent
                     }
             ) {
-                DashedHorizontalDivider(color = EggshellWhite.copy(alpha = 0.75f))
+                DashedHorizontalDivider(
+                    color = if (isDark) MintWhite.copy(alpha = 0.75f) else EggshellWhite.copy(alpha = 0.75f)
+                )
             }
 
             Image(
@@ -87,7 +93,7 @@ fun QuranScreenHeader(
                 text = "Last Read: ${lastReadSura.lastSuraNumber}. ${lastReadSura.lastSuraName}",
                 style = TextStyle(
                     fontSize = 16.sp,
-                    color = SaladGreen,
+                    color = if (isDark) MintWhite else SaladGreen,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 ),
@@ -104,7 +110,7 @@ fun QuranScreenHeader(
                 text = lastReadSura.lastSuraNameMeaning,
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = SaladGreen,
+                    color = if (isDark) MintWhite.copy(alpha = 0.9f) else SaladGreen,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -122,7 +128,7 @@ fun QuranScreenHeader(
                 text = " (${lastReadSura.lastSuraType})",
                 style = TextStyle(
                     fontSize = 13.sp,
-                    color = SaladGreen,
+                    color = if (isDark) MintWhite.copy(alpha = 0.9f) else SaladGreen,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -139,7 +145,7 @@ fun QuranScreenHeader(
                 text = "Last Verse: ${lastReadSura.lastAyahNumber} / Total Verse: ${lastReadSura.lasReadSuraTotalAya}",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -157,7 +163,7 @@ fun QuranScreenHeader(
                 text = lastReadSura.lastAyaTextTranslation,
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),
@@ -176,7 +182,7 @@ fun QuranScreenHeader(
                 text = "Translation: ${lastReadSura.lastReadSuraTranslationName}",
                 style = TextStyle(
                     fontSize = 12.sp,
-                    color = EggshellWhite,
+                    color = if (isDark) MintWhite else EggshellWhite,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start
                 ),

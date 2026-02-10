@@ -35,7 +35,9 @@ import com.tasnimulhasan.common.constant.AlAsmaUlHusna
 import com.tasnimulhasan.common.constant.QuoteConstants
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -44,7 +46,7 @@ internal fun AlAsmaUlHusnaScreen(
     modifier: Modifier = Modifier,
     viewModel: AlAsmaUlHusnaViewModel = hiltViewModel(),
 ) {
-
+    val isDark = isSystemInDarkTheme()
 
     ConstraintLayout(
         modifier = modifier
@@ -96,7 +98,7 @@ internal fun AlAsmaUlHusnaScreen(
                         fontFamily = RobotoFontFamily,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
-                        color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                        color = if (isDark) MintWhite else BottleGreen,
                         textAlign = TextAlign.Start
                     )
                     Spacer(modifier = Modifier.height(6.dp))
@@ -125,7 +127,7 @@ internal fun AlAsmaUlHusnaScreen(
                             fontFamily = RobotoFontFamily,
                             fontWeight = FontWeight.Medium,
                             textAlign = TextAlign.Start,
-                            color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen
+                            color = if (isDark) MintWhite else BottleGreen
                         )
                     )
 

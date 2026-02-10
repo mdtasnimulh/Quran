@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,9 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.DullBlue
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.hadith.Book
 import com.tasnimulhasan.entity.hadith.Chapter
 import com.tasnimulhasan.entity.hadith.HadithData
@@ -42,6 +46,7 @@ fun HadithItem(
     index: Int,
 ){
     var isExpanded by remember { mutableStateOf(false) }
+    val isDark = isSystemInDarkTheme()
 
     ElevatedCard(
         modifier = Modifier
@@ -50,7 +55,7 @@ fun HadithItem(
             .wrapContentHeight(),
         elevation = CardDefaults.cardElevation(3.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite
+            containerColor = if (isDark) BackgroundBlack else BackgroundWhite
         )
     ) {
         Column (
@@ -70,7 +75,7 @@ fun HadithItem(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         fontFamily = RobotoFontFamily,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Start,
                     ),
                     maxLines = if (isExpanded) Int.MAX_VALUE else 2,
@@ -89,7 +94,7 @@ fun HadithItem(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = RobotoFontFamily,
-                    color = DullBlue,
+                    color = if (isDark) SaladGreen.copy(alpha = 0.85f) else DullBlue,
                     textAlign = TextAlign.Start,
                 ),
             )
@@ -105,7 +110,7 @@ fun HadithItem(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = RobotoFontFamily,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = if (isDark) MintWhite.copy(alpha = 0.9f) else MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Justify,
                 ),
                 maxLines = if (isExpanded) Int.MAX_VALUE else 3,
@@ -123,7 +128,11 @@ fun HadithItem(
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = RobotoFontFamily,
-                    color = DullBlue.copy(alpha = 0.75f),
+                    color = if (isDark) {
+                        MintWhite.copy(alpha = 0.6f)
+                    } else {
+                        DullBlue.copy(alpha = 0.75f)
+                    },
                     textAlign = TextAlign.Start,
                 )
             )
@@ -139,7 +148,11 @@ fun HadithItem(
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = RobotoFontFamily,
-                    color = DullBlue.copy(alpha = 0.75f),
+                    color = if (isDark) {
+                        MintWhite.copy(alpha = 0.6f)
+                    } else {
+                        DullBlue.copy(alpha = 0.75f)
+                    },
                     textAlign = TextAlign.Start,
                 )
             )
@@ -155,7 +168,7 @@ fun HadithItem(
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Medium,
                     fontFamily = RobotoFontFamily,
-                    color = DullBlue,
+                    color = if (isDark) SaladGreen else BottleGreen,
                     textAlign = TextAlign.End
                 ),
             )

@@ -2,6 +2,7 @@ package com.tasnimulhasan.hadithdetails.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -21,7 +22,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.tasnimulhasan.designsystem.R as Res
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 
 @Composable
 fun HadithDetailsHeader(
@@ -30,20 +34,22 @@ fun HadithDetailsHeader(
     chapterNumber: String,
     totalCount: String,
 ){
+    val isDark = isSystemInDarkTheme()
+
     ConstraintLayout(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .wrapContentHeight()
             .background(
-                color = MaterialTheme.colorScheme.primary,
+                color = if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen,
                 shape = MaterialTheme.shapes.medium
             )
             .shadow(
                 elevation = 6.dp,
                 shape = MaterialTheme.shapes.medium,
-                spotColor = MaterialTheme.colorScheme.primary,
-                ambientColor = MaterialTheme.colorScheme.primary
+                spotColor = if (isDark) SaladGreen else BottleGreen,
+                ambientColor = if (isDark) SaladGreen else BottleGreen
             )
             .padding(12.dp),
     ) {
@@ -62,7 +68,7 @@ fun HadithDetailsHeader(
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = RobotoFontFamily,
-                color = BackgroundWhite,
+                color = if (isDark) MintWhite else BackgroundWhite,
                 textAlign = TextAlign.Start,
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false
@@ -83,7 +89,7 @@ fun HadithDetailsHeader(
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = RobotoFontFamily,
-                color = BackgroundWhite,
+                color = if (isDark) MintWhite else BackgroundWhite,
                 textAlign = TextAlign.Start,
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false
@@ -104,7 +110,7 @@ fun HadithDetailsHeader(
             style = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = RobotoFontFamily,
-                color = BackgroundWhite,
+                color = if (isDark) MintWhite else BackgroundWhite,
                 textAlign = TextAlign.Start,
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false
