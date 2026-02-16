@@ -24,6 +24,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeFormat
 import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTime
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 
@@ -105,7 +106,7 @@ fun TimeCard(
             style = TextStyle(
                 fontSize = 13.sp,
                 fontFamily = RobotoFontFamily,
-                color = if (isSystemInDarkTheme()) EggshellWhite else BottleGreen,
+                color = if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.8f) else BottleGreen,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             ),

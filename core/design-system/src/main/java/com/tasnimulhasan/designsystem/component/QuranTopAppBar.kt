@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tasnimulhasan.designsystem.icon.QuranIcons
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.R as Res
@@ -38,11 +39,12 @@ fun QuranTopAppBar(
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {}
 ) {
+    val isDark = isSystemInDarkTheme()
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = stringResource(id = titleRes),
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (isDark) MintWhite else BottleGreen,
                 fontFamily = RobotoFontFamily,
                 fontWeight = FontWeight.SemiBold
             )
@@ -52,7 +54,7 @@ fun QuranTopAppBar(
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = if (isDark) MintWhite else BottleGreen,
                 )
             }
         },

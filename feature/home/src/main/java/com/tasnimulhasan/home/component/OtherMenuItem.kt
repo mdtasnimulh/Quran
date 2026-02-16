@@ -1,6 +1,7 @@
 package com.tasnimulhasan.home.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +31,7 @@ import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.R as Res
@@ -45,6 +47,11 @@ fun OtherMenuItem(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .border(
+                width = 0.5.dp,
+                color = if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.33f) else BottleGreen.copy(alpha = 0.33f),
+                shape = RoundedCornerShape(20.dp)
+            )
             .shadow(
                 elevation = 2.dp,
                 shape = RoundedCornerShape(20.dp),
@@ -96,7 +103,7 @@ fun OtherMenuItem(
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.8f) else BottleGreen,
                     platformStyle = PlatformTextStyle(
                         includeFontPadding = false
                     )

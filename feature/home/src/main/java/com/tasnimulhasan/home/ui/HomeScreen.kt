@@ -12,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -60,6 +61,8 @@ import com.tasnimulhasan.common.extfun.buildAnnotatedString
 import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.component.DashedHorizontalDivider
 import com.tasnimulhasan.designsystem.theme.ArabicUthmanFontFamily
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.domain.apiusecase.home.FetchDailyPrayerTimesByCityUseCase
@@ -93,6 +96,7 @@ internal fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val isDark = isSystemInDarkTheme()
     val fusedLocationProviderClient =
         remember { LocationServices.getFusedLocationProviderClient(context) }
     val geoCoder = Geocoder(context, Locale.getDefault())
@@ -260,7 +264,7 @@ internal fun HomeScreen(
 
         uiState.isLoading -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = if (isDark) MintWhite else BottleGreen)
             }
         }
 
@@ -282,7 +286,7 @@ internal fun HomeScreen(
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontFamily = RobotoFontFamily,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = if (isDark) MintWhite else BottleGreen,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Start
                         ),
@@ -476,7 +480,7 @@ internal fun HomeScreen(
                             fontSize = 56.sp,
                             fontFamily = ArabicUthmanFontFamily,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = if (isDark) MintWhite else BottleGreen,
                             textAlign = TextAlign.Center,
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
@@ -534,12 +538,13 @@ internal fun HomeScreen(
                                 text = buildAnnotatedString(
                                     verse = item.ayaText,
                                     ayaNumber = item.index,
-                                    color = SaladGreen
+                                    color = if (isDark) SaladGreen else SaladGreen
                                 ),
                                 style = TextStyle(
                                     textAlign = TextAlign.Right,
                                     fontSize = 26.sp,
-                                    fontWeight = FontWeight.SemiBold
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground,
                                 ),
                             )
                         }
@@ -551,7 +556,7 @@ internal fun HomeScreen(
                             text = htmlToTajweedAnnotatedString(quranTransliteration[index].ayaText),
                             style = TextStyle(
                                 fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
+                                color = if (isDark) MintWhite.copy(0.6f) else MaterialTheme.colorScheme.onBackground.copy(0.5f),
                                 fontWeight = FontWeight.Medium,
                                 textAlign = TextAlign.Justify,
                                 fontFamily = RobotoFontFamily,
@@ -565,7 +570,7 @@ internal fun HomeScreen(
                             text = suraEnglish[index].ayaText.replace("-", ""),
                             style = TextStyle(
                                 fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onBackground,
+                                color = if (isDark) MintWhite.copy(0.9f) else BottleGreen,
                                 fontWeight = FontWeight.Normal,
                                 textAlign = TextAlign.Justify,
                                 fontFamily = RobotoFontFamily,
@@ -576,7 +581,7 @@ internal fun HomeScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     if (index != suraEnglish.size - 1) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f))
+                        HorizontalDivider(color = if (isDark) MintWhite.copy(0.3f) else BottleGreen.copy(0.3f))
                     }
                 }
 

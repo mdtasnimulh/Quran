@@ -3,6 +3,7 @@ package com.tasnimulhasan.home.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 
 @Composable
@@ -48,7 +51,7 @@ fun LocationPermissionDenied(
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = RobotoFontFamily,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if (isSystemInDarkTheme()) MintWhite else BottleGreen,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             ),

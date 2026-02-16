@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.tasnimulhasan.common.extfun.htmlToTajweedAnnotatedString
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.SaladGreen
@@ -87,7 +88,7 @@ fun VerseDialog(
 
                 // Transliteration
                 Text(
-                    text = transliteration,
+                    text = htmlToTajweedAnnotatedString(transliteration),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurface
                     ),

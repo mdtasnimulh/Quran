@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 
 @Composable
 fun FindMosqueRow(context: Context = LocalContext.current) {
@@ -69,11 +72,13 @@ fun FindMosqueRow(context: Context = LocalContext.current) {
         Text(
             text = "Find Nearest Mosque",
             modifier = Modifier.weight(1f),
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.75f) else BottleGreen
         )
         Icon(
             imageVector = Icons.Default.ChevronRight,
-            contentDescription = "Go to Maps"
+            contentDescription = "Go to Maps",
+            tint = if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.75f) else BottleGreen
         )
     }
 }

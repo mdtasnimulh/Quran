@@ -2,6 +2,7 @@ package com.tasnimulhasan.about.ui
 
 import android.content.Intent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,13 +29,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import com.tasnimulhasan.designsystem.theme.BottleGreen
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 
 @Composable
 fun AboutScreen(
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
+    val isDark = isSystemInDarkTheme()
+    val iconColor = if (isDark) SaladGreen else BottleGreen
 
     Column(
         modifier = Modifier
@@ -53,7 +59,8 @@ fun AboutScreen(
                     .clickable(
                         onClick = { navigateBack.invoke() }
                     )
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                tint = if (isDark) MintWhite else BottleGreen
             )
 
             Text(
@@ -66,7 +73,8 @@ fun AboutScreen(
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontFamily = RobotoFontFamily,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if (isDark) MintWhite else BottleGreen
                 )
             )
         }
@@ -77,7 +85,8 @@ fun AboutScreen(
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
+                tint = iconColor
             )
             Text(
                 text = "This Quran app is a sadaqa from me to everyone. " +
@@ -97,7 +106,8 @@ fun AboutScreen(
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = null,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
+                tint = iconColor
             )
             Column {
                 Text(
@@ -134,17 +144,19 @@ fun AboutScreen(
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = null,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
+                tint = iconColor
             )
             Column {
                 Text(
                     text = "Contact Developer",
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "mdtasnimulh@gmail.com",
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = iconColor.copy(alpha = 0.7f)
                 )
             }
         }

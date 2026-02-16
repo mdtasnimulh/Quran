@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,10 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
-import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.ArabicAlphabet
 import com.tasnimulhasan.entity.ExampleWord
 
@@ -71,6 +73,8 @@ private fun LetterDetailsContent(
     letter: ArabicAlphabet,
     onPlayAudio: (String) -> Unit,
 ) {
+    val isDark = isSystemInDarkTheme()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -84,7 +88,7 @@ private fun LetterDetailsContent(
                 fontSize = 44.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                color = PumpkinOrange,
+                color = if (isDark) SaladGreen else PumpkinOrange,
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -99,23 +103,25 @@ private fun LetterDetailsContent(
 
         Spacer(Modifier.height(16.dp))
 
-        PronunciationButton {
+        PronunciationButton(isDark) {
             onPlayAudio.invoke(letter.isolatedForm)
         }
 
         Spacer(Modifier.height(8.dp))
 
-        FormsTableAnimated(letter)
+        FormsTableAnimated(letter, isDark)
 
         ExamplesTable(
-            examples = letter.exampleWords
+            examples = letter.exampleWords,
+            isDark = isDark
         )
     }
 }
 
 @Composable
 private fun FormsTableAnimated(
-    letter: ArabicAlphabet
+    letter: ArabicAlphabet,
+    isDark: Boolean
 ) {
     var selected by remember { mutableStateOf("Isolated") }
 
@@ -125,20 +131,20 @@ private fun FormsTableAnimated(
             .padding(top = 16.dp)
     ) {
 
-        TableHeader("Form", "","Letter")
+        TableHeader("Form", "","Letter", isDark)
 
         DividerThin()
 
-        TableRowAnimated("Isolated", letter.isolatedForm, selected) {
+        TableRowAnimated("Isolated", letter.isolatedForm, selected, isDark) {
             selected = "Isolated"
         }
-        TableRowAnimated("Initial", letter.initialForm, selected) {
+        TableRowAnimated("Initial", letter.initialForm, selected, isDark) {
             selected = "Initial"
         }
-        TableRowAnimated("Medial", letter.medialForm, selected) {
+        TableRowAnimated("Medial", letter.medialForm, selected, isDark) {
             selected = "Medial"
         }
-        TableRowAnimated("Final", letter.finalForm, selected) {
+        TableRowAnimated("Final", letter.finalForm, selected, isDark) {
             selected = "Final"
         }
     }
@@ -146,12 +152,16 @@ private fun FormsTableAnimated(
 
 @Composable
 private fun PronunciationButton(
+    isDark: Boolean,
     onClick: () -> Unit
 ) {
+    val backgroundColor = if (isDark) SaladGreen.copy(alpha = 0.2f) else SaladGreen.copy(alpha = 0.1f)
+    val textColor = if (isDark) SaladGreen else BottleGreen
+
     TextButton(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DeepSeaGreen.copy(alpha = 0.1f), shape = RoundedCornerShape(100.dp)),
+            .background(backgroundColor, shape = RoundedCornerShape(100.dp)),
         onClick = onClick
     ) {
         Text(
@@ -160,7 +170,7 @@ private fun PronunciationButton(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 fontFamily = RobotoFontFamily,
-                color = DeepSeaGreen,
+                color = textColor,
                 platformStyle = PlatformTextStyle(
                     includeFontPadding = false
                 )
@@ -181,7 +191,7 @@ private fun AnimatedLetterCell(
 
     val color by animateColorAsState(
         targetValue = if (isHighlighted)
-            MaterialTheme.colorScheme.primary
+            if (isSystemInDarkTheme()) SaladGreen else PumpkinOrange
         else
             MaterialTheme.colorScheme.onSurface,
         label = ""
@@ -205,6 +215,7 @@ private fun TableRowAnimated(
     label: String,
     value: String,
     selected: String,
+    isDark: Boolean,
     onClick: () -> Unit
 ) {
     Row(
@@ -236,7 +247,8 @@ private fun TableRowAnimated(
 
 @Composable
 private fun ExamplesTable(
-    examples: List<ExampleWord>
+    examples: List<ExampleWord>,
+    isDark: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -245,7 +257,7 @@ private fun ExamplesTable(
     ) {
         Spacer(Modifier.height(8.dp))
 
-        TableHeader("Translation", "Transliteration", "Arabic")
+        TableHeader("Translation", "Transliteration", "Arabic", isDark)
 
         Spacer(Modifier.height(4.dp))
 
@@ -313,7 +325,9 @@ private fun ExamplesTable(
 }
 
 @Composable
-private fun TableHeader(left: String, middle: String, right: String) {
+private fun TableHeader(left: String, middle: String, right: String, isDark: Boolean) {
+    val headerColor = if (isDark) SaladGreen else BottleGreen
+
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -326,7 +340,7 @@ private fun TableHeader(left: String, middle: String, right: String) {
                 fontSize = 14.sp,
                 fontFamily = RobotoFontFamily,
                 fontWeight = FontWeight.SemiBold,
-                color = DeepSeaGreen,
+                color = headerColor,
                 textAlign = TextAlign.Start,
             )
         )
@@ -339,7 +353,7 @@ private fun TableHeader(left: String, middle: String, right: String) {
                     fontSize = 14.sp,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.SemiBold,
-                    color = DeepSeaGreen,
+                    color = headerColor,
                     textAlign = TextAlign.Center,
                 )
             )
@@ -353,7 +367,7 @@ private fun TableHeader(left: String, middle: String, right: String) {
                     fontSize = 14.sp,
                     fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.SemiBold,
-                    color = DeepSeaGreen,
+                    color = headerColor,
                     textAlign = TextAlign.End,
                 )
             )

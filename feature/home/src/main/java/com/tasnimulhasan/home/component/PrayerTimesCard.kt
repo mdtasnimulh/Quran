@@ -3,6 +3,7 @@ package com.tasnimulhasan.home.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import com.tasnimulhasan.common.dateparser.DateTimeParser.convertReadableDateTim
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.EggshellWhite
+import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
 import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
@@ -63,7 +65,8 @@ fun PrayerTimesCard(
                 color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(15.dp)
             )
-            .border(shape = RoundedCornerShape(15.dp), width = (0.25).dp, color = BottleGreen.copy(alpha = 0.5f))
+            .border(shape = RoundedCornerShape(15.dp), width = (0.25).dp, color = BottleGreen.copy(alpha = if (isSystemInDarkTheme()) 1f else 0.5f))
+            .clip(RoundedCornerShape(15.dp))
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -209,7 +212,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (isCurrent) SaladGreen else MaterialTheme.colorScheme.onBackground,
+                                color = if (isCurrent) SaladGreen else if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.8f) else BottleGreen,
                                 fontWeight = if (isCurrent) FontWeight.Medium else FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
@@ -225,7 +228,7 @@ fun PrayerTimesCard(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontFamily = RobotoFontFamily,
-                                color = if (isCurrent) SaladGreen else MaterialTheme.colorScheme.onBackground,
+                                color = if (isCurrent) SaladGreen else if (isSystemInDarkTheme()) MintWhite.copy(alpha = 0.8f) else BottleGreen,
                                 fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),

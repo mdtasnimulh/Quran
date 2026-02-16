@@ -25,10 +25,12 @@ import com.tasnimulhasan.common.constant.AppConstants
 import com.tasnimulhasan.designsystem.theme.ArabicKsaFontFamily
 import com.tasnimulhasan.designsystem.theme.BackgroundBlack
 import com.tasnimulhasan.designsystem.theme.BackgroundWhite
+import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.DeepSeaGreen
 import com.tasnimulhasan.designsystem.theme.PumpkinOrange
 import com.tasnimulhasan.designsystem.theme.QuranTheme
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
+import com.tasnimulhasan.designsystem.theme.SaladGreen
 import com.tasnimulhasan.entity.ArabicAlphabet
 
 @Composable
@@ -36,6 +38,8 @@ fun LetterItem(
     item: ArabicAlphabet,
     onItemClick: (item: ArabicAlphabet) -> Unit,
 ) {
+    val isDark = isSystemInDarkTheme()
+
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,14 +48,14 @@ fun LetterItem(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(20.dp),
                 ambientColor = PumpkinOrange,
-                spotColor = DeepSeaGreen
+                spotColor = BottleGreen
             )
             .clickable(
                 onClick = { onItemClick.invoke(item) }
             ),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = if (isSystemInDarkTheme()) BackgroundBlack else BackgroundWhite,
+            containerColor = if (isDark) BackgroundBlack else BackgroundWhite,
         ),
     ) {
         ConstraintLayout(
@@ -76,7 +80,7 @@ fun LetterItem(
                 fontFamily = ArabicKsaFontFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                color = PumpkinOrange,
+                color = if (isDark) SaladGreen else PumpkinOrange,
                 textAlign = TextAlign.Center
             )
 
