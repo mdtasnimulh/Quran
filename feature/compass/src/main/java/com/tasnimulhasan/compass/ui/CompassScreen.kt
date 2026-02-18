@@ -2,27 +2,15 @@ package com.tasnimulhasan.compass.ui
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -34,8 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tasnimulhasan.common.constant.AppConstants.getDirectionName
-import com.tasnimulhasan.compass.ui.viewmodel.CompassViewModel
 import com.tasnimulhasan.compass.ui.viewmodel.CompassUiAction
+import com.tasnimulhasan.compass.ui.viewmodel.CompassViewModel
 import com.tasnimulhasan.designsystem.theme.BottleGreen
 import com.tasnimulhasan.designsystem.theme.MintWhite
 import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
@@ -56,18 +44,38 @@ internal fun CompassScreen(
     val userLocation by viewModel.locations.collectAsStateWithLifecycle()
     val isDark = isSystemInDarkTheme()
 
-    val angleToQibla = (qiblaDirection - azimuth + 360) % 360
+    // Track CUMULATIVE rotation to avoid the 360->0 wraparound spin bug
+    var compassRotationTarget by remember { mutableFloatStateOf(0f) }
+    var qiblaRotationTarget by remember { mutableFloatStateOf(0f) }
 
-    val animatedRotation by animateFloatAsState(
-        targetValue = angleToQibla.roundToInt().toFloat(),
-        animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
+    // Update compass rotation (the dial rotates opposite to heading)
+    LaunchedEffect(azimuth) {
+        compassRotationTarget = updateCumulativeAngle(compassRotationTarget, -azimuth)
+    }
+
+    // Update qibla arrow rotation
+    LaunchedEffect(azimuth, qiblaDirection) {
+        val angleToQibla = ((qiblaDirection - azimuth + 360) % 360).toFloat()
+        qiblaRotationTarget = updateCumulativeAngle(qiblaRotationTarget, angleToQibla)
+    }
+
+    // Use spring animation for natural compass feel
+    val animatedCompassRotation by animateFloatAsState(
+        targetValue = compassRotationTarget,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
         label = "Compass Rotation"
     )
 
-    val animatedRotationCompass by animateFloatAsState(
-        targetValue = -(azimuth.roundToInt().toFloat()),
-        animationSpec = tween(durationMillis = 500, easing = LinearOutSlowInEasing),
-        label = "Qibla Compass Rotation"
+    val animatedQiblaRotation by animateFloatAsState(
+        targetValue = qiblaRotationTarget,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
+        label = "Qibla Rotation"
     )
 
     LaunchedEffect(true) {
@@ -95,7 +103,7 @@ internal fun CompassScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .rotate(animatedRotationCompass)
+                    .rotate(animatedCompassRotation)
             )
 
             Image(
@@ -104,7 +112,7 @@ internal fun CompassScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .rotate(animatedRotation)
+                    .rotate(animatedQiblaRotation)
             )
         }
 
@@ -124,11 +132,7 @@ internal fun CompassScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Qibla: ${qiblaDirection.roundToInt()}° ${
-                getDirectionName(
-                    qiblaDirection.roundToInt().toFloat()
-                )
-            }",
+            text = "Qibla: ${qiblaDirection.roundToInt()}° ${getDirectionName(qiblaDirection.roundToInt().toFloat())}",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = RobotoFontFamily,
@@ -140,37 +144,25 @@ internal fun CompassScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Kaaba fixed coordinates
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .weight(1f),
-                text = "Lat: 21.4225",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = RobotoFontFamily,
+                modifier = Modifier.wrapContentSize().weight(1f),
+                text = "Kaaba Lat: 21.4225°",
+                style = TextStyle(fontSize = 14.sp, fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
-                ),
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground),
             )
-
             Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .weight(1f),
-                text = "Lon: 39.8262",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = RobotoFontFamily,
+                modifier = Modifier.wrapContentSize().weight(1f),
+                text = "Kaaba Lon: 39.8262°",
+                style = TextStyle(fontSize = 14.sp, fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
-                ),
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground),
             )
         }
 
@@ -179,9 +171,7 @@ internal fun CompassScreen(
         Text(
             text = "User: ${userLocation?.cityName}, ${userLocation?.countryName}",
             style = TextStyle(
-                fontSize = 16.sp,
-                fontFamily = RobotoFontFamily,
-                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp, fontFamily = RobotoFontFamily, fontWeight = FontWeight.Medium,
                 color = if (isDark) MintWhite else MaterialTheme.colorScheme.onBackground
             ),
             modifier = Modifier.wrapContentSize()
@@ -190,37 +180,40 @@ internal fun CompassScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .weight(1f),
+                modifier = Modifier.wrapContentSize().weight(1f),
                 text = "Lat: ${userLocation?.latitude}",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = RobotoFontFamily,
+                style = TextStyle(fontSize = 14.sp, fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
-                ),
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground),
             )
-
             Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .weight(1f),
+                modifier = Modifier.wrapContentSize().weight(1f),
                 text = "Lon: ${userLocation?.longitude}",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = RobotoFontFamily,
+                style = TextStyle(fontSize = 14.sp, fontFamily = RobotoFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
-                ),
+                    color = if (isDark) MintWhite.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground),
             )
         }
     }
+}
+
+/**
+ * Calculate the next cumulative rotation angle to avoid spinning the wrong way.
+ *
+ * Instead of jumping between 0-360, we accumulate rotation so animations
+ * always take the shortest path. E.g., 350° -> 10° becomes 350° -> 370°
+ * instead of 350° -> 10° (which would cause a -340° backward spin).
+ */
+fun updateCumulativeAngle(currentCumulative: Float, newAbsolute: Float): Float {
+    val current = ((currentCumulative % 360f) + 360f) % 360f
+    var delta = newAbsolute - current
+    // Always rotate by the shortest path (max 180°)
+    while (delta > 180f) delta -= 360f
+    while (delta < -180f) delta += 360f
+    return currentCumulative + delta
 }
