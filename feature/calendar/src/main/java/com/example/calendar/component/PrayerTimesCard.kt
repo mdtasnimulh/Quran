@@ -1,51 +1,55 @@
 package com.example.calendar.component
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import com.tasnimulhasan.designsystem.theme.BackgroundBlack
-import com.tasnimulhasan.designsystem.theme.BackgroundWhite
-import com.tasnimulhasan.designsystem.theme.BottleGreen
-import com.tasnimulhasan.designsystem.theme.MintWhite
-import com.tasnimulhasan.designsystem.theme.RobotoFontFamily
-import com.tasnimulhasan.designsystem.theme.SaladGreen
-import com.tasnimulhasan.entity.prayertimes.PrayerTImeEntity
+import com.tasnimulhasan.designsystem.theme.*
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.Locale
 import com.tasnimulhasan.designsystem.R as Res
 
+// ─── Colors ────────────────────────────────────────────────────────────────
+private val DarkGreenBg     = Color(0xFF1B4332)
+private val MediumGreenBg   = Color(0xFF2D6A4F)
+private val ArcGreen        = Color(0xFF74C69D)
+private val CardWhite       = Color(0xFFF8F9FA)
+private val DotActive       = Color(0xFFFFD166)
+private val DotInactive     = Color(0xFFDEE2E6)
+private val TimelineLineClr = Color(0xFFE9ECEF)
+private val SubtextGray     = Color(0xFF888888)
+
+// ─── Data ──────────────────────────────────────────────────────────────────
+private data class PrayerRow(
+    val name: String,
+    val time: String,
+    val iconRes: Int,
+    val isActive: Boolean = false,
+)
+
+// ─── Main Composable ───────────────────────────────────────────────────────
 @Composable
 fun PrayerTimesCard(
     fajrTime: String,
@@ -53,119 +57,285 @@ fun PrayerTimesCard(
     asrTime: String,
     maghribTime: String,
     ishaTime: String,
-    currentEnDate: String,
+    sunriseTime: String,   // kept for future use
+    sunsetTime: String,    // kept for future use
+    locationName: String = "",
+    currentEnDate: String = "",
 ) {
     val isDark = isSystemInDarkTheme()
+    val fmt = DateTimeFormatter.ofPattern("hh:mm a", Locale.US)
 
-    val prayerTimeList = listOf(
-        PrayerTImeEntity("Fajr", fajrTime),
-        PrayerTImeEntity("Dhuhr", dhuhrTime),
-        PrayerTImeEntity("Asr", asrTime),
-        PrayerTImeEntity("Maghrib", maghribTime),
-        PrayerTImeEntity("Isha", ishaTime),
+    fun parse(t: String): LocalTime? = runCatching { LocalTime.parse(t, fmt) }.getOrNull()
+
+    val fajrLT    = parse(fajrTime)
+    val dhuhrLT   = parse(dhuhrTime)
+    val asrLT     = parse(asrTime)
+    val maghribLT = parse(maghribTime)
+    val ishaLT    = parse(ishaTime)
+
+    // Live clock — updates every second
+    var now by remember { mutableStateOf(LocalTime.now()) }
+    LaunchedEffect(Unit) {
+        while (true) { delay(1000L); now = LocalTime.now() }
+    }
+
+    // Arc progress: 0f at Fajr → 1f at Isha
+    val arcProgress = remember(now, fajrLT, ishaLT) {
+        if (fajrLT != null && ishaLT != null) {
+            val total   = (ishaLT.toSecondOfDay() - fajrLT.toSecondOfDay()).toFloat()
+            val elapsed = (now.toSecondOfDay() - fajrLT.toSecondOfDay()).toFloat()
+            (elapsed / total).coerceIn(0f, 1f)
+        } else 0.4f
+    }
+
+    // Which prayer is currently active
+    val activePrayerIndex = remember(now) {
+        val times = listOf(fajrLT, dhuhrLT, asrLT, maghribLT, ishaLT)
+        var idx = -1
+        times.forEachIndexed { i, t -> if (t != null && !now.isBefore(t)) idx = i }
+        idx
+    }
+
+    val prayers = listOf(
+        PrayerRow(
+            name     = "Fajr",
+            time     = fajrTime,
+            iconRes  = Res.drawable.img_calendar, // TODO: replace with ic_fajr_time
+            isActive = activePrayerIndex == 0
+        ),
+        PrayerRow(
+            name     = "Dhuhr",
+            time     = dhuhrTime,
+            iconRes  = Res.drawable.img_calendar, // TODO: replace with ic_dhuhr_time
+            isActive = activePrayerIndex == 1
+        ),
+        PrayerRow(
+            name     = "Asr",
+            time     = asrTime,
+            iconRes  = Res.drawable.img_calendar, // TODO: replace with ic_asr_time
+            isActive = activePrayerIndex == 2
+        ),
+        PrayerRow(
+            name     = "Maghrib",
+            time     = maghribTime,
+            iconRes  = Res.drawable.img_calendar, // TODO: replace with ic_maghrib_time
+            isActive = activePrayerIndex == 3
+        ),
+        PrayerRow(
+            name     = "Isha",
+            time     = ishaTime,
+            iconRes  = Res.drawable.img_calendar, // TODO: replace with ic_isha_time
+            isActive = activePrayerIndex == 4
+        ),
     )
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(
-                color = if (isDark) SaladGreen.copy(alpha = 0.9f) else BottleGreen,
-                shape = RoundedCornerShape(15.dp)
-            )
+            .clip(RoundedCornerShape(24.dp))
+            .background(DarkGreenBg)
     ) {
-        ConstraintLayout(
+
+        // ── HEADER: Arc + Clock ───────────────────────────────────────────
+        Box(
+            modifier         = Modifier
+                .fillMaxWidth()
+                .height(210.dp)
+                .background(DarkGreenBg),
+            contentAlignment = Alignment.Center
+        ) {
+            ArcCanvas(arcProgress = arcProgress)
+
+            // Text sits inside the dome area
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier            = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 28.dp)
+            ) {
+                if (locationName.isNotBlank()) {
+                    Text(
+                        text  = locationName,
+                        style = TextStyle(
+                            fontSize   = 12.sp,
+                            color      = Color.White.copy(alpha = 0.85f),
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.Normal
+                        )
+                    )
+                    Spacer(Modifier.height(2.dp))
+                }
+
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        text  = now.format(DateTimeFormatter.ofPattern("hh:mm", Locale.US)),
+                        style = TextStyle(
+                            fontSize   = 52.sp,
+                            color      = Color.White,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    // Superscript AM/PM — only the letter "M" styled small
+                    Text(
+                        text  = now.format(DateTimeFormatter.ofPattern("a", Locale.US)),
+                        style = TextStyle(
+                            fontSize   = 14.sp,
+                            color      = Color.White.copy(alpha = 0.9f),
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        modifier = Modifier.padding(start = 3.dp, bottom = 12.dp)
+                    )
+                }
+            }
+        }
+
+        // ── FAJR / IFTAR ROW ─────────────────────────────────────────────
+        Row(
+            modifier              = Modifier
+                .fillMaxWidth()
+                .background(DarkGreenBg)
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment     = Alignment.CenterVertically
+        ) {
+            // Fajr — left: icon → label + time
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter            = painterResource(Res.drawable.img_calendar), // TODO: replace with ic_fajr or ic_sunrise
+                    contentDescription = "Fajr",
+                    tint               = Color(0xFFFFD166),
+                    modifier           = Modifier.size(28.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Column {
+                    Text(
+                        text  = "Fajr",
+                        style = TextStyle(
+                            fontSize   = 13.sp,
+                            color      = Color.White,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Text(
+                        text  = fajrTime,
+                        style = TextStyle(
+                            fontSize   = 12.sp,
+                            color      = Color.White.copy(alpha = 0.85f),
+                            fontFamily = RobotoFontFamily
+                        )
+                    )
+                }
+            }
+
+            // Iftar — right: label + time → icon
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text  = "Iftar",
+                        style = TextStyle(
+                            fontSize   = 13.sp,
+                            color      = Color.White,
+                            fontFamily = RobotoFontFamily,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Text(
+                        text  = maghribTime,
+                        style = TextStyle(
+                            fontSize   = 12.sp,
+                            color      = Color.White.copy(alpha = 0.85f),
+                            fontFamily = RobotoFontFamily
+                        )
+                    )
+                }
+                Spacer(Modifier.width(8.dp))
+                Icon(
+                    painter            = painterResource(Res.drawable.img_calendar), // TODO: replace with ic_iftar or ic_sunset
+                    contentDescription = "Iftar",
+                    tint               = Color(0xFFFFD166),
+                    modifier           = Modifier.size(28.dp)
+                )
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        // Connector dot between dark header and white list card
+        Box(
+            modifier         = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .background(ArcGreen, CircleShape)
+            )
+        }
+
+        Spacer(Modifier.height(4.dp))
+
+        // ── PRAYER LIST ───────────────────────────────────────────────────
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                .background(if (isDark) Color(0xFF121212) else CardWhite)
         ) {
-            val (quranImage, enDateRef, prayerTimesRef) = createRefs()
+            Row(modifier = Modifier.fillMaxWidth()) {
 
-            Image(
-                modifier = Modifier
-                    .constrainAs(quranImage) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(prayerTimesRef.top)
-                        end.linkTo(parent.end)
-                        width = Dimension.value(85.dp)
-                        height = Dimension.wrapContent
-                    },
-                painter = painterResource(Res.drawable.ic_quran_large),
-                contentDescription = "Quran Image",
-            )
+                // ── Timeline column (dots + connecting lines) ─────────────
+                Column(
+                    modifier            = Modifier
+                        .width(52.dp)
+                        .padding(top = 12.dp, bottom = 12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    prayers.forEachIndexed { index, prayer ->
+                        // Dot — always rendered unconditionally
+                        Box(
+                            modifier = Modifier
+                                .size(if (prayer.isActive) 14.dp else 10.dp)
+                                .background(
+                                    color = if (prayer.isActive) DotActive else DotInactive,
+                                    shape = CircleShape
+                                )
+                        )
 
-            Text(
-                modifier = Modifier
-                    .constrainAs(enDateRef) {
-                        top.linkTo(quranImage.top)
-                        bottom.linkTo(quranImage.bottom)
-                        end.linkTo(quranImage.end, margin = 8.dp)
-                        start.linkTo(parent.start, margin = 16.dp)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.wrapContent
-                    },
-                text = currentEnDate,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = RobotoFontFamily,
-                    color = if (isDark) MintWhite else BackgroundWhite,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Start
-                ),
-            )
-
-            Row(
-                modifier = Modifier
-                    .constrainAs(prayerTimesRef) {
-                        top.linkTo(enDateRef.bottom, margin = 24.dp)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.wrapContent
+                        // Connecting line — only between items, never after last
+                        if (index < prayers.lastIndex) {
+                            Box(
+                                modifier = Modifier
+                                    .width(2.dp)
+                                    .height(58.dp) // fixed height so last dot is never clipped
+                                    .background(TimelineLineClr)
+                            )
+                        } else {
+                            // Small breathing room below last dot
+                            Spacer(Modifier.height(8.dp))
+                        }
                     }
-                    .background(
-                        if (isDark) BackgroundBlack else BackgroundWhite,
-                        RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                    ),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                prayerTimeList.forEach { time ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .weight(1f),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = time.prayerName,
-                            style = TextStyle(
-                                fontSize = 13.sp,
-                                fontFamily = RobotoFontFamily,
-                                color = if (isDark) MintWhite else BackgroundBlack,
-                                fontWeight = FontWeight.Medium,
-                                textAlign = TextAlign.Center
-                            ),
-                        )
+                }
 
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(
-                            text = time.prayerTime,
-                            style = TextStyle(
-                                fontSize = 11.sp,
-                                fontFamily = RobotoFontFamily,
-                                color = if (isDark) SaladGreen else BackgroundBlack,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            ),
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
+                // ── Prayer rows ───────────────────────────────────────────
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 16.dp, top = 12.dp, bottom = 12.dp)
+                ) {
+                    prayers.forEachIndexed { index, prayer ->
+                        PrayerListRow(prayer = prayer, isDark = isDark)
+                        if (index < prayers.lastIndex) {
+                            HorizontalDivider(
+                                color     = TimelineLineClr,
+                                thickness = 0.8.dp,
+                                modifier  = Modifier.padding(vertical = 2.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -173,69 +343,159 @@ fun PrayerTimesCard(
     }
 }
 
-@Preview()
+// ─── Arc Canvas (stroke only — no filled dome) ─────────────────────────────
+@Composable
+private fun ArcCanvas(arcProgress: Float) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        val strokeWidth  = 18.dp.toPx()
+        val pad          = 24.dp.toPx()
+        val diameter     = minOf(size.width, size.height * 2f) - pad * 2
+        val arcSize      = Size(diameter, diameter)
+        val topLeft      = Offset((size.width - diameter) / 2f, size.height - diameter / 2f)
+        val centerX      = size.width / 2f
+        val centerY      = topLeft.y + diameter / 2f
+        val radius       = diameter / 2f
+        val totalSweep   = 180f
+
+        // ── 1. Dark background track ──────────────────────────────────────
+        drawArc(
+            color      = Color(0xFF2D6A4F),
+            startAngle = 180f,
+            sweepAngle = totalSweep,
+            useCenter  = false,
+            topLeft    = topLeft,
+            size       = arcSize,
+            style      = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+        )
+
+        // ── 2. Green progress stroke ──────────────────────────────────────
+        val greenEnd   = 0.88f
+        val greenSweep = totalSweep * minOf(arcProgress, greenEnd)
+
+        if (greenSweep > 0f) {
+            drawArc(
+                color      = Color(0xFF95D5B2),
+                startAngle = 180f,
+                sweepAngle = greenSweep,
+                useCenter  = false,
+                topLeft    = topLeft,
+                size       = arcSize,
+                style      = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+            )
+        }
+
+        // ── 3. Yellow tip ─────────────────────────────────────────────────
+        if (arcProgress > greenEnd) {
+            // Yellow arc segment at the very end
+            val yellowStart = 180f + greenSweep
+            val yellowSweep = (totalSweep * arcProgress) - greenSweep
+            drawArc(
+                color      = Color(0xFFFFD166),
+                startAngle = yellowStart - 2f,
+                sweepAngle = yellowSweep + 4f,
+                useCenter  = false,
+                topLeft    = topLeft,
+                size       = arcSize,
+                style      = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+            )
+        } else {
+            // Yellow dot at the current head of the progress arc
+            val tipAngle = Math.toRadians((180.0 + totalSweep * arcProgress))
+            val tipX     = centerX + radius * Math.cos(tipAngle).toFloat()
+            val tipY     = centerY + radius * Math.sin(tipAngle).toFloat()
+            drawCircle(
+                color  = Color(0xFFFFD166),
+                radius = strokeWidth / 2f + 2.dp.toPx(),
+                center = Offset(tipX, tipY)
+            )
+        }
+
+        // ── 4. Small notch bump at 6 o'clock (bottom centre of arc) ──────
+        drawArc(
+            color      = Color(0xFF1B4332),
+            startAngle = 155f,
+            sweepAngle = 50f,
+            useCenter  = false,
+            topLeft    = Offset(centerX - 30.dp.toPx(), centerY - 14.dp.toPx()),
+            size       = Size(60.dp.toPx(), 60.dp.toPx()),
+            style      = Stroke(width = 16.dp.toPx(), cap = StrokeCap.Round)
+        )
+    }
+}
+
+// ─── Single Prayer Row ──────────────────────────────────────────────────────
+@Composable
+private fun PrayerListRow(prayer: PrayerRow, isDark: Boolean) {
+    Row(
+        modifier          = Modifier
+            .fillMaxWidth()
+            .height(72.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Prayer icon in rounded box
+        Box(
+            modifier         = Modifier
+                .size(44.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(if (isDark) Color(0xFF1E1E1E) else Color(0xFFF0F0F0)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter            = painterResource(prayer.iconRes),
+                contentDescription = prayer.name,
+                tint               = Color.Unspecified,
+                modifier           = Modifier.size(28.dp)
+            )
+        }
+
+        Spacer(Modifier.width(12.dp))
+
+        // Prayer name + time
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text  = prayer.name,
+                style = TextStyle(
+                    fontSize   = 15.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    color      = if (isDark) MintWhite else Color(0xFF1B1B1B)
+                )
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                text  = prayer.time,
+                style = TextStyle(
+                    fontSize   = 12.sp,
+                    fontFamily = RobotoFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    color      = if (isDark) MintWhite.copy(alpha = 0.5f) else SubtextGray
+                )
+            )
+        }
+
+        // Volume icon — TODO: replace img_calendar with ic_volume_on / ic_volume_off
+        Icon(
+            painter            = painterResource(Res.drawable.img_calendar),
+            contentDescription = "Volume",
+            tint               = if (prayer.isActive) BottleGreen else SubtextGray,
+            modifier           = Modifier.size(22.dp)
+        )
+    }
+}
+
+// ─── Preview ────────────────────────────────────────────────────────────────
+@Preview(showBackground = true)
 @Composable
 fun PreviewPrayerTimesCard() {
     PrayerTimesCard(
-        fajrTime = "03:45 AM",
-        dhuhrTime = "12:45 PM",
-        asrTime = "04:43 PM",
-        maghribTime = "06:49 PM",
-        ishaTime = "08:00 PM",
-        currentEnDate = "Wednesday, 02 July 2025"
+        fajrTime      = "04:38 AM",
+        dhuhrTime     = "12:25 PM",
+        asrTime       = "03:35 PM",
+        maghribTime   = "06:20 PM",
+        ishaTime      = "07:32 PM",
+        sunriseTime   = "05:51 AM",
+        sunsetTime    = "06:20 PM",
+        locationName  = "Banani, Dhaka, BD",
+        currentEnDate = "Wednesday, 18 Feb 2026"
     )
-}
-
-fun getCurrentAndNextPrayer(
-    fajrTime: String,
-    dhuhrTime: String,
-    asrTime: String,
-    maghribTime: String,
-    ishaTime: String
-): Triple<String?, String, LocalTime> {
-    val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.US)
-
-    val fajr = LocalTime.parse(fajrTime, formatter)
-    val dhuhr = LocalTime.parse(dhuhrTime, formatter)
-    val asr = LocalTime.parse(asrTime, formatter)
-    val maghrib = LocalTime.parse(maghribTime, formatter)
-    val isha = LocalTime.parse(ishaTime, formatter)
-    val current = LocalTime.now()
-
-    val prayerTimes = listOf(
-        "Fajr" to fajr,
-        "Dhuhr" to dhuhr,
-        "Asr" to asr,
-        "Maghrib" to maghrib,
-        "Isha" to isha
-    )
-
-    var currentPrayer: String? = null
-    var nextPrayer = "Fajr (Next Day)"
-    var nextPrayerTime = fajr
-
-    for (i in prayerTimes.indices) {
-        val (prayerName, prayerTime) = prayerTimes[i]
-        val nextIndex = (i + 1) % prayerTimes.size
-        val nextPrayerName = if (nextIndex == 0) "Fajr (Next Day)" else prayerTimes[nextIndex].first
-        val nextPrayerTimeCandidate = if (nextIndex == 0) fajr else prayerTimes[nextIndex].second
-
-        if (current.isAfter(prayerTime) || current == prayerTime) {
-            currentPrayer = "$prayerName at $prayerTime"
-            nextPrayer = "$nextPrayerName ${nextPrayerTimeCandidate.format(formatter)}"
-            nextPrayerTime = nextPrayerTimeCandidate
-        } else if (current.isBefore(prayerTime)) {
-            nextPrayer = "$prayerName ${prayerTime.format(formatter)}"
-            nextPrayerTime = prayerTime
-            break
-        }
-    }
-
-    if (current.isAfter(isha)) {
-        currentPrayer = "Isha at $isha"
-        nextPrayer = "Fajr (Next Day) at ${fajr.format(formatter)}"
-        nextPrayerTime = fajr
-    }
-
-    return Triple(currentPrayer, nextPrayer, nextPrayerTime)
 }
