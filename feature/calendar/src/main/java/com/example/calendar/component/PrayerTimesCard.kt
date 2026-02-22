@@ -4,8 +4,12 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -264,20 +268,6 @@ fun PrayerTimesCard(
 
         Spacer(Modifier.height(8.dp))
 
-        // Connector dot between dark header and white list card
-        Box(
-            modifier         = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .background(ArcGreen, CircleShape)
-            )
-        }
-
-        Spacer(Modifier.height(4.dp))
-
         // ── PRAYER LIST ───────────────────────────────────────────────────
         Box(
             modifier = Modifier
@@ -286,14 +276,17 @@ fun PrayerTimesCard(
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                 .background(if (isDark) Color(0xFF121212) else CardWhite)
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
                 // ── Timeline column (dots + connecting lines) ─────────────
                 Column(
                     modifier            = Modifier
                         .width(52.dp)
                         .padding(top = 12.dp, bottom = 12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     prayers.forEachIndexed { index, prayer ->
                         // Dot — always rendered unconditionally
@@ -429,7 +422,7 @@ private fun PrayerListRow(prayer: PrayerRow, isDark: Boolean) {
     Row(
         modifier          = Modifier
             .fillMaxWidth()
-            .height(72.dp),
+            .height(68.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Prayer icon in rounded box
@@ -448,7 +441,7 @@ private fun PrayerListRow(prayer: PrayerRow, isDark: Boolean) {
             )
         }
 
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(8.dp))
 
         // Prayer name + time
         Column(modifier = Modifier.weight(1f)) {
@@ -473,9 +466,9 @@ private fun PrayerListRow(prayer: PrayerRow, isDark: Boolean) {
             )
         }
 
-        // Volume icon — TODO: replace img_calendar with ic_volume_on / ic_volume_off
+        // Notification icon — TODO: will implement alarm logic on click
         Icon(
-            painter            = painterResource(Res.drawable.img_calendar),
+            imageVector        = Icons.AutoMirrored.Filled.VolumeUp,
             contentDescription = "Volume",
             tint               = if (prayer.isActive) BottleGreen else SubtextGray,
             modifier           = Modifier.size(22.dp)
